@@ -6,7 +6,6 @@ import JoinSuccess from "./pages/Join/JoinSuccess";
 import User from "./pages/User/User";
 import UserPracticeRoom from "./pages/User/UserPracticeRoom";
 import UserPayment from "./pages/User/UserPayment";
-import UserReservation from "./pages/User/UserReservation";
 import PracticeRoom from "./pages/PracticeRoom";
 import Owner from "./pages/Owner/Owner";
 import OwnerPracticeRoom from "./pages/Owner/OwnerPracticeRoom";
@@ -37,10 +36,12 @@ const UserRoutes = () => {
             <Route path="/practiceRoom" element={<UserPracticeRoom />} />
             {/* 결제 페이지 */}
             <Route path="/PracticeRoom/payment" element={<UserPayment />} />
-            {/* 예약 내역 페이지 */}
-            <Route path="/reservation" element={<UserReservation />} />
-            {/* 마이 페이지 */}
-            <Route path="/mypage" element={<User />} />
+            <Route element={<MainHeader />}>
+                {/* 예약 내역 페이지 */}
+                <Route path="/reservation" element={<Owner />} />
+                {/* 마이 페이지 */}
+                <Route path="/mypage" element={<User />} />
+            </Route>
         </Routes>
     );
 };
