@@ -2,6 +2,8 @@ import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import { CiCalendar } from "react-icons/ci";
 import { CiUser } from "react-icons/ci";
+import { CiSquarePlus } from "react-icons/ci";
+import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
@@ -32,17 +34,14 @@ const Header = styled.div`
         color: #a9a9a9;
         cursor: pointer;
     }
-
-    svg:last-child {
-        margin-left: 10%;
-    }
 `;
 
 const IconWrapper = styled.div`
     width: 25%;
     display: flex;
-    justify-content: end;
+    justify-content: space-around;
     align-items: center;
+    gap: 5%;
 `;
 
 const Content = styled.div`
@@ -55,21 +54,33 @@ const MainHeader = () => {
     const navigate = useNavigate();
 
     // TODO : JWT를 통해 오너 페이지로 갈지 유저 페이지로 갈지 구현
+    const handlePlus = () => {
+        navigate("/owner/practiceRoom/1");
+    };
+
+    const handleOwner = () => {
+        navigate("/owner/revenue");
+    };
+
     const handleCalender = () => {
-        navigate("/owner");
+        navigate("/user/reservation");
     };
 
     const handleUser = () => {
-        navigate("/owner/revenue");
+        navigate("/user/mypage");
     };
 
     return (
         <Container>
             <Header>
+                {/* TODO : owner는 메인 클릭시 /owner로 이동하게 구현 */}
+                {/* TODO : user는 메인 클릭시 /main으로 가게 구현 */}
                 <a href="/main">
                     <img src="/assets/img/zic_mainlogo.png" alt="Logo" />
                 </a>
                 <IconWrapper>
+                    <CiSquarePlus onClick={handlePlus} />
+                    <FaUser onClick={handleOwner} />
                     <CiCalendar onClick={handleCalender} />
                     <CiUser onClick={handleUser} />
                 </IconWrapper>
