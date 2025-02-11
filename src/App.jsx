@@ -37,7 +37,7 @@ const UserRoutes = () => {
             {/* 연습실 내부 방 페이지 */}
             <Route path="/practiceRoom/:id" element={<UserPracticeRoom />} />
             {/* 결제 페이지 */}
-            <Route path="/PracticeRoom/:id/payment" element={<UserPayment />} />
+            <Route path="/practiceRoom/:id/payment" element={<UserPayment />} />
             <Route path="/payment/loading" element={<Loading />} />
             <Route element={<MainHeader />}>
                 {/* 예약 내역 페이지 */}

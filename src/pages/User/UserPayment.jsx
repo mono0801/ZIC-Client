@@ -299,7 +299,7 @@ const UserPayment = () => {
                         </div>
                         <div>
                             <p>시간 당 금액</p>
-                            <p>{fee}원</p>
+                            <p>{fee.toLocaleString()}원</p>
                         </div>
                         <div>
                             <p>수수료</p>
@@ -308,7 +308,7 @@ const UserPayment = () => {
                     </InfoContainer>
                     <Total>
                         <p>결제 금액</p>
-                        <p>{total}원</p>
+                        <p>{total.toLocaleString()}원</p>
                     </Total>
                 </ReservationContainer>
             </Wrapper>
