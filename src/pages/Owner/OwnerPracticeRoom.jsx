@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
-import { useNavigate, useMatch } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
 import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
@@ -121,26 +121,17 @@ const Address = styled.div`
         align-items: center;
         justify-content: start;
         gap: 2%;
-
         text-decoration: none;
         font-family: "Pretendard-ExtraLight";
         letter-spacing: 2%;
         margin-right: 2%;
-
-        &:visited {
-            color: #545454;
-        }
+        color: #545454;
     }
 `;
 
 const OwnerPracticeRoom = () => {
     const navigate = useNavigate();
     const [toggleActive, setToggleActive] = useState(false);
-    const matchOwner = useMatch("/owner/practiceRoom/:practiceRoomId");
-
-    if (matchOwner) {
-        console.log(matchOwner);
-    }
 
     return (
         <OwnerPracticeRoomContainer>
@@ -184,9 +175,7 @@ const OwnerPracticeRoom = () => {
                         </a>
                     </Address>
                 </TitleContainer>
-
-                {/* TODO : 유저 연습실 내부방 목록 페이지 구현 */}
-                {matchOwner ? <AddPracticeRoom /> : "none"}
+                <AddPracticeRoom />
             </PracticeRoomContainer>
         </OwnerPracticeRoomContainer>
     );

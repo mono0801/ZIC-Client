@@ -1,0 +1,46 @@
+.react-ios-time-picker {
+    z-index: 20 !important;
+}
+
+.react-ios-time-picker-container {
+    font-family: "Pretendard-Regular" !important;
+    background-color: #fff !important;
+}
+
+.react-ios-time-picker-minute {
+    display: none !important;
+}
+
+.react-ios-time-picker-cell-inner-hour:hover,
+.react-ios-time-picker-cell-inner-minute:hover,
+.react-ios-time-picker-cell-inner-hour-format:hover {
+    background-color: #edf8ff !important;
+    color: #353535 !important;
+}
+
+.react-ios-time-picker-cell-inner-selected {
+    color: #353535 !important;
+}
+
+.react-ios-time-picker-cell-inner-hour-format-selected {
+    color: #f7f7f7 !important;
+}
+
+.react-ios-time-picker-selected-overlay {
+    background-color: #edf8ff !important;
+}
+
+.react-ios-time-picker-colon {
+    display: none !important;
+    color: #353535 !important;
+}
+
+.react-ios-time-picker-btn-container {
+    font-family: "Pretendard-Regular" !important;
+    background-color: white !important;
+    border-bottom: none !important;
+}
+
+.react-ios-time-picker-btn {
+    color: #278cff !important;
+}

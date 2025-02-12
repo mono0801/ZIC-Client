@@ -4,9 +4,9 @@ import JoinCategory from "./pages/Join/JoinCategory";
 import JoinInfo from "./pages/Join/JoinInfo";
 import JoinSuccess from "./pages/Join/JoinSuccess";
 import User from "./pages/User/User";
+import UserReservation from "./pages/User/UserReservation";
 import UserPracticeRoom from "./pages/User/UserPracticeRoom";
 import UserPayment from "./pages/User/UserPayment";
-import UserReservation from "./pages/User/UserReservation";
 import PracticeRoom from "./pages/PracticeRoom";
 import Owner from "./pages/Owner/Owner";
 import OwnerPracticeRoom from "./pages/Owner/OwnerPracticeRoom";
@@ -14,6 +14,7 @@ import OwnerRevenue from "./pages/Owner/OwnerRevenue";
 import RootContainer from "./Components/RootContainer";
 import JoinHeader from "./Components/JoinHeader";
 import MainHeader from "./Components/MainHeader";
+import Loading from "./pages/Loading";
 
 const JoinRoutes = () => {
     return (
@@ -34,13 +35,16 @@ const UserRoutes = () => {
     return (
         <Routes>
             {/* 연습실 내부 방 페이지 */}
-            <Route path="/practiceRoom" element={<UserPracticeRoom />} />
+            <Route path="/practiceRoom/:id" element={<UserPracticeRoom />} />
             {/* 결제 페이지 */}
-            <Route path="/PracticeRoom/payment" element={<UserPayment />} />
-            {/* 예약 내역 페이지 */}
-            <Route path="/reservation" element={<UserReservation />} />
-            {/* 마이 페이지 */}
-            <Route path="/mypage" element={<User />} />
+            <Route path="/practiceRoom/:id/payment" element={<UserPayment />} />
+            <Route path="/payment/loading" element={<Loading />} />
+            <Route element={<MainHeader />}>
+                {/* 예약 내역 페이지 */}
+                <Route path="/reservation" element={<UserReservation />} />
+                {/* 마이 페이지 */}
+                <Route path="/mypage" element={<User />} />
+            </Route>
         </Routes>
     );
 };
@@ -70,6 +74,8 @@ function App() {
                 <Route element={<RootContainer />}>
                     {/* 로그인 */}
                     <Route path="/" element={<Home />} />
+                    <Route path="/login/loading" element={<Loading />} />
+
                     {/* 메인 페이지 */}
                     <Route path="/main" element={<PracticeRoom />} />
 

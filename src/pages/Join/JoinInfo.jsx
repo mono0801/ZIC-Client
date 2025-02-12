@@ -1,10 +1,11 @@
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../Components/Button";
 import { JoinContainer } from "../../styles/container";
 import styled from "styled-components";
 import { IoIosSearch } from "react-icons/io";
 import { regions, instruments } from "../../assets/category";
+import ScrollContainer from "react-indiana-drag-scroll";
 
 const InputContainer = styled.div`
     width: 100%;
@@ -50,7 +51,7 @@ const InputWrapper = styled.div`
     }
 `;
 
-const RegionCategory = styled.div`
+const RegionCategory = styled(ScrollContainer)`
     width: 100%;
     max-width: 100%;
     height: 30%;
@@ -126,7 +127,6 @@ const JoinInfo = () => {
     const [number, setNumber] = useState("");
     const [address, setAddress] = useState("");
     const [selectedInstruments, setSelectedInstruments] = useState([]);
-    const scrollRef = useRef(null);
 
     const handleNext = () => {
         console.log(region);
@@ -134,25 +134,6 @@ const JoinInfo = () => {
         // TODO : 로그인 API 설정하기
         navigate(`/join/${role.role}/success`);
     };
-
-    useEffect(() => {
-        if (regionToggle) {
-            const handleWheel = (e) => {
-                // 세로 스크롤을 가로 스크롤로 변환
-                if (e.deltaY !== 0) {
-                    e.preventDefault();
-                    scrollRef.current.scrollLeft += e.deltaY;
-                }
-            };
-
-            const current = scrollRef.current;
-            current.addEventListener("wheel", handleWheel, { passive: false });
-
-            return () => {
-                current.removeEventListener("wheel", handleWheel);
-            };
-        }
-    }, [regionToggle]);
 
     const handleInstrumentClick = (instrument) => {
         setSelectedInstruments(
@@ -180,7 +161,7 @@ const JoinInfo = () => {
                         />
                     </InputWrapper>
                     {regionToggle ? (
-                        <RegionCategory ref={scrollRef}>
+                        <RegionCategory>
                             {regions.map((el) => (
                                 <RegionBtn
                                     key={el}

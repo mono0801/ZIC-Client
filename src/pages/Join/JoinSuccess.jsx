@@ -80,7 +80,7 @@ const JoinSuccess = () => {
                     text={param.role == "owner" ? "룸 등록하기" : "예약하기"}
                     onClick={handleNext}
                 />
-                <a href="/main">건너뛰기</a>
+                {param.role == "owner" && (<a href="/owner">건너뛰기</a>)}
             </BtnWrapper>
         </Container>
     );
