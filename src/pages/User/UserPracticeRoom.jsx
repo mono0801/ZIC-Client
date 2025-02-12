@@ -163,10 +163,6 @@ const UserPracticeRoom = () => {
     const [query] = useSearchParams();
     const navigate = useNavigate();
     const [toggleActive, setToggleActive] = useState(false);
-    const reservedTimes = [
-        { startTime: "11:00:00", endTime: "15:00:00" },
-        { startTime: "17:00:00", endTime: "22:00:00" },
-    ];
 
     return (
         <OwnerPracticeRoomContainer>
@@ -216,7 +212,7 @@ const UserPracticeRoom = () => {
                     <PracticeRoomDetailCard
                         key={el.practiceRoomDetailId}
                         img={el.image}
-                        time={reservedTimes}
+                        time={el.reservedTimes}
                         name={el.name}
                         fee={el.fee}
                         id={el.practiceRoomDetailId}
