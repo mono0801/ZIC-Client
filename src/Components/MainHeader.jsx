@@ -7,9 +7,9 @@ import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column; /* 세로로 쌓기 */
-    height: 100vh; /* 전체 화면 높이 차지 */
+    /* display: flex; */
+    /* flex-direction: column; 세로로 쌓기 */
+    /* height: 100vh; 전체 화면 높이 차지 */
 `;
 
 const Header = styled.div`
@@ -23,6 +23,7 @@ const Header = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #fff; //정호
 
     img {
         margin-bottom: 10px;
