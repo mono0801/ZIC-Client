@@ -1,9 +1,99 @@
 import styled from "styled-components"; // styled-components import 추가
 import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/font.css";
-import KakaoImage from "../../../public/assets/img/kakaoImage.svg";
 import MainHeader from "../../Components/MainHeader";
+import axios from "axios";
+import { mypage } from "../../assets/mypage";
+
+const User = () => {
+    const [data, setData] = useState({
+        userThisMonthPractices: { userThisMonthPracticeList: [] },
+        frequentPracticeRooms: { frequentPracticeRoomDetailList: [] }
+    });
+    
+    const navigate = useNavigate();
+    mypage
+    useEffect(() => {
+        fetchNewsList(); 
+    }, []);
+
+    const fetchNewsList = async () => {
+        try {
+
+        //   const token = localStorage.getItem("accessToken");
+        //   const response = await axios.get(
+        //     `/api/user/mypage`, {
+        //         headers: {
+        //             Authorization: `Bearer ${token}`, // 🔥 헤더에 토큰 추가
+        //         },
+        //     }
+            
+        //   );
+        //   setData(response.data);
+        setData(mypage.result);
+        } catch (error) {
+          console.error("데이터를 불러오는 중 에러 발생:", error);
+        }
+      };
+
+    //logout api 연동해야함
+    const handleLogout = () =>{
+        localStorage.removeItem("accessToken");
+        navigate("/");
+    }
+    
+
+
+    return (
+        <Container>
+            <MainHeader></MainHeader>
+
+            <TopContent>
+                <UserInfoBox>
+                    <UserName>{data.userName}</UserName>
+                    <KakaoImageComponent/>
+                </UserInfoBox>
+                <LogoutBtn onClick={handleLogout}>로그아웃</LogoutBtn>
+            </TopContent>
+
+            <CenterContent>
+                <PracticeBox>
+                    <span>이번 달 연습 횟수</span>
+                    {data.userThisMonthPractices.userThisMonthPracticeList.map((practice, index) => (
+                        <div key={index}>
+                            <p>{`${practice.practiceRoomName} ${practice.practiceRoomNameDetail}`}</p>
+                            <p>{practice.practiceCount}회</p>
+                        </div>
+                    ))}
+                    <DividerLine />
+                    <div><p>총 연습 횟수</p><p>{data.userThisMonthPractices.totalPracticeCount}회</p></div>
+                </PracticeBox>
+            </CenterContent>
+
+            <BottomContent>
+                <span>자주 가는 연습실</span>
+                <PracticeRankBox>
+                    {data.frequentPracticeRooms.frequentPracticeRoomDetailList.map((room, index) => (
+                        index === 0 ? (
+                        <div key={index}>
+                            <img src="/assets/img/Union.svg" alt="1위 아이콘" />
+                            <p>{room.roomName}</p>
+                        </div>
+                        ) : (
+                        <div key={index}>
+                            <p>{index + 1}</p>
+                            <p>{room.roomName}</p>
+                        </div>
+                        )
+                    ))}
+                </PracticeRankBox>
+            </BottomContent>
+        </Container>
+    )
+};
+
+export default User;
 
 const Container = styled.div`
     width : 100%;
@@ -25,7 +115,7 @@ const UserInfoBox = styled.div`
     display: flex;
     flex-direction: row;
     text-align: center;
-    background-color: rgba(217, 240, 255, 50%);
+    background-color: rgba(217, 240, 255,0.5);
     width : 90%;
     height : 70px;
     align-items: center;
@@ -145,7 +235,7 @@ const PracticeRankBox = styled.div`
         font-size: 1.2rem;
         line-height: 16px;
         color: #030303;
-        margin-left: 6.4%;
+        margin-left: 6.3%;
         margin-right: 2.3%;
     }
 
@@ -184,61 +274,4 @@ const PracticeRankBox = styled.div`
 //     }
 // `;
 
-
-
-
 const KakaoImageComponent = () => <img src="/assets/img/kakaoImage.svg" alt="Kakao Image" width={"8%"}/>;
-
-const User = () => {
-
-
-    return (
-        
-        <Container>
-            <MainHeader></MainHeader>
-
-            <TopContent>
-                <UserInfoBox>
-                    <UserName>홍길동</UserName>
-                    <KakaoImageComponent/>
-                </UserInfoBox>
-                <LogoutBtn>로그아웃</LogoutBtn>
-            </TopContent>
-
-            <CenterContent>
-                <PracticeBox>
-                    <span>이번 달 연습 횟수</span>
-                    <div><p>가위피아노 A실</p><p>2회</p></div>
-                    <div><p>마음피아노 4번방</p><p>1회</p></div>
-                    <div><p>가위피아노 A실</p><p>2회</p></div>
-                    <div><p>마음피아노 4번방</p><p>1회</p></div>
-                    <div><p>가위피아노 A실</p><p>2회</p></div>
-                    <div><p>마음피아노 4번방</p><p>1회</p></div>
-                    <DividerLine/>
-                    <div><p>총 연습 횟수</p><p>3회</p></div>
-                </PracticeBox>
-            </CenterContent>
-
-            <BottomContent>
-                <span>자주 가는 연습실</span>
-                <PracticeRankBox>
-                    <div>
-                        <img src="/assets/img/Union.svg" alt=""></img>
-                        <p>가위 피아노</p>
-                    </div>
-                    <div>
-                        <p>2</p>
-                        <p>마음 피아노</p>
-                    </div>
-                    <div>
-                        <p>3</p>
-                        <p>라라 피아노</p>
-                    </div>
-                </PracticeRankBox>
-            </BottomContent>
-
-        </Container>
-    )
-};
-
-export default User;

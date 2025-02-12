@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^2.5.1",
     "@types/redux-persist": "^4.0.0",
     "apexcharts": "^4.4.0",
+    "axios": "^1.7.9",
     "firebase": "^11.3.0",
     "react": "^19.0.0",
     "react-apexcharts": "^1.7.0",
