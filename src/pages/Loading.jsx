@@ -13,13 +13,13 @@ const Loading = () => {
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
+        // 모바일인지 PC인지 검사
         const userAgent = navigator.userAgent;
         const mobile = /iPhone|iPad|iPod|Android/i.test(userAgent);
         setIsMobile(mobile);
-        console.log(`Mobile : ${mobile}`);
     }, []);
 
-    return <Container>Loading</Container>;
+    return <Container>Loading - Mobile : {isMobile + ""}</Container>;
 };
 
 export default Loading;

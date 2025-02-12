@@ -121,15 +121,11 @@ const Address = styled.div`
         align-items: center;
         justify-content: start;
         gap: 2%;
-
         text-decoration: none;
         font-family: "Pretendard-ExtraLight";
         letter-spacing: 2%;
         margin-right: 2%;
-
-        &:visited {
-            color: #545454;
-        }
+        color: #545454;
     }
 `;
 
