@@ -55,10 +55,10 @@ const OwnerRoutes = () => {
             <Route element={<MainHeader />}>
                 {/* 대여자 메인 페이지 */}
                 <Route path="/" element={<Owner />} />
-                {/* 대여자 연습실 내부 방 추가 페이지 */}
+                {/* 대여자 수익 페이지 */}
                 <Route path="/revenue" element={<OwnerRevenue />} />
             </Route>
-            {/* 대여자 수익 페이지 */}
+            {/* 대여자 연습실 내부 방 추가 페이지 */}
             <Route
                 path="/practiceRoom/:practiceRoomId"
                 element={<OwnerPracticeRoom />}
@@ -77,7 +77,9 @@ function App() {
                     <Route path="/login/loading" element={<Loading />} />
 
                     {/* 메인 페이지 */}
-                    <Route path="/main" element={<PracticeRoom />} />
+                    <Route element={<MainHeader />}>
+                        <Route path="/main" element={<PracticeRoom />} />
+                    </Route>
 
                     {/* 회원가입 */}
                     <Route path="/join/*" element={<JoinRoutes />} />
