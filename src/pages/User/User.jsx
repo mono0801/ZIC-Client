@@ -47,8 +47,6 @@ const User = () => {
 
     return (
         <Container>
-            <MainHeader></MainHeader>
-
             <TopContent>
                 <UserInfoBox>
                     <UserName>{data.userName}</UserName>
