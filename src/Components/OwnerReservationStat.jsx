@@ -3,6 +3,8 @@ import styled from "styled-components";
 const StatContainer = styled.div`
     width: 100%;
     font-family: "Pretendard-bord";
+    display: flex;
+    flex-direction: column;
 `;
 
 const TitleWrapper = styled.div`
@@ -21,16 +23,26 @@ const TitleWrapper = styled.div`
 
 const ContentWrapper = styled.div`
     width: 100%;
+    height: 4rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     color: #545454;
+    overflow-y: auto;
+    padding: 1%;
+
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+
+    /* 웹킷 기반 브라우저에서 스크롤바 숨기기 */
+    ::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
 
     div {
         display: flex;
         justify-content: space-between;
         margin-bottom: 2%;
-
         p {
             font-family: "Pretendard-Light";
         }
