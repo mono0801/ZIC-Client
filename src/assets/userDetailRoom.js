@@ -7,6 +7,10 @@ export const userDetailRoom = [
         status: "SUSPENDED",
         createdAt: "2025-02-04T08:47:58",
         updatedAt: "2025-02-04T08:47:58",
+        reservedTimes: [
+            { startTime: "00:00:00", endTime: "01:00:00" },
+            { startTime: "03:00:00", endTime: "05:00:00" },
+        ],
     },
     {
         practiceRoomDetailId: 4,
@@ -16,6 +20,11 @@ export const userDetailRoom = [
         status: "AVAILABLE",
         createdAt: "2025-02-04T08:47:58",
         updatedAt: "2025-02-04T08:47:58",
+        reservedTimes: [
+            { startTime: "06:00:00", endTime: "10:00:00" },
+            { startTime: "12:00:00", endTime: "16:00:00" },
+            { startTime: "19:00:00", endTime: "21:00:00" },
+        ],
     },
     {
         practiceRoomDetailId: 3,
@@ -25,6 +34,12 @@ export const userDetailRoom = [
         status: "AVAILABLE",
         createdAt: "2025-02-04T08:47:58",
         updatedAt: "2025-02-04T08:47:58",
+        reservedTimes: [
+            { startTime: "00:00:00", endTime: "03:00:00" },
+            { startTime: "07:00:00", endTime: "12:00:00" },
+            { startTime: "14:00:00", endTime: "16:00:00" },
+            { startTime: "18:00:00", endTime: "24:00:00" },
+        ],
     },
     {
         practiceRoomDetailId: 2,
@@ -34,6 +49,7 @@ export const userDetailRoom = [
         status: "AVAILABLE",
         createdAt: "2025-02-04T08:47:58",
         updatedAt: "2025-02-04T08:47:58",
+        reservedTimes: [{ startTime: "00:00:00", endTime: "24:00:00" }],
     },
     {
         practiceRoomDetailId: 1,
@@ -43,5 +59,9 @@ export const userDetailRoom = [
         status: "ETC",
         createdAt: "2025-02-04T08:47:58",
         updatedAt: "2025-02-04T08:47:58",
+        reservedTimes: [
+            { startTime: "01:00:00", endTime: "15:00:00" },
+            { startTime: "17:00:00", endTime: "22:00:00" },
+        ],
     },
 ];
