@@ -62,9 +62,9 @@ const JoinSuccess = () => {
 
     const handleNext = () => {
         if (param.role == "user") {
-            navigate("/main");
+            navigate("/");
         } else if (param.role == "owner") {
-            navigate("/owner/practiceRoom/3");
+            navigate("/owner/practiceRoom");
         }
     };
 
@@ -80,7 +80,7 @@ const JoinSuccess = () => {
                     text={param.role == "owner" ? "룸 등록하기" : "예약하기"}
                     onClick={handleNext}
                 />
-                {param.role == "owner" && (<a href="/owner">건너뛰기</a>)}
+                {param.role == "owner" && <a href="/owner">건너뛰기</a>}
             </BtnWrapper>
         </Container>
     );

@@ -33,7 +33,7 @@ const JoinHeader = () => {
         <Container>
             <Header>
                 <a href="/">
-                    <img src="/assets/img/zic_mainlogo.png" alt="Logo" />
+                    <img src="/assets/img/zic_mainlogo.svg" alt="Logo" />
                 </a>
             </Header>
             {/* TODO : 진행 바 설정 */}

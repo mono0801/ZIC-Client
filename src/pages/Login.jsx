@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { BsChatFill } from "react-icons/bs";
 
-const HomeContainer = styled.div`
+const LoginContainer = styled.div`
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -15,13 +15,9 @@ const BannerWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: "pretendard-Bold";
+    flex-direction: column; /* 세로 정렬 */
+    font-family: "Pretendard-Bold";
     font-size: 20px;
-
-    img {
-        width: 15%;
-        height: 15%;
-    }
 `;
 
 const Banner = styled.div`
@@ -29,10 +25,27 @@ const Banner = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     background-image: url(${(props) => props.bgphoto});
     background-size: cover;
     background-repeat: no-repeat;
+    position: relative;
+    height: 10%;
+    padding: 20px;
+`;
+
+const BannerText = styled.p`
+    font-size: 1.3rem;
+    color: #030303;
+    font-family: "Pretendard-Bold";
+    margin-left: 5%;
+`;
+
+const BannerImage = styled.img`
+    margin-top: 1%;
+    height: 4.2rem;
+    background-size: cover;
+    margin-right: 4%;
 `;
 
 const KakaoWrapper = styled.div`
@@ -81,7 +94,7 @@ const KakaoBtn = styled.div`
     }
 `;
 
-const Home = () => {
+const Login = () => {
     // TODO : 로그인 API 적용
     const handleKakaoLogin = () => {
         window.location.href =
@@ -89,12 +102,12 @@ const Home = () => {
     };
 
     return (
-        <HomeContainer>
+        <LoginContainer>
             <BannerWrapper>
                 <Banner bgphoto={"/assets/img/piano5line.png"}>
-                    <p>당신이 연주할 곳은 여기</p>
+                    <BannerText>당신이 연주할 곳은 여기</BannerText>
                     {/* TODO : ZIC 로고 포지션 수정하기 */}
-                    <img src="/assets/img/zic_banner.png" />
+                    <BannerImage src="/assets/img/zic_banner.png" />
                 </Banner>
             </BannerWrapper>
             <KakaoWrapper>
@@ -105,8 +118,8 @@ const Home = () => {
                 </KakaoBtn>
                 <a href="/join/category">다른 이메일로 시작하기</a>
             </KakaoWrapper>
-        </HomeContainer>
+        </LoginContainer>
     );
 };
 
-export default Home;
+export default Login;

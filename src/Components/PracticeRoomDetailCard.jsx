@@ -5,7 +5,7 @@ import ScrollContainer from "react-indiana-drag-scroll";
 
 const Container = styled.div`
     width: 100%;
-    height: 40%;
+    height: 18rem;
     padding: 3%;
     display: flex;
     flex-direction: column;
@@ -22,6 +22,7 @@ const Banner = styled.div`
     background-image: url(${(props) => props.bgphoto});
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
     border-radius: 1rem;
     cursor: pointer;
 `;
@@ -54,7 +55,7 @@ const Light = styled.div`
 
 const CustomScrollContainer = styled(ScrollContainer)`
     width: 100%;
-    height: 20%;
+    height: 15%;
 
     overflow-x: auto; /* 가로 스크롤 활성화 */
 
@@ -76,12 +77,12 @@ const TimeBlock = styled.div`
 const Hour = styled.div`
     width: 10%;
     height: 100%;
-    background-color: ${(props) => (props.isAvailable ? "#80CDFF" : "#F2F2F2")};
+    background-color: ${(props) => (props.isAvailable ? "#F2F2F2" : "#80CDFF")};
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: "Pretendard-Regular";
-    min-width: 60px; /* 각 시간의 최소 너비 */
+    min-width: 3rem; /* 각 시간의 최소 너비 */
     border-right: 1px solid #a9a9a9;
 
     &:first-child {
@@ -115,7 +116,7 @@ const Text = styled.div`
     justify-content: start;
     align-items: center;
     font-family: "Pretendard-Regular";
-    min-width: 60px; /* 각 시간의 최소 너비 */
+    min-width: 3rem; /* 각 시간의 최소 너비 */
 
     p {
         font-family: "Pretendard-Light";
