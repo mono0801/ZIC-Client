@@ -19,6 +19,3 @@ const CalendarComponent = ({ date }) => {
 };
 
 export default CalendarComponent;
-
-//일단 이런식으로 컴포넌트 구현을 하고
-//여기서 date를 boolean으로 받아서 date가 false이면 일 표시는 없애도록

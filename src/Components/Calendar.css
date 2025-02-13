@@ -10,7 +10,6 @@
   margin-bottom: 11.4%;
 }
 
-/* 모든 요소의 크기를 width/height에 padding과 border까지 포함하도록 설정 */
 .react-calendar,
 .react-calendar *,
 .react-calendar *:before,
@@ -82,14 +81,14 @@
 
 /* 요일(weekday) 점선 없애기 */
 .react-calendar__month-view__weekdays__weekday abbr {
-  text-decoration: none; /* 점선 제거 */
+  text-decoration: none;
   border-bottom: none; 
   cursor: default;
 }
   
 .react-calendar__month-view__days {
   display: flex;
-  flex-wrap: wrap; /* 여러 줄 표시 */
+  flex-wrap: wrap;
   width: 100%;
   text-align: center;
   text-transform: uppercase;
@@ -108,9 +107,9 @@
   text-align: center;
 }
 
-  /* 오늘 날짜 원 스타일 (원과 숫자 분리) */
+
 .react-calendar__tile--active::before {
-  content: ""; /* 가상 요소를 사용하여 원 생성 */
+  content: ""; 
   position: absolute;
   width: 35px;
   height: 35px;
@@ -119,7 +118,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: -1; /* 원이 숫자 아래에 배치되도록 */
+  z-index: -1; 
 }
 
 .react-calendar__tile--active {
