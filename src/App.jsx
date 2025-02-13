@@ -9,12 +9,13 @@ import MainPracticeRoom from "./pages/MainPracticeRoom";
 import UserPayment from "./pages/User/UserPayment";
 import Main from "./pages/Main";
 import Owner from "./pages/Owner/Owner";
-import OwnerPracticeRoom from "./pages/Owner/OwnerPracticeRoom";
+import OwnerAddPracticeRoom from "./pages/Owner/AddPracticeRoom";
 import OwnerRevenue from "./pages/Owner/OwnerRevenue";
 import RootContainer from "./Components/RootContainer";
 import JoinHeader from "./Components/JoinHeader";
 import MainHeader from "./Components/MainHeader";
 import Loading from "./pages/Loading";
+import OwnerPracticeRoom from "./pages/Owner/OwnerPracticeRoom";
 
 const JoinRoutes = () => {
     return (
@@ -62,12 +63,12 @@ const OwnerRoutes = () => {
             {/* 대여자 내부방 변경 페이지 */}
             <Route
                 path="/practiceRoom/:practiceRoomId/practiceRoomDetail/:practiceRoomDetailId"
-                element={<OwnerPracticeRoom />}
+                element={<OwnerAddPracticeRoom />}
             />
             {/* 대여자 연습실 내부 방 추가 페이지 */}
             <Route
                 path="/practiceRoom/:practiceRoomId/practiceRoomDetail"
-                element={<OwnerPracticeRoom />}
+                element={<OwnerAddPracticeRoom />}
             />
         </Routes>
     );

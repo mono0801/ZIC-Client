@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import Button from "./Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import {
     getDownloadURL,
@@ -10,6 +10,8 @@ import {
     uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
+import { useMatch, useParams } from "react-router-dom";
+import { userDetailRoom } from "../assets/userDetailRoom";
 
 const Container = styled.div`
     width: 100%;
@@ -104,13 +106,29 @@ const BtnWrapper = styled.div`
     flex: 1;
     flex-direction: column;
     gap: 7%;
+
+    div {
+        height: 20%;
+    }
 `;
 
 const AddPracticeRoom = () => {
+    const addPractice = useMatch(
+        "/owner/practiceRoom/:practiceRoomId/practiceRoomDetail"
+    );
     const [roomName, setRoomName] = useState("");
     const [roomPrice, setRoomPrice] = useState("");
+    const { practiceRoomDetailId } = useParams();
     const [previewImg, setPreviewImg] = useState(""); // 브라우저에 보여줄 이미지 주소
     const [img, setImg] = useState(null); // firebase에 저장할 img 정보
+
+    useEffect(() => {
+        if (practiceRoomDetailId) {
+            setPreviewImg(userDetailRoom[0].image);
+            setRoomName(userDetailRoom[0].name);
+            setRoomPrice(userDetailRoom[0].fee);
+        }
+    }, [practiceRoomDetailId]);
 
     const handleAddRoom = () => {
         // if (!roomName || !roomPrice) {
@@ -137,7 +155,7 @@ const AddPracticeRoom = () => {
         return new Promise((resolve, reject) => {
             try {
                 const storage = getStorage(app);
-                const fileName = `zic/test/${
+                const fileName = `zic/test/room/${
                     file.name
                 }_${new Date().getTime()}`;
                 const storageRef = ref(storage, fileName);
@@ -235,9 +253,13 @@ const AddPracticeRoom = () => {
             </InputContainer>
 
             <BtnWrapper>
-                <Button text={"이용중지"} height={"20%"} />
+                {addPractice ? (
+                    <div />
+                ) : (
+                    <Button text={"이용중지"} height={"20%"} />
+                )}
                 <Button
-                    text={"+ 룸 추가하기"}
+                    text={addPractice ? "+ 룸 추가하기" : "변경하기"}
                     reverse={true}
                     height={"20%"}
                     onClick={handleAddRoom}
