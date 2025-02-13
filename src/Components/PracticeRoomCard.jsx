@@ -92,7 +92,7 @@ const PracticeRoomCard = ({ practiceRoom }) => {
 
     return (
         <RoomItem
-            to={`/user/practiceRoom/${practiceRoom.practiceRoomId}`}
+            to={`/practiceRoom/${practiceRoom.practiceRoomId}`}
             className="room-item"
             key={practiceRoom.id}
         >

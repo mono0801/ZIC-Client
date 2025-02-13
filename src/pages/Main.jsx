@@ -63,7 +63,7 @@ const ListContainer = styled.div`
     }
 `;
 
-const PracticeRoom = () => {
+const Main = () => {
     const locationOptions = regions;
     const instrumentOptions = instruments;
     const priceOptions = ["저가순", "고가순"];
@@ -122,4 +122,4 @@ const PracticeRoom = () => {
     );
 };
 
-export default PracticeRoom;
+export default Main;
