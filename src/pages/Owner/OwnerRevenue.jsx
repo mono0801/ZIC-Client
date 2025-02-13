@@ -2,13 +2,15 @@ import { revenueResult } from "../../assets/owner";
 import OwnerReservationStat from "../../Components/OwnerReservationStat";
 import styled from "styled-components";
 import Chart from "../../Components/Chart";
+import CalendarComponent from "../../Components/Calendar";
 
 const StatContainer = styled.div`
-    height: 100%;
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     padding: 5%;
+    box-sizing: border-box;
 `;
 
 const Horizon = styled.div`
@@ -16,10 +18,22 @@ const Horizon = styled.div`
     margin: 5% 0;
 `;
 
+const CalendarWrapper = styled.div`
+    height: 10%; /* CalendarComponent가 차지할 고정 높이 */
+`;
+
+const ChartWrapper = styled.div`
+    height: 30%; /* Chart가 차지할 고정 높이 */
+    margin-top: 5%; /* 차트와 다른 콘텐츠 사이에 여백 */
+    box-sizing: border-box;
+`;
+
 const OwnerRevenue = () => {
-    // TODO : 연도, 월 선택하는 컴포넌트 구현
     return (
         <StatContainer>
+            <CalendarWrapper>
+                <CalendarComponent showDate={false} />
+            </CalendarWrapper>
             <OwnerReservationStat
                 text={"총 이용 횟수"}
                 list={
@@ -37,7 +51,9 @@ const OwnerRevenue = () => {
                 }
                 count={false}
             />
-            <Chart list={revenueResult.result.monthlyEarning} />
+            <ChartWrapper>
+                <Chart list={revenueResult.result.monthlyEarning} />
+            </ChartWrapper>
         </StatContainer>
     );
 };
