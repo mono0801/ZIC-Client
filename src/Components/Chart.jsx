@@ -4,7 +4,8 @@ import styled from "styled-components";
 
 const ChartContainer = styled.div`
     width: 100%;
-    height: 30%;
+    height: 100%;
+    min-height: 30%;
     margin-top: 7%;
 
     h2 {

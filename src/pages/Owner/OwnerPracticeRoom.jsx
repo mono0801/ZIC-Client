@@ -1,18 +1,31 @@
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { FiMapPin } from "react-icons/fi";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
-import AddPracticeRoom from "../../Components/AddPracticeRoom";
+import { userDetailRoom } from "../../assets/userDetailRoom";
 import { ownerPracticeRoom } from "../../assets/OwnerPracticeRoom";
+import {
+    getDownloadURL,
+    getStorage,
+    ref,
+    uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../../firebase";
+import { useDropzone } from "react-dropzone";
+import PracticeRoomDetailCard from "../../Components/OwnerPracticeRoomDetailCard";
+import Button from "../../Components/Button";
 
-const OwnerPracticeRoomContainer = styled.div`
+const MainPracticeRoomContainer = styled.div`
     width: 100%;
     height: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 `;
 
 const Banner = styled.div`
@@ -35,7 +48,7 @@ const BackBtn = styled.div`
     color: #7d7d7d;
     border-radius: 50%;
     position: absolute;
-    top: 15%;
+    top: 5%;
     left: 5%;
     cursor: pointer;
 
@@ -57,6 +70,16 @@ const PracticeRoomContainer = styled.div`
     height: 75%;
     bottom: 0;
     border-radius: 5% 5% 0 0;
+    /* background-color: white; */
+    overflow-y: auto;
+
+    overflow-y: scroll; /* 세로 스크롤 활성화 */
+    -ms-overflow-style: none; /* IE와 Edge에서 스크롤바 숨기기 */
+    scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
+
+    &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari에서 스크롤바 숨기기 */
+    }
 `;
 
 const TitleContainer = styled.div`
@@ -64,11 +87,12 @@ const TitleContainer = styled.div`
     width: 100%;
     height: 20%;
     background-color: white;
-    border-bottom: 3px solid #f2f2f2;
+    border-bottom: 7px solid #f2f2f2;
     display: flex;
     flex-direction: column;
     justify-content: center;
     box-sizing: border-box;
+    margin-bottom: 5%;
 `;
 
 const Title = styled.div`
@@ -129,17 +153,136 @@ const Address = styled.div`
     }
 `;
 
+const CardContainer = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    top: 40%;
+
+    overflow-y: auto;
+
+    overflow-y: scroll; /* 세로 스크롤 활성화 */
+    -ms-overflow-style: none; /* IE와 Edge에서 스크롤바 숨기기 */
+    scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
+
+    &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari에서 스크롤바 숨기기 */
+    }
+`;
+
+const BtnContainer = styled.div`
+    position: absolute;
+    bottom: 2%;
+    width: 100%;
+    height: 5vh;
+    padding: 0 3%;
+`;
+
 const OwnerPracticeRoom = () => {
     const navigate = useNavigate();
     const [toggleActive, setToggleActive] = useState(false);
+    const [img, setImg] = useState(null);
+    const [previewImg, setPreviewImg] = useState(ownerPracticeRoom.img);
+
+    useEffect(() => {
+        if (img == null) {
+            return;
+        } else {
+            uploadImg(img).then((url) => {
+                alert(
+                    `연습실 대표 사진이 변경되었습니다.
+                \n이미지 Url: ${url}
+                `
+                );
+            });
+        }
+    }, [img]);
+
+    // firebase에 이미지 저장하는 함수
+    const uploadImg = (file) => {
+        return new Promise((resolve, reject) => {
+            try {
+                const storage = getStorage(app);
+                const fileName = `zic/test/main/${
+                    file.name
+                }_${new Date().getTime()}`;
+                const storageRef = ref(storage, fileName);
+                const uploadTask = uploadBytesResumable(storageRef, file);
+                uploadTask.on(
+                    "state_changed",
+                    (snapshot) => {
+                        const progress =
+                            (snapshot.bytesTransferred / snapshot.totalBytes) *
+                            100;
+                        console.log(progress);
+                    },
+                    (error) => {
+                        alert("Image Upload Failed");
+                        reject(error);
+                    },
+                    async () => {
+                        try {
+                            const url = await getDownloadURL(
+                                uploadTask.snapshot.ref
+                            );
+                            resolve(url);
+                        } catch (error) {
+                            reject(error);
+                        }
+                    }
+                );
+            } catch (error) {
+                alert("Image Upload Failed");
+                reject(error);
+            }
+        });
+    };
+
+    // input에 이미지를 넣을 경우 미리보기 url을 변경하는 함수
+    const handleImgChange = (e) => {
+        const { name, value } = e.target;
+        setValues((prevValues) => ({
+            ...prevValues,
+            [name]: value,
+        }));
+        if (e.target.name === "imgUrl") {
+            setPreviewImg(e.target.value);
+        }
+    };
+
+    // 이미지 Drop 시 실행
+    const onDrop = (acceptedFiles) => {
+        const result = confirm("연습실 대표 사진을 변경하시겠습니까?");
+
+        if (result) {
+            const reader = new FileReader();
+            const file = acceptedFiles;
+            if (file) {
+                // 이미지 파일을 읽어 setImg로 저장
+                reader.readAsDataURL(file[0]); // img 파일을 base64로 인코딩
+                setImg(file[0]);
+            }
+
+            reader.onload = (e) => {
+                // onDrop되면 preview 되게 처리, 기존 이미지 url 정보를 공백처리
+                setPreviewImg(reader.result);
+                document.getElementsByName("imgUrl")[0].value = "";
+            };
+        } else {
+            return;
+        }
+    };
+
+    const { getRootProps, getInputProps } = useDropzone({ onDrop }); // html 컴포넌트와 연결
 
     return (
-        <OwnerPracticeRoomContainer>
-            <Banner bgphoto={ownerPracticeRoom.img}>
-                <BackBtn>
-                    <IoIosArrowBack onClick={() => navigate(-1)} />
-                </BackBtn>
+        <MainPracticeRoomContainer>
+            <Banner {...getRootProps()} bgphoto={previewImg}>
+                <input multiple={false} name="imgUrl" {...getInputProps()} />
             </Banner>
+            <BackBtn>
+                <IoIosArrowBack onClick={() => navigate(-1)} />
+            </BackBtn>
 
             <PracticeRoomContainer>
                 <TitleContainer>
@@ -175,9 +318,32 @@ const OwnerPracticeRoom = () => {
                         </a>
                     </Address>
                 </TitleContainer>
-                <AddPracticeRoom />
             </PracticeRoomContainer>
-        </OwnerPracticeRoomContainer>
+            <CardContainer>
+                {userDetailRoom.map((el) => (
+                    <PracticeRoomDetailCard
+                        key={el.practiceRoomDetailId}
+                        img={el.image}
+                        name={el.name}
+                        fee={el.fee}
+                        PracticeRoomId={el.practiceRoomDetailId}
+                        status={el.status}
+                        DetailId={el.practiceRoomDetailId}
+                    />
+                ))}
+            </CardContainer>
+            <BtnContainer>
+                <Button
+                    text={"방 추가하기"}
+                    height={"100%"}
+                    onClick={() =>
+                        navigate(
+                            `/owner/practiceRoom/${userDetailRoom[0].practiceRoomDetailId}/practiceRoomDetail`
+                        )
+                    }
+                />
+            </BtnContainer>
+        </MainPracticeRoomContainer>
     );
 };
 

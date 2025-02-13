@@ -1,16 +1,15 @@
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
 import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { FiMapPin } from "react-icons/fi";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
-import { userDetailRoom } from "../assets/userDetailRoom";
-import { ownerPracticeRoom } from "../assets/OwnerPracticeRoom";
-import PracticeRoomDetailCard from "../Components/PracticeRoomDetailCard";
+import AddPracticeRoom from "../../Components/AddPracticeRoom";
+import { ownerPracticeRoom } from "../../assets/OwnerPracticeRoom";
 
-const MainPracticeRoomContainer = styled.div`
+const OwnerPracticeRoomContainer = styled.div`
     width: 100%;
     height: 100%;
     position: relative;
@@ -58,16 +57,6 @@ const PracticeRoomContainer = styled.div`
     height: 75%;
     bottom: 0;
     border-radius: 5% 5% 0 0;
-    background-color: white;
-    overflow-y: auto;
-
-    overflow-y: scroll; /* 세로 스크롤 활성화 */
-    -ms-overflow-style: none; /* IE와 Edge에서 스크롤바 숨기기 */
-    scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
-
-    &::-webkit-scrollbar {
-        display: none; /* Chrome, Safari에서 스크롤바 숨기기 */
-    }
 `;
 
 const TitleContainer = styled.div`
@@ -75,12 +64,11 @@ const TitleContainer = styled.div`
     width: 100%;
     height: 20%;
     background-color: white;
-    border-bottom: 7px solid #f2f2f2;
+    border-bottom: 3px solid #f2f2f2;
     display: flex;
     flex-direction: column;
     justify-content: center;
     box-sizing: border-box;
-    margin-bottom: 5%;
 `;
 
 const Title = styled.div`
@@ -141,33 +129,12 @@ const Address = styled.div`
     }
 `;
 
-const CardContainer = styled.div`
-    position: absolute;
-    width: 100%;
-    height: 60%;
-    top: 40%;
-
-    overflow-y: auto;
-
-    overflow-y: scroll; /* 세로 스크롤 활성화 */
-    -ms-overflow-style: none; /* IE와 Edge에서 스크롤바 숨기기 */
-    scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
-
-    &::-webkit-scrollbar {
-        display: none; /* Chrome, Safari에서 스크롤바 숨기기 */
-    }
-`;
-
-const MainPracticeRoom = () => {
-    const { id } = useParams();
-    const [query] = useSearchParams();
+const OwnerAddPracticeRoom = () => {
     const navigate = useNavigate();
     const [toggleActive, setToggleActive] = useState(false);
-    console.log(`PracticeRoom Id : ${id}`);
-    console.log(`Date : ${query.get("date")}`);
 
     return (
-        <MainPracticeRoomContainer>
+        <OwnerPracticeRoomContainer>
             <Banner bgphoto={ownerPracticeRoom.img}></Banner>
             <BackBtn>
                 <IoIosArrowBack onClick={() => navigate(-1)} />
@@ -207,23 +174,10 @@ const MainPracticeRoom = () => {
                         </a>
                     </Address>
                 </TitleContainer>
+                <AddPracticeRoom />
             </PracticeRoomContainer>
-            <CardContainer>
-                {userDetailRoom.map((el) => (
-                    <PracticeRoomDetailCard
-                        key={el.practiceRoomDetailId}
-                        img={el.image}
-                        time={el.reservedTimes}
-                        name={el.name}
-                        fee={el.fee}
-                        id={el.practiceRoomDetailId}
-                        date={query.get("date")}
-                        status={el.status}
-                    />
-                ))}
-            </CardContainer>
-        </MainPracticeRoomContainer>
+        </OwnerPracticeRoomContainer>
     );
 };
 
-export default MainPracticeRoom;
+export default OwnerAddPracticeRoom;
