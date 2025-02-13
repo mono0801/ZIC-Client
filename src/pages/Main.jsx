@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { practiceRooms } from "../assets/PracticeRoom";
 import PracticeRoomCard from "../Components/PracticeRoomCard";
 import { regions, instruments } from "../assets/category";
-import Dropdown from "../Components/Dropdown";
+import Dropdown from "../Components/DropDown";
 import { useEffect, useState } from "react";
 
 const Container = styled.div`
