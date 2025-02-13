@@ -32,7 +32,7 @@ const UserReservation = () => {
     // TODO : 달력 컴포넌트 통해 예약 내역 API 구현
     const navigate = useNavigate();
     const handleNext = () => {
-        navigate("/main");
+        navigate("/");
     };
 
     return (

@@ -56,7 +56,7 @@ const MainHeader = () => {
 
     // TODO : JWT를 통해 오너 페이지로 갈지 유저 페이지로 갈지 구현
     const handlePlus = () => {
-        navigate("/owner/practiceRoom/1");
+        navigate("/owner/practiceRoom");
     };
 
     const handleOwner = () => {
@@ -68,15 +68,15 @@ const MainHeader = () => {
     };
 
     const handleUser = () => {
-        navigate("/user/mypage");
+        navigate("/user");
     };
 
     return (
         <Container>
             <Header>
                 {/* TODO : owner는 메인 클릭시 /owner로 이동하게 구현 */}
-                {/* TODO : user는 메인 클릭시 /main으로 가게 구현 */}
-                <a href="/main">
+                {/* TODO : user는 메인 클릭시 /으로 가게 구현 */}
+                <a href="/">
                     <img src="/assets/img/zic_mainlogo.png" alt="Logo" />
                 </a>
                 <IconWrapper>

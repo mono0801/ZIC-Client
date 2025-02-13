@@ -1,13 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
+import Login from "./pages/Login";
 import JoinCategory from "./pages/Join/JoinCategory";
 import JoinInfo from "./pages/Join/JoinInfo";
 import JoinSuccess from "./pages/Join/JoinSuccess";
 import User from "./pages/User/User";
 import UserReservation from "./pages/User/UserReservation";
-import UserPracticeRoom from "./pages/User/UserPracticeRoom";
+import MainPracticeRoom from "./pages/MainPracticeRoom";
 import UserPayment from "./pages/User/UserPayment";
-import PracticeRoom from "./pages/PracticeRoom";
+import Main from "./pages/Main";
 import Owner from "./pages/Owner/Owner";
 import OwnerPracticeRoom from "./pages/Owner/OwnerPracticeRoom";
 import OwnerRevenue from "./pages/Owner/OwnerRevenue";
@@ -34,16 +34,15 @@ const JoinRoutes = () => {
 const UserRoutes = () => {
     return (
         <Routes>
-            {/* 연습실 내부 방 페이지 */}
-            <Route path="/practiceRoom/:id" element={<UserPracticeRoom />} />
             {/* 결제 페이지 */}
             <Route path="/practiceRoom/:id/payment" element={<UserPayment />} />
+            {/* 예약 결제 콜백 페이지 */}
             <Route path="/payment/loading" element={<Loading />} />
             <Route element={<MainHeader />}>
                 {/* 예약 내역 페이지 */}
                 <Route path="/reservation" element={<UserReservation />} />
                 {/* 마이 페이지 */}
-                <Route path="/mypage" element={<User />} />
+                <Route path="/" element={<User />} />
             </Route>
         </Routes>
     );
@@ -58,9 +57,16 @@ const OwnerRoutes = () => {
                 {/* 대여자 수익 페이지 */}
                 <Route path="/revenue" element={<OwnerRevenue />} />
             </Route>
+            {/* 대여자 내부방 목록 페이지 */}
+            <Route path="/practiceRoom" element={<OwnerPracticeRoom />} />
+            {/* 대여자 내부방 변경 페이지 */}
+            <Route
+                path="/practiceRoom/:practiceRoomId/practiceRoomDetail/:practiceRoomDetailId"
+                element={<OwnerPracticeRoom />}
+            />
             {/* 대여자 연습실 내부 방 추가 페이지 */}
             <Route
-                path="/practiceRoom/:practiceRoomId"
+                path="/practiceRoom/:practiceRoomId/practiceRoomDetail"
                 element={<OwnerPracticeRoom />}
             />
         </Routes>
@@ -72,14 +78,19 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route element={<RootContainer />}>
-                    {/* 로그인 */}
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login/loading" element={<Loading />} />
-
                     {/* 메인 페이지 */}
                     <Route element={<MainHeader />}>
-                        <Route path="/main" element={<PracticeRoom />} />
+                        <Route path="/" element={<Main />} />
                     </Route>
+                    {/* 연습실 내부 방 페이지 */}
+                    <Route
+                        path="/practiceRoom/:id"
+                        element={<MainPracticeRoom />}
+                    />
+
+                    {/* 로그인 */}
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/login/loading" element={<Loading />} />
 
                     {/* 회원가입 */}
                     <Route path="/join/*" element={<JoinRoutes />} />

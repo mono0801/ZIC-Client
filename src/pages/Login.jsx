@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { BsChatFill } from "react-icons/bs";
 
-const HomeContainer = styled.div`
+const LoginContainer = styled.div`
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -25,13 +25,13 @@ const Banner = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between; 
+    justify-content: space-between;
     background-image: url(${(props) => props.bgphoto});
     background-size: cover;
     background-repeat: no-repeat;
     position: relative;
     height: 10%;
-    padding: 20px; 
+    padding: 20px;
 `;
 
 const BannerText = styled.p`
@@ -42,7 +42,7 @@ const BannerText = styled.p`
 `;
 
 const BannerImage = styled.img`
-    margin-top : 1%;
+    margin-top: 1%;
     height: 4.2rem;
     background-size: cover;
     margin-right: 4%;
@@ -94,7 +94,7 @@ const KakaoBtn = styled.div`
     }
 `;
 
-const Home = () => {
+const Login = () => {
     // TODO : 로그인 API 적용
     const handleKakaoLogin = () => {
         window.location.href =
@@ -102,7 +102,7 @@ const Home = () => {
     };
 
     return (
-        <HomeContainer>
+        <LoginContainer>
             <BannerWrapper>
                 <Banner bgphoto={"/assets/img/piano5line.png"}>
                     <BannerText>당신이 연주할 곳은 여기</BannerText>
@@ -118,8 +118,8 @@ const Home = () => {
                 </KakaoBtn>
                 <a href="/join/category">다른 이메일로 시작하기</a>
             </KakaoWrapper>
-        </HomeContainer>
+        </LoginContainer>
     );
 };
 
-export default Home;
+export default Login;

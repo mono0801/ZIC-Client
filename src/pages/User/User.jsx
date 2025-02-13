@@ -38,7 +38,7 @@ const User = () => {
     //logout api 연동해야함
     const handleLogout = () => {
         localStorage.removeItem("accessToken");
-        navigate("/");
+        navigate("/login");
     };
 
     return (

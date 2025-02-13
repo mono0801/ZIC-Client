@@ -1,4 +1,3 @@
-import Button from "../../Components/Button";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
@@ -7,11 +6,11 @@ import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { FiMapPin } from "react-icons/fi";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
-import { userDetailRoom } from "../../assets/userDetailRoom";
-import { ownerPracticeRoom } from "../../assets/OwnerPracticeRoom";
-import PracticeRoomDetailCard from "../../Components/PracticeRoomDetailCard";
+import { userDetailRoom } from "../assets/userDetailRoom";
+import { ownerPracticeRoom } from "../assets/OwnerPracticeRoom";
+import PracticeRoomDetailCard from "../Components/PracticeRoomDetailCard";
 
-const OwnerPracticeRoomContainer = styled.div`
+const MainPracticeRoomContainer = styled.div`
     width: 100%;
     height: 100%;
     position: relative;
@@ -159,13 +158,16 @@ const CardContainer = styled.div`
     }
 `;
 
-const UserPracticeRoom = () => {
+const MainPracticeRoom = () => {
+    const { id } = useParams();
     const [query] = useSearchParams();
     const navigate = useNavigate();
     const [toggleActive, setToggleActive] = useState(false);
+    console.log(`PracticeRoom Id : ${id}`);
+    console.log(`Date : ${query.get("date")}`);
 
     return (
-        <OwnerPracticeRoomContainer>
+        <MainPracticeRoomContainer>
             <Banner bgphoto={ownerPracticeRoom.img}>
                 <BackBtn>
                     <IoIosArrowBack onClick={() => navigate(-1)} />
@@ -221,8 +223,8 @@ const UserPracticeRoom = () => {
                     />
                 ))}
             </CardContainer>
-        </OwnerPracticeRoomContainer>
+        </MainPracticeRoomContainer>
     );
 };
 
-export default UserPracticeRoom;
+export default MainPracticeRoom;
