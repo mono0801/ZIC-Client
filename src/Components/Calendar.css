@@ -1,0 +1,127 @@
+.react-calendar {
+  width: 100%;
+  border: none;
+  font-family: 'PyeongChang-Regular';
+  line-height: 12px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 11.4%;
+}
+
+/* 모든 요소의 크기를 width/height에 padding과 border까지 포함하도록 설정 */
+.react-calendar,
+.react-calendar *,
+.react-calendar *:before,
+.react-calendar *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.react-calendar button {
+  margin: 0;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+}
+
+.react-calendar__navigation {
+  display:flex;
+  width: 83%; 
+  height: 37px; 
+  background-color: #F2F2F2;
+  border-radius: 50px; 
+  margin-bottom: 8%;
+  margin-top: 3%;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+}
+
+.react-calendar__navigation__label {
+  font-size: 16px;
+  font-family: "Pretendard-Regular";
+  pointer-events: none;
+}
+
+.calendar-prevnav-btn, .calendar-nextnav-btn {
+  width: 25px; 
+  height: 25px;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 6px 15px;
+}
+
+.react-calendar__month-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+  
+.react-calendar__month-view__weekdays {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-family: "Pretendard-Regular";
+  margin: 0;
+}
+  
+.react-calendar__month-view__weekdays__weekday {
+  padding: 0.5em;
+  flex: 1;
+}
+
+/* 요일(weekday) 점선 없애기 */
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none; /* 점선 제거 */
+  border-bottom: none; 
+  cursor: default;
+}
+  
+.react-calendar__month-view__days {
+  display: flex;
+  flex-wrap: wrap; /* 여러 줄 표시 */
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-family: "Pretendard-Regular";
+  margin: 0;
+}
+  
+.react-calendar__tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5% 1.8%;
+  background: none;
+  text-align: center;
+}
+
+  /* 오늘 날짜 원 스타일 (원과 숫자 분리) */
+.react-calendar__tile--active::before {
+  content: ""; /* 가상 요소를 사용하여 원 생성 */
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  background: #278CFF;
+  border-radius: 50%; 
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1; /* 원이 숫자 아래에 배치되도록 */
+}
+
+.react-calendar__tile--active {
+  color: white !important;
+}
