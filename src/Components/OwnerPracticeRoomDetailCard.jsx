@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
     width: 100%;
-    height: 40%;
+    height: 14rem;
     padding: 3%;
     display: flex;
     flex-direction: column;
@@ -15,7 +15,7 @@ const Container = styled.div`
 const Banner = styled.div`
     width: 100%;
     height: 90%;
-    margin-bottom: 2%;
+    margin-bottom: 5%;
     justify-content: space-around;
     background-image: url(${(props) => props.bgphoto});
     filter: ${(props) =>

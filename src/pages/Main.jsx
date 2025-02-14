@@ -8,36 +8,33 @@ import DateSelector from "../Components/DateSelector";
 
 const Container = styled.div`
     width: 100%;
-    flex: 1;
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: 100% 1fr;
     min-height: 0;
 `;
 
 const Wrapper = styled.div`
     padding: 5%;
     width: 100%;
-    flex: 1;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 18% 18% 1fr;
 `;
 
 const ParamContainer = styled.div`
     width: 100%;
-    height: 8rem;
+    height: 100%;
     box-sizing: border-box;
-    margin-bottom: 1%;
-    display: flex;
-    flex-direction: column;
+    gap: 3%;
+    display: grid;
+    grid-template-rows: 28% 1fr;
 `;
 
 const DropDownContainer = styled.div`
     display: flex;
     justify-content: space-between;
-    height: 2rem;
+    height: 100%;
     gap: 10%;
 `;
 
@@ -63,6 +60,7 @@ const Banner = styled.img`
 `;
 
 const ListContainer = styled.div`
+    margin-top: 5%;
     flex: 1;
 
     overflow-y: auto; /* 세로 스크롤 활성화 */
@@ -80,15 +78,21 @@ const Footer = styled.div`
     color: #7d7d7d;
     background: #f2f2f2;
 
+    display: grid;
+    grid-template-rows: 50% 1fr 1fr;
+    grid-gap: 2%;
+
     p:first-child {
         font-size: 1.5rem;
         font-family: "Alongserifbsc-regular";
         margin-bottom: 5%;
     }
 
-    p:last-child {
-        font-size: 60%;
+    p:last-child,
+    p:nth-child(2) {
+        font-size: 50%;
         font-family: "Pretendard-Regualr";
+        white-space: nowrap;
     }
 `;
 
@@ -166,8 +170,8 @@ const Main = () => {
                 <p className="footer-info">
                     회사소개 | 개인정보 처리방침 | 서비스 이용약관 | 사업자
                     정보확인
-                    <br />
-                    <br />
+                </p>
+                <p>
                     광고제휴문의 | 위치정보 이용약관 | 전자공정거래 이용자
                     유의사항
                 </p>

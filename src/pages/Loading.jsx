@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
+import { checkMobile } from "../utils/checkMobile";
 
 const Container = styled.div`
     width: 100%;
@@ -49,10 +50,7 @@ const Loading = () => {
     const pathRef3 = useRef(null);
 
     useEffect(() => {
-        // 모바일인지 PC인지 검사
-        const userAgent = navigator.userAgent;
-        const mobile = /iPhone|iPad|iPod|Android/i.test(userAgent);
-        setIsMobile(mobile);
+        setIsMobile(checkMobile());
     }, []);
 
     useEffect(() => {

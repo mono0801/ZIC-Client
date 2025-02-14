@@ -158,6 +158,8 @@ const CardContainer = styled.div`
     width: 100%;
     height: 50%;
     top: 40%;
+    display: flex;
+    flex-wrap: wrap;
 
     overflow-y: auto;
 
