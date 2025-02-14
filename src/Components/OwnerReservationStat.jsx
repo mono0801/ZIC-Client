@@ -13,7 +13,6 @@ const TitleWrapper = styled.div`
     justify-content: space-between;
     border-bottom: 2px dashed #dcdcdc;
     padding-bottom: 2%;
-    margin-bottom: 3%;
 
     p {
         font-size: 120%;
@@ -23,13 +22,13 @@ const TitleWrapper = styled.div`
 
 const ContentWrapper = styled.div`
     width: 100%;
-    height: 4rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     color: #545454;
     overflow-y: auto;
-    padding: 1%;
+    gap: 1rem;
+    padding: 5% 1% 0% 1%;
 
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* Internet Explorer 10+ */
@@ -42,7 +41,6 @@ const ContentWrapper = styled.div`
     div {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 2%;
         p {
             font-family: "Pretendard-Light";
         }

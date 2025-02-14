@@ -3,7 +3,7 @@ import styled from "styled-components";
 const ReservationContainer = styled.div`
     width: 100%;
     height: 6rem;
-    padding: 2%;
+    padding: 2% 0;
     border-bottom: 1px solid #dcdcdc;
     display: flex;
     gap: 5%;
