@@ -86,13 +86,13 @@ const RoomTime = styled.p`
     }
 `;
 
-const PracticeRoomCard = ({ practiceRoom }) => {
+const PracticeRoomCard = ({ practiceRoom, selectedDate }) => {
     const [current, total] = practiceRoom.available.split("/").map(Number);
     const isFull = current >= total;
 
     return (
         <RoomItem
-            to={`/practiceRoom/${practiceRoom.practiceRoomId}`}
+            to={`/practiceRoom/${practiceRoom.practiceRoomId}?date=${selectedDate}`}
             className="room-item"
             key={practiceRoom.id}
         >

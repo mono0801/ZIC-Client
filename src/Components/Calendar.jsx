@@ -2,7 +2,7 @@ import Calendar from "react-calendar";
 import "./Calendar.css";
 import moment from "moment";
 
-const CalendarComponent = ({ showDate }) => {
+const CalendarComponent = ({ onDateSelect }) => {
     return (
         <Calendar
             calendarType="gregory"
@@ -26,7 +26,7 @@ const CalendarComponent = ({ showDate }) => {
                     className="calendar-nextnav-btn"
                 />
             }
-            className={showDate ? null : "hide-dates"}
+            onChange={onDateSelect}
         />
     );
 };

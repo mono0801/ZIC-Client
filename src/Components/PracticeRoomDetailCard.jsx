@@ -20,6 +20,8 @@ const Banner = styled.div`
     height: 60%;
     justify-content: space-around;
     background-image: url(${(props) => props.bgphoto});
+    filter: ${(props) =>
+        props.isNotAvailable == "AVAILABLE" ? "none" : "grayscale(100%)"};
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -77,7 +79,8 @@ const TimeBlock = styled.div`
 const Hour = styled.div`
     width: 10%;
     height: 100%;
-    background-color: ${(props) => (props.isAvailable ? "#F2F2F2" : "#80CDFF")};
+    background-color: ${(props) =>
+        props.isNotAvailable ? "#F2F2F2" : "#80CDFF"};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -135,12 +138,15 @@ const PracticeRoomDetailCard = ({ img, time, name, fee, id, date, status }) => {
         const times = hours.map((hour) => {
             const currentTime = `${String(hour).padStart(2, "0")}:00:00`;
             // 예약 시간 안에 있는지 확인
-            const isAvailable = time.every(
+            const isNotAvailable = time.every(
                 (reserved) =>
                     currentTime < reserved.startTime ||
                     currentTime >= reserved.endTime
             );
-            return { hour: `${String(hour).padStart(2, "0")}시`, isAvailable };
+            return {
+                hour: `${String(hour).padStart(2, "0")}시`,
+                isNotAvailable,
+            };
         });
 
         setAvailableTimes(times);
@@ -150,6 +156,7 @@ const PracticeRoomDetailCard = ({ img, time, name, fee, id, date, status }) => {
         <Container>
             <Banner
                 bgphoto={img}
+                isNotAvailable={status}
                 onClick={() => {
                     status == "AVAILABLE"
                         ? navigate(
@@ -162,14 +169,28 @@ const PracticeRoomDetailCard = ({ img, time, name, fee, id, date, status }) => {
             <CustomScrollContainer>
                 <TextBlock>
                     {availableTimes.map((time, index) => (
-                        <Text key={index} isAvailable={time.isAvailable}>
+                        <Text
+                            key={index}
+                            isNotAvailable={
+                                status != "AVAILABLE"
+                                    ? true
+                                    : time.isNotAvailable
+                            }
+                        >
                             <p>{time.hour}</p>
                         </Text>
                     ))}
                 </TextBlock>
                 <TimeBlock>
                     {availableTimes.map((time, index) => (
-                        <Hour key={index} isAvailable={time.isAvailable}>
+                        <Hour
+                            key={index}
+                            isNotAvailable={
+                                status != "AVAILABLE"
+                                    ? true
+                                    : time.isNotAvailable
+                            }
+                        >
                             <Horizon />
                         </Hour>
                     ))}

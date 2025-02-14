@@ -146,13 +146,3 @@
 .react-calendar__tile--active {
     color: white !important;
 }
-
-/* showDate가 false일 때 요일 숨기기 */
-.hide-dates .react-calendar__viewContainer {
-    display: none;
-}
-
-/* showDate가 false일 때 날짜 숨기기 */
-.hide-dates .react-calendar__tile {
-    display: none;
-}
