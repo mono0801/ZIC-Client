@@ -2,7 +2,8 @@ import { revenueResult } from "../../assets/owner";
 import OwnerReservationStat from "../../Components/OwnerReservationStat";
 import styled from "styled-components";
 import Chart from "../../Components/Chart";
-import CalendarComponent from "../../Components/Calendar";
+import DateSelector from "../../Components/DateSelector";
+import { useEffect, useState } from "react";
 
 const StatContainer = styled.div`
     width: 100%;
@@ -29,10 +30,18 @@ const ChartWrapper = styled.div`
 `;
 
 const OwnerRevenue = () => {
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    useEffect(() => {
+        console.log(selectedDate);
+    }, [selectedDate]);
     return (
         <StatContainer>
             <CalendarWrapper>
-                <CalendarComponent showDate={false} />
+                <DateSelector
+                    onlyMonth={true}
+                    onChange={setSelectedDate}
+                    showDate={false}
+                />
             </CalendarWrapper>
             <OwnerReservationStat
                 text={"총 이용 횟수"}
