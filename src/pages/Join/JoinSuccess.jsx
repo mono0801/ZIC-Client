@@ -5,12 +5,26 @@ import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
     height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-rows: 1fr 6% 6%;
     padding: 5%;
-    justify-content: space-between;
     box-sizing: border-box;
+
+    div:last-child {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    a {
+        text-decoration: none;
+        border-bottom: 1px solid #707070;
+        color: #707070;
+        font-family: Pretendard-Regular;
+        padding: 0 7px 2px 7px;
+    }
 `;
 
 const Wrapper = styled.div`
@@ -34,28 +48,6 @@ const Wrapper = styled.div`
     }
 `;
 
-const BtnWrapper = styled.div`
-    height: 25%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    align-items: center;
-
-    button {
-        height: 25%;
-        margin-bottom: 5%;
-    }
-
-    a {
-        text-decoration: none;
-        border-bottom: 1px solid #707070;
-        color: #707070;
-        font-family: Pretendard-Regular;
-        padding: 0 7px 2px 7px;
-    }
-`;
-
 const JoinSuccess = () => {
     const param = useParams();
     const navigate = useNavigate();
@@ -75,13 +67,12 @@ const JoinSuccess = () => {
                 <p>성공했어요!</p>
             </Wrapper>
 
-            <BtnWrapper>
-                <Button
-                    text={param.role == "owner" ? "룸 등록하기" : "예약하기"}
-                    onClick={handleNext}
-                />
-                {param.role == "owner" && <a href="/owner">건너뛰기</a>}
-            </BtnWrapper>
+            <Button
+                text={param.role == "owner" ? "룸 등록하기" : "예약하기"}
+                onClick={handleNext}
+                height={"100%"}
+            />
+            <div>{param.role == "owner" && <a href="/owner">건너뛰기</a>}</div>
         </Container>
     );
 };

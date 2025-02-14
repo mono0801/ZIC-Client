@@ -13,24 +13,16 @@ const Container = styled.div`
     height: 100vh;
     padding: 5%;
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: space-between;
+    display: grid;
+    grid-template-rows: 1fr 6%;
     z-index: 1;
     position: relative;
 `;
 
 const Wrapper = styled.div`
+    padding-top: 25%;
     width: 100%;
-    height: 80%;
-`;
-
-const Header = styled.div`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    margin-bottom: 7%;
+    height: 100%;
 `;
 
 const BackBtn = styled.div`
@@ -43,9 +35,10 @@ const BackBtn = styled.div`
     color: #7d7d7d;
     border: 1px solid #7d7d7d;
     border-radius: 50%;
-    top: 15%;
-    left: 5%;
     cursor: pointer;
+    position: absolute;
+    top: 5%;
+    left: 5%;
 
     svg {
         width: 70%;
@@ -79,35 +72,18 @@ const Title = styled.div`
         font-family: "Pretendard-SemiBold";
         font-size: 150%;
     }
-
-    div {
-        width: auto;
-        border: 1px solid #dcdcdc;
-        padding: 2% 3%;
-        border-radius: 1.5rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-family: "Pretendard-ExtraLight";
-        color: #7d7d7d;
-        cursor: pointer;
-    }
 `;
 
-const Address = styled.div`
+const Address = styled.a`
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 2%;
+    text-decoration: none;
+    font-family: "Pretendard-ExtraLight";
+    letter-spacing: 2%;
+    margin-right: 2%;
     color: #545454;
-
-    a {
-        display: flex;
-        align-items: center;
-        justify-content: start;
-        gap: 2%;
-        text-decoration: none;
-        font-family: "Pretendard-ExtraLight";
-        letter-spacing: 2%;
-        margin-right: 2%;
-        color: #545454;
-    }
 `;
 
 const ReservationContainer = styled.div`
@@ -117,13 +93,13 @@ const ReservationContainer = styled.div`
     gap: 5%;
     width: 100%;
     height: 50%;
-    padding: 5%;
+    padding: 2%;
     box-sizing: border-box;
 `;
 
 const TimeContainer = styled.div`
     width: 100%;
-    height: 15%;
+    height: 17%;
     background-color: #d9f0ff80;
     border-radius: 1rem;
     display: flex;
@@ -134,7 +110,7 @@ const TimeContainer = styled.div`
     input,
     p {
         font-family: "Pretendard-Bold";
-        font-size: 150%;
+        font-size: 170%;
     }
 
     input {
@@ -240,18 +216,16 @@ const UserPayment = () => {
     return (
         <Container>
             <Wrapper>
-                <Header>
-                    <BackBtn>
-                        <IoIosArrowBack onClick={() => navigate(-1)} />
-                    </BackBtn>
-                </Header>
+                <BackBtn>
+                    <IoIosArrowBack onClick={() => navigate(-1)} />
+                </BackBtn>
                 <TitleContainer>
                     <Title>
                         <p>{ownerPracticeRoom.name}</p>
                     </Title>
 
-                    <Address>
-                        <a
+                    <div>
+                        <Address
                             href={`https://map.naver.com/p/search/${
                                 ownerPracticeRoom.region +
                                 " " +
@@ -263,8 +237,8 @@ const UserPayment = () => {
                                 " " +
                                 ownerPracticeRoom.address}
                             <MdOutlineArrowForwardIos />
-                        </a>
-                    </Address>
+                        </Address>
+                    </div>
                 </TitleContainer>
 
                 <ReservationContainer>
@@ -308,7 +282,7 @@ const UserPayment = () => {
                     </Total>
                 </ReservationContainer>
             </Wrapper>
-            <Button text="결제하기" onClick={hanldeNext} />
+            <Button text="결제하기" onClick={hanldeNext} height={"100%"} />
         </Container>
     );
 };

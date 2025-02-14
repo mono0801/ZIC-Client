@@ -54,7 +54,7 @@ const InputWrapper = styled.div`
 const RegionCategory = styled(ScrollContainer)`
     width: 100%;
     max-width: 100%;
-    height: 30%;
+    height: 2.3rem;
     margin-top: 2%;
     overflow-x: auto;
     display: flex;
@@ -88,7 +88,7 @@ const RegionBtn = styled.button`
 `;
 
 const InstrumentContainer = styled.div`
-    height: 50%;
+    height: 100%;
     width: 100%;
 
     p {
@@ -101,7 +101,7 @@ const InstrumentContainer = styled.div`
 `;
 
 const InstrumentWarpper = styled.div`
-    height: 70%;
+    height: ${(props) => (props.isRole ? "60%" : "80%")};
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 3%;
@@ -145,7 +145,7 @@ const JoinInfo = () => {
     };
 
     return (
-        <JoinContainer>
+        <JoinContainer isRole={role.role == "user"}>
             {role.role == "user" ? (
                 <InputContainer>
                     <InputLabel isActive={region != ""}>지역</InputLabel>
@@ -220,7 +220,7 @@ const JoinInfo = () => {
 
             <InstrumentContainer isActive={selectedInstruments.length > 0}>
                 <p>연주 가능 종목</p>
-                <InstrumentWarpper>
+                <InstrumentWarpper isRole={role.role == "user"}>
                     {instruments.map((instrument) => (
                         <InstrumentBtn
                             key={instrument}
@@ -233,7 +233,7 @@ const JoinInfo = () => {
                 </InstrumentWarpper>
             </InstrumentContainer>
 
-            <Button text={"완료"} onClick={handleNext} />
+            <Button text={"완료"} onClick={handleNext} height={"100%"} />
         </JoinContainer>
     );
 };

@@ -4,13 +4,12 @@ import ScrollContainer from "react-indiana-drag-scroll";
 
 const Container = styled.div`
     width: 100%;
-    height: 7rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: 100%;
+    display: grid;
+    grid-template-rows: ${(props) => (props.showDate ? "30% 50%" : "1fr")};
     background: #fff;
     box-sizing: border-box;
-    margin-bottom: 5%;
+    gap: 8%;
 
     span {
         font-weight: bold;
@@ -25,15 +24,9 @@ const MonthNavigation = styled.div`
     justify-content: space-between;
     align-items: center;
     background-color: #f2f2f2;
-    margin-bottom: 5%;
 
     button {
         border: none;
-    }
-
-    img {
-        /* width: 25px;
-        height: 25px; */
     }
 
     span {
@@ -173,7 +166,7 @@ const DateSelector = ({ onlyMonth, showDate, onChange }) => {
     }, [dates]);
 
     return (
-        <Container>
+        <Container showDate={showDate}>
             {/* 월 변경 */}
             <MonthNavigation>
                 <NextBtn
