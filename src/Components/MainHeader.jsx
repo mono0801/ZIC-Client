@@ -18,8 +18,6 @@ const Header = styled.div`
     max-width: 500px;
     padding: 5%;
     box-sizing: border-box;
-    /* 경계선 지우기 */
-    border-bottom: 2px solid black;
     display: flex;
     justify-content: space-between;
     align-items: center;
