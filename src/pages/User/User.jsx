@@ -166,7 +166,7 @@ const LogoutBtn = styled.button`
 const CenterContent = styled.div`
     width: 100%;
     flex: 1;
-    margin: 3% 0%;
+    margin: 1.5% 0%;
     padding: 6% 4%;
     display: flex;
     flex-direction: column;
