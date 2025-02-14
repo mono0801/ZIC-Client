@@ -2,38 +2,41 @@ import { revenueResult } from "../../assets/owner";
 import OwnerReservationStat from "../../Components/OwnerReservationStat";
 import styled from "styled-components";
 import Chart from "../../Components/Chart";
-import CalendarComponent from "../../Components/Calendar";
+import DateSelector from "../../Components/DateSelector";
+import { useEffect, useState } from "react";
+import moment from "moment";
 
 const StatContainer = styled.div`
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 5%;
-    box-sizing: border-box;
-`;
+    display: grid;
+    grid-template-rows: 10% 25% 25% 35%;
 
-const Horizon = styled.div`
-    border: 1px solid #f2f2f2;
-    margin: 5% 0;
-`;
+    & > div {
+        padding: 5%;
 
-const CalendarWrapper = styled.div`
-    height: 10%; /* CalendarComponent가 차지할 고정 높이 */
-`;
-
-const ChartWrapper = styled.div`
-    height: 30%; /* Chart가 차지할 고정 높이 */
-    margin-top: 5%; /* 차트와 다른 콘텐츠 사이에 여백 */
-    box-sizing: border-box;
+        &:nth-child(2) {
+            border-bottom: 5px solid #f2f2f2;
+        }
+    }
 `;
 
 const OwnerRevenue = () => {
+    const [selectedDate, setSelectedDate] = useState(
+        moment().format("YYYY-MM-DD")
+    );
+
+    useEffect(() => {
+        console.log(selectedDate);
+    }, [selectedDate]);
+
     return (
         <StatContainer>
-            <CalendarWrapper>
-                <CalendarComponent showDate={false} />
-            </CalendarWrapper>
+            <DateSelector
+                onlyMonth={true}
+                onChange={setSelectedDate}
+                showDate={false}
+            />
             <OwnerReservationStat
                 text={"총 이용 횟수"}
                 list={
@@ -42,7 +45,6 @@ const OwnerRevenue = () => {
                 }
                 count={true}
             />
-            <Horizon />
             <OwnerReservationStat
                 text={"총 수익"}
                 list={
@@ -51,9 +53,7 @@ const OwnerRevenue = () => {
                 }
                 count={false}
             />
-            <ChartWrapper>
-                <Chart list={revenueResult.result.monthlyEarning} />
-            </ChartWrapper>
+            <Chart list={revenueResult.result.monthlyEarning} />
         </StatContainer>
     );
 };

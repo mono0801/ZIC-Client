@@ -7,7 +7,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 8%;
 }
 
 .react-calendar,
@@ -32,7 +31,7 @@
     height: 2.5rem;
     background-color: #f2f2f2;
     border-radius: 3rem;
-    margin-bottom: 8%;
+    margin-bottom: 6%;
     justify-content: space-around;
     align-items: center;
 }
@@ -148,6 +147,15 @@
     color: white !important;
 }
 
+.red-day {
+    color: red;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+    &:first-child,
+    &:last-child {
+        color: red !important; /* 일요일과 토요일만 빨간색으로 */
+    }
 .blue-dot {
     position: relative;
     bottom: 0.125rem;

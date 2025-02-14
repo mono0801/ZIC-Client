@@ -6,7 +6,6 @@ const ChartContainer = styled.div`
     width: 100%;
     height: 100%;
     min-height: 30%;
-    margin-top: 7%;
 
     h2 {
         font-size: 120%;

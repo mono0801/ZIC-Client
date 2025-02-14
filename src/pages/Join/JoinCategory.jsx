@@ -87,7 +87,8 @@ const JoinCategory = () => {
                     ))}
                 </BtnWrapper>
             </Wrapper>
-            <Button text={"다음"} onClick={handleNext} />
+            <div />
+            <Button text={"다음"} onClick={handleNext} height={"100%"} />
         </JoinContainer>
     );
 };

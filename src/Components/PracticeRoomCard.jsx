@@ -12,8 +12,8 @@ const RoomItem = styled(Link)`
     color: inherit; /*부모 요소 색상*/
 
     img {
-        width: 6rem;
-        height: 6rem;
+        width: 5rem;
+        height: 5rem;
         border-radius: 0.8rem;
         object-fit: cover;
         margin-right: 4%;
@@ -35,7 +35,7 @@ const RoomInfo = styled.div`
     align-items: flex-start;
     gap: 0.5rem;
     flex: 1; /* 남은 공간을 채움 */
-    padding: 0.5rem 0; /* 위아래 여백 */
+    padding: 0.5rem 0 0 0; /* 위아래 여백 */
 
     h3 {
         // 연습실 이름
@@ -86,13 +86,13 @@ const RoomTime = styled.p`
     }
 `;
 
-const PracticeRoomCard = ({ practiceRoom }) => {
+const PracticeRoomCard = ({ practiceRoom, selectedDate }) => {
     const [current, total] = practiceRoom.available.split("/").map(Number);
     const isFull = current >= total;
 
     return (
         <RoomItem
-            to={`/practiceRoom/${practiceRoom.practiceRoomId}`}
+            to={`/practiceRoom/${practiceRoom.practiceRoomId}?date=${selectedDate}`}
             className="room-item"
             key={practiceRoom.id}
         >

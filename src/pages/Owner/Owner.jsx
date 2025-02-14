@@ -2,36 +2,64 @@ import CalendarComponent from "../../Components/Calendar";
 import styled from "styled-components";
 import ReservationCard from "../../Components/ReservationCard";
 import { userReservation } from "../../assets/userReservation";
+import moment from "moment";
+import { useState, useEffect } from "react";
+import { checkMobile } from "../../utils/checkMobile";
+
 const Container = styled.div`
     padding: 5%;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+    height: 100%;
     width: 100%;
+    display: grid;
+    grid-template-rows: ${(props) => (props.ismobile ? "45%" : "35%")} 1fr;
     box-sizing: border-box;
+    gap: 3%;
 `;
 
+const CalendarWrapper = styled.div``;
+
 const ReservationWrapper = styled.div`
-    margin-top: 2%;
     width: 100%;
-    height: 50%;
-    max-height: 50%;
-    overflow-y: auto;
+    height: 100%;
+
+    overflow-y: auto; /* 세로 스크롤 활성화 */
+    scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
+
+    &::-webkit-scrollbar {
+        /* Chrome, Safari에서 스크롤바 숨김 */
+        display: none;
+    }
 `;
 
 const ReservationLabel = styled.p`
     font-family: "Pretendard-Bold";
-    font-size: 120%;
+    font-size: 1rem;
     margin-bottom: 3%;
 `;
 
 const Owner = () => {
+    const [selectedDate, setSelectedDate] = useState(
+        moment().format("YYYY-MM-DD")
+    );
+
+    // 날짜 선택 시 처리 함수
+    const handleDateSelect = (date) => {
+        const formattedDate = moment(date).format("YYYY-MM-DD"); // 날짜 포맷
+        setSelectedDate(formattedDate); // 상태에 저장
+    };
+
+    useEffect(() => {
+        console.log(selectedDate);
+    }, [selectedDate]);
+
     // API로 대여자 예약 내역 조회 구현
     return (
-        <Container>
-            <CalendarComponent />
+        <Container ismobile={checkMobile()}>
+            <CalendarWrapper>
+                <CalendarComponent onDateSelect={handleDateSelect} />
+            </CalendarWrapper>
             <ReservationWrapper>
-                <ReservationLabel>이번 달 예약 내역</ReservationLabel>
+                <ReservationLabel>예약 내역</ReservationLabel>
                 {userReservation.result.resultList.map((el) => (
                     <ReservationCard
                         img={
