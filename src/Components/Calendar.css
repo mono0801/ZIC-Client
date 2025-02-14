@@ -69,6 +69,7 @@
 
 .react-calendar__viewContainer {
     width: 100% !important;
+    margin-bottom: 49px;
 }
 
 .react-calendar__month-view {
@@ -156,6 +157,8 @@
     &:last-child {
         color: red !important; /* 일요일과 토요일만 빨간색으로 */
     }
+}
+
 .blue-dot {
     position: relative;
     bottom: 0.125rem;
