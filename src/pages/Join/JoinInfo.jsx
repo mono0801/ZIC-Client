@@ -10,11 +10,10 @@ import ScrollContainer from "react-indiana-drag-scroll";
 const InputContainer = styled.div`
     width: 100%;
     height: 20%;
-    margin-bottom: 60%;
 `;
 
 const InputLabel = styled.p`
-    font-size: 100%;
+    font-size: 80%;
     font-family: "Pretendard-Regular";
     letter-spacing: 2%;
     margin-top: 5%;
@@ -54,7 +53,7 @@ const InputWrapper = styled.div`
 const RegionCategory = styled(ScrollContainer)`
     width: 100%;
     max-width: 100%;
-    height: 2.3rem;
+    height: 2rem;
     margin-top: 2%;
     overflow-x: auto;
     display: flex;
@@ -70,7 +69,7 @@ const RegionCategory = styled(ScrollContainer)`
 `;
 
 const RegionBtn = styled.button`
-    width: 20%;
+    width: 18%;
     background-color: ${(props) => (props.selected ? "#278cff" : "#ffffff")};
     border: 1px solid ${(props) => (props.selected ? "#278cff" : "#dcdcdc")};
     border-radius: 2rem;
@@ -95,7 +94,8 @@ const InstrumentContainer = styled.div`
         font-size: 100%;
         font-family: "Pretendard-Regular";
         letter-spacing: 2%;
-        margin-bottom: 5%;
+        margin-top: 1%;
+        margin-bottom: 4%;
         color: ${(props) => (props.isActive ? "#C6C6C6" : "#030303")};
     }
 `;
@@ -204,15 +204,29 @@ const JoinInfo = () => {
                             value={region}
                             onChange={(e) => setRegion(e.target.value)}
                         />
-                        <IoIosSearch />
+                        <IoIosSearch
+                            onClick={() => setRegionToggle(!regionToggle)}
+                        />
                     </InputWrapper>
+                    <RegionCategory>
+                        {regionToggle
+                            ? regions.map((el) => (
+                                  <RegionBtn
+                                      key={el}
+                                      selected={region == el}
+                                      onClick={() => setRegion(el)}
+                                  >
+                                      {el}
+                                  </RegionBtn>
+                              ))
+                            : null}
+                    </RegionCategory>
                     <InputWrapper>
                         <input
                             type="text"
                             placeholder="상세주소를 작성해주세요."
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
-                            style={{ marginTop: "5%" }}
                         />
                     </InputWrapper>
                 </InputContainer>
