@@ -4,6 +4,8 @@ import CalendarComponent from "../../Components/Calendar";
 import styled from "styled-components";
 import ReservationCard from "../../Components/ReservationCard";
 import { userReservation } from "../../assets/userReservation";
+import { useState } from "react";
+import moment from "moment";
 
 const Container = styled.div`
     padding: 5%;
@@ -29,19 +31,28 @@ const ReservationLabel = styled.p`
 `;
 
 const UserReservation = () => {
+    const [selectedDate, setSelectedDate] = useState(null);
     // TODO : 달력 컴포넌트 통해 예약 내역 API 구현
     const navigate = useNavigate();
     const handleNext = () => {
         navigate("/");
     };
 
+    // 날짜 선택 시 처리 함수
+    const handleDateSelect = (date) => {
+        const formattedDate = moment(date).format("YYYY-MM-DD"); // 날짜 포맷
+        setSelectedDate(formattedDate); // 상태에 저장
+        console.log("선택된 날짜:", formattedDate);
+    };
+
     return (
         <Container>
-            <CalendarComponent />
+            <CalendarComponent onDateSelect={handleDateSelect} />
             <ReservationWrapper>
                 <ReservationLabel>이번 달 예약 내역</ReservationLabel>
                 {userReservation.result.resultList.map((el) => (
                     <ReservationCard
+                        key={el.reservationResult.id}
                         img={
                             el.reservationResult.practiceRoomDetail
                                 .practiceRoomDetailImage
