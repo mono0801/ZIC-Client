@@ -20,13 +20,14 @@ const ReactCalendar = () => {
         const fetchReservedDates = async () => {
             try {
                 const response = await axios.get(
-                    `https://43.200.3.214:8080/api/reservation/owner?date=2025-02-07&page=1`, {
+                    `http://43.200.3.214:8080/api/reservation/owner?date=2025-01-01&page=1`, {
+                        
                         headers: {
-                            Authorization: `eyJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJUeXBlIjoiVVNFUiIsInVzZXJOYW1lIjoiVXNlclRlc3QiLCJpYXQiOjE3Mzk1NTY1ODEsImV4cCI6MTczOTU2MDE4MX0.EbjIFt_PGyOLZUizQ5QT7Bmi9rI9Yw7BvLclA_wgyS0`
+                            Authorization: `eyJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsInVzZXJUeXBlIjoiT1dORVIiLCJ1c2VyTmFtZSI6Ik93bmVyVGVzdCIsImlhdCI6MTczOTYzNDQzNCwiZXhwIjoxNzM5NzIwODM0fQ.g245fBrpF4Q4k_XaM1zQ65VIMcMwzZ-ogzqsjNMxR5E`
                         }
-                });
+                }); console.log("🔍 Authorization 토큰:", localStorage.getItem("accessToken"));
 
-                console.log("API 응답: ", response);
+                console.log("API 응답: ", response.data);
                 
                 if (!response.data.isSuccess) {
                     console.error("API 오류: ", response.data);
@@ -37,6 +38,7 @@ const ReactCalendar = () => {
                 setDayList(reservedDates);
 
                 console.log("예약된 날짜 리스트: ", reservedDates);
+
             } catch (error) {
                 console.error("예약내역 불러오기 실패", error)
             }
@@ -53,8 +55,8 @@ const ReactCalendar = () => {
 
         try {
             const response = await axios.get(
-                `https://43.200.3.214:8080/api/reservation/owner?date=${activeDate}&page=1`,
-                {
+                `http://43.200.3.214:8080/api/reservation/owner?date=${activeDate}&page=1`,
+               {
                     headers: {
                         Authorization: `eyJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJUeXBlIjoiVVNFUiIsInVzZXJOYW1lIjoiVXNlclRlc3QiLCJpYXQiOjE3Mzk1NTY1ODEsImV4cCI6MTczOTU2MDE4MX0.EbjIFt_PGyOLZUizQ5QT7Bmi9rI9Yw7BvLclA_wgyS0`
                     }
@@ -63,13 +65,13 @@ const ReactCalendar = () => {
 
             console.log("API 응답: ", response);
             
-            if (!response.data.isSuccess) {
-                console.error("API 오류: ", response.data);
+             if (!response.data.isSuccess) {
+                 console.error("API 오류: ", response.data);
             }
     
             setReservations(response.data);
         } catch (error) {
-            console.error("예약 내역 불러오기 실패: ", error);
+            console.error("예약 내역 불러오기 실패! : ", error);
         }
     };
 
