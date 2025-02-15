@@ -205,6 +205,7 @@ const OwnerPracticeRoom = () => {
         return new Promise((resolve, reject) => {
             try {
                 const storage = getStorage(app);
+                // 연습실 대표 사진 이름 형식 = zic/{대여자 이름}/main/{파일 이름}_{현재 시간}
                 const fileName = `zic/test/main/${
                     file.name
                 }_${new Date().getTime()}`;

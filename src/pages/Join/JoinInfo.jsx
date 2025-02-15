@@ -16,8 +16,8 @@ const InputLabel = styled.p`
     font-size: 80%;
     font-family: "Pretendard-Regular";
     letter-spacing: 2%;
-    margin-top: 5%;
-    margin-bottom: 2%;
+    margin-top: 4%;
+    margin-bottom: 1%;
     color: ${(props) => (props.isActive ? "#C6C6C6" : "#030303")};
 `;
 
@@ -30,7 +30,7 @@ const InputWrapper = styled.div`
         background: none;
         border: none;
         border-bottom: 1px solid #dcdcdc;
-        padding: 2% 0 2% 1%;
+        padding: 1% 0 2% 1%;
         box-sizing: border-box;
         font-size: 100%;
         font-family: "Pretendard-Regular";

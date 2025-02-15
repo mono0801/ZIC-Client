@@ -1,5 +1,5 @@
 import Button from "../../Components/Button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CalendarComponent from "../../Components/Calendar";
 import styled from "styled-components";
 import ReservationCard from "../../Components/ReservationCard";
@@ -7,20 +7,21 @@ import { userReservation } from "../../assets/userReservation";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { checkMobile } from "../../utils/checkMobile";
+import axios from "axios";
 
 const Container = styled.div`
     padding: 5%;
     height: 100%;
     width: 100%;
     display: grid;
-    grid-template-rows: ${(props) => (props.ismobile ? "45%" : "35%")} 1fr 6%;
+    grid-template-rows: ${(props) => (props.ismobile ? "45%" : "35%")} 1rem 1fr 6%;
     box-sizing: border-box;
     gap: 3%;
 `;
 
 const CalendarWrapper = styled.div``;
 
-const ReservationWrapper = styled.div`
+const ReservationContainer = styled.div`
     width: 100%;
     height: 100%;
 
@@ -33,10 +34,9 @@ const ReservationWrapper = styled.div`
     }
 `;
 
-const ReservationLabel = styled.p`
+const Label = styled.p`
     font-family: "Pretendard-Bold";
     font-size: 1rem;
-    margin-bottom: 3%;
 `;
 
 const UserReservation = () => {
@@ -47,6 +47,31 @@ const UserReservation = () => {
     const navigate = useNavigate();
     const handleNext = () => {
         navigate("/");
+    };
+    const axiosReservationCancle = (id, tid, amount, tax_free, vat) => {
+        const body = {
+            reservationId: id,
+            tid: tid,
+            cancel_amount: amount,
+            cancel_tax_free_amount: tax_free,
+            cancel_vat_amount: vat,
+        };
+
+        const option = {
+            url: `${import.meta.env.VITE_EC2_URL}/api/reservation/payment/kakao/cancel`,
+            method: "POST",
+            headers: {
+                Authorization: import.meta.env.VITE_USER_JWT,
+                "Content-Type": "application/json",
+            },
+            data: body,
+        };
+
+        axios(option)
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((err) => console.error(err));
     };
 
     // 날짜 선택 시 처리 함수
@@ -64,8 +89,8 @@ const UserReservation = () => {
             <CalendarWrapper>
                 <CalendarComponent onDateSelect={handleDateSelect} />
             </CalendarWrapper>
-            <ReservationWrapper>
-                <ReservationLabel>예약 내역</ReservationLabel>
+            <Label>예약 내역</Label>
+            <ReservationContainer>
                 {userReservation.result.resultList.map((el) => (
                     <ReservationCard
                         key={el.reservationResult.id}
@@ -83,9 +108,18 @@ const UserReservation = () => {
                         date={el.reservationResult.date}
                         startTime={el.reservationResult.startTime}
                         endTime={el.reservationResult.endTime}
+                        onClick={() =>
+                            axiosReservationCancle(
+                                el.reservationResult.id,
+                                el.reservationDetailResult.tid,
+                                el.reservationDetailResult.amount,
+                                el.reservationDetailResult.tax_free_amount,
+                                el.reservationDetailResult.vat_amount
+                            )
+                        }
                     />
                 ))}
-            </ReservationWrapper>
+            </ReservationContainer>
             <Button text="예약하기" onClick={handleNext} height={"100%"} />
         </Container>
     );
