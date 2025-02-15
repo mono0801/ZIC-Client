@@ -135,7 +135,7 @@ const OwnerAddPracticeRoom = () => {
 
     return (
         <OwnerPracticeRoomContainer>
-            <Banner bgphoto={ownerPracticeRoom.img}></Banner>
+            <Banner bgphoto={ownerPracticeRoom.img} />
             <BackBtn>
                 <IoIosArrowBack onClick={() => navigate(-1)} />
             </BackBtn>

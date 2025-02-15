@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
 import { checkMobile } from "../utils/checkMobile";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
 
 const Container = styled.div`
     width: 100%;
@@ -48,6 +50,42 @@ const Loading = () => {
     const pathRef1 = useRef(null);
     const pathRef2 = useRef(null);
     const pathRef3 = useRef(null);
+    const [query] = useSearchParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // 결제 토큰 처리
+        if (query.get("pg_token")) {
+            const storedData = JSON.parse(
+                window.sessionStorage.getItem("reservationData")
+            );
+            const body = {
+                reservationId: storedData.reservationId,
+                tid: storedData.tid,
+                partner_order_id: storedData.reservationNumber,
+                pg_token: query.get("pg_token"),
+            };
+
+            const option = {
+                url: `${
+                    import.meta.env.VITE_EC2_URL
+                }/api/reservation/payment/kakao/approve`,
+                method: "POST",
+                headers: {
+                    Authorization: import.meta.env.VITE_USER_JWT,
+                    "Content-Type": "application/json",
+                },
+                data: body,
+            };
+
+            axios(option)
+                .then((res) => {
+                    navigate(`/user/reservation?${storedData.date}`);
+                })
+                .catch((err) => console.error(err));
+        }
+        // 로그인 처리 구현
+    }, [query]);
 
     useEffect(() => {
         setIsMobile(checkMobile());
