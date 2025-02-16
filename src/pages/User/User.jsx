@@ -25,9 +25,11 @@ const User = () => {
 
     const fetchNewsList = async () => {
         try {
-              const token = localStorage.getItem("accessToken");
+            //   const token = localStorage.getItem("accessToken");
+              const token = `eyJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJUeXBlIjoiVVNFUiIsInVzZXJOYW1lIjoiVXNlclRlc3QiLCJpYXQiOjE3Mzk2OTc0MjAsImV4cCI6MTczOTc4MzgyMH0.yJULrK0Ks1E6YYIl1PIWrngzuYIQcdmZgDlwfJU0K_w`;
+
               const response = await axios.get(
-                `http://43.200.3.214:8080/api/user/mypage`, {
+                `${import.meta.env.VITE_EC2_URL}/api/user/mypage`, {
                     headers: {
                         Authorization: token,
                     },
@@ -92,6 +94,40 @@ const User = () => {
                 <span>자주 가는 연습실</span>
                 <PracticeRankBox>
                     {data.frequentPracticeRooms.frequentPracticeRoomDetailList.map(
+                        (room, index) =>
+                            index === 0 ? (
+                                <div key={index}>
+                                    <img
+                                        src="/assets/img/Union.svg"
+                                        alt="1위 아이콘"
+                                    />
+                                    <p>{room.roomName}</p>
+                                </div>
+                            ) : (
+                                <div key={index}>
+                                    <p>{index + 1}</p>
+                                    <p>{room.roomName}</p>
+                                </div>
+                            )
+                    )}
+                     {data.frequentPracticeRooms.frequentPracticeRoomDetailList.map(
+                        (room, index) =>
+                            index === 0 ? (
+                                <div key={index}>
+                                    <img
+                                        src="/assets/img/Union.svg"
+                                        alt="1위 아이콘"
+                                    />
+                                    <p>{room.roomName}</p>
+                                </div>
+                            ) : (
+                                <div key={index}>
+                                    <p>{index + 1}</p>
+                                    <p>{room.roomName}</p>
+                                </div>
+                            )
+                    )}
+                     {data.frequentPracticeRooms.frequentPracticeRoomDetailList.map(
                         (room, index) =>
                             index === 0 ? (
                                 <div key={index}>
@@ -209,7 +245,7 @@ const PracticeWrapper = styled.div`
     margin: 2% 0;
     flex-direction: column;
     justify-content: space-between;
-    gap: 12%;
+    /* gap: 1rem; */
     overflow-y: auto;
 
     scrollbar-width: none; /* Firefox */
