@@ -7,12 +7,18 @@ import { mypage } from "../../assets/mypage";
 
 const User = () => {
     const [data, setData] = useState({
-        userThisMonthPractices: { userThisMonthPracticeList: [] },
-        frequentPracticeRooms: { frequentPracticeRoomDetailList: [] },
+        userName: "",
+        userThisMonthPractices: {
+            userThisMonthPracticeList: [],
+            totalPracticeCount: 0
+        },
+        frequentPracticeRooms: {
+            frequentPracticeRoomDetailList: []
+        }
     });
 
     const navigate = useNavigate();
-    mypage;
+    // mypage;
     useEffect(() => {
         fetchNewsList();
     }, []);
@@ -20,16 +26,24 @@ const User = () => {
     const fetchNewsList = async () => {
         try {
             //   const token = localStorage.getItem("accessToken");
-            //   const response = await axios.get(
-            //     `/api/user/mypage`, {
-            //         headers: {
-            //             Authorization: `Bearer ${token}`, // 🔥 헤더에 토큰 추가
-            //         },
-            //     }
+              const token = `eyJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJUeXBlIjoiVVNFUiIsInVzZXJOYW1lIjoiVXNlclRlc3QiLCJpYXQiOjE3Mzk2OTc0MjAsImV4cCI6MTczOTc4MzgyMH0.yJULrK0Ks1E6YYIl1PIWrngzuYIQcdmZgDlwfJU0K_w`;
 
-            //   );
-            //   setData(response.data);
-            setData(mypage.result);
+              const response = await axios.get(
+                `${import.meta.env.VITE_EC2_URL}/api/user/mypage`, {
+                    headers: {
+                        Authorization: token,
+                    },
+                }
+              );
+
+              console.log("API 응답: ", response);
+            
+              if (!response.data.isSuccess) {
+                  console.error("API 오류: ", response.data);
+              }
+              setData(response.data.result);
+              console.log(data);
+            // setData(mypage.result);
         } catch (error) {
             console.error("데이터를 불러오는 중 에러 발생:", error);
         }
@@ -80,6 +94,40 @@ const User = () => {
                 <span>자주 가는 연습실</span>
                 <PracticeRankBox>
                     {data.frequentPracticeRooms.frequentPracticeRoomDetailList.map(
+                        (room, index) =>
+                            index === 0 ? (
+                                <div key={index}>
+                                    <img
+                                        src="/assets/img/Union.svg"
+                                        alt="1위 아이콘"
+                                    />
+                                    <p>{room.roomName}</p>
+                                </div>
+                            ) : (
+                                <div key={index}>
+                                    <p>{index + 1}</p>
+                                    <p>{room.roomName}</p>
+                                </div>
+                            )
+                    )}
+                     {data.frequentPracticeRooms.frequentPracticeRoomDetailList.map(
+                        (room, index) =>
+                            index === 0 ? (
+                                <div key={index}>
+                                    <img
+                                        src="/assets/img/Union.svg"
+                                        alt="1위 아이콘"
+                                    />
+                                    <p>{room.roomName}</p>
+                                </div>
+                            ) : (
+                                <div key={index}>
+                                    <p>{index + 1}</p>
+                                    <p>{room.roomName}</p>
+                                </div>
+                            )
+                    )}
+                     {data.frequentPracticeRooms.frequentPracticeRoomDetailList.map(
                         (room, index) =>
                             index === 0 ? (
                                 <div key={index}>
@@ -197,7 +245,7 @@ const PracticeWrapper = styled.div`
     margin: 2% 0;
     flex-direction: column;
     justify-content: space-between;
-    gap: 12%;
+    /* gap: 1rem; */
     overflow-y: auto;
 
     scrollbar-width: none; /* Firefox */
