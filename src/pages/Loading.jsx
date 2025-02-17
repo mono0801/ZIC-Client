@@ -80,7 +80,10 @@ const Loading = () => {
 
             axios(option)
                 .then((res) => {
-                    navigate(`/user/reservation?${storedData.date}`);
+                    res.data.isSuccess
+                        ? navigate(`/user/reservation?${storedData.date}`)
+                        : alert("예약 결제 처리 중 문제가 발생하였습니다.");
+                    navigate("/");
                 })
                 .catch((err) => console.error(err));
         }

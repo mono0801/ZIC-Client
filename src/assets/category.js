@@ -1,3 +1,4 @@
+// 삭제하면 안됨
 export const regions = [
     "부산",
     "충북",
