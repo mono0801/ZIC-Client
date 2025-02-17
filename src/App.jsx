@@ -17,7 +17,7 @@ import MainHeader from "./Components/MainHeader";
 import Loading from "./pages/Loading";
 import OwnerPracticeRoom from "./pages/Owner/OwnerPracticeRoom";
 import OnlyAdmin from "./router/onlyOwner";
-import OnlyUser from "./router/OnlyUSER";
+import OnlyUser from "./router/OnlyUser";
 import BlockAdmin from "./router/BlockAdmin";
 import OnlyPending from "./router/OnlyPending";
 import OnlyNotLogin from "./router/OnlyNotLogin";
