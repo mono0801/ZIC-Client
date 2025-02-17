@@ -206,7 +206,7 @@ const UserPayment = () => {
             }/api/reservation/payment/kakao/ready`,
             method: "POST",
             headers: {
-                Authorization: import.meta.env.VITE_JWT,
+                Authorization: localStorage.getItem("accessToken"),
                 "Content-Type": "application/json",
             },
             data: body,

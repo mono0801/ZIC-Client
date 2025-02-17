@@ -75,15 +75,22 @@ const MainHeader = () => {
     // TODO : 로그아웃 테스트
     const handleLogout = () => {
         localStorage.removeItem("accessToken");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("userType");
         navigate("/login");
     };
 
     return (
         <Container>
             <Header>
-                {/* TODO : owner는 메인 클릭시 /owner로 이동하게 구현 */}
-                {/* TODO : user는 메인 클릭시 /으로 가게 구현 */}
-                <a href="/">
+                <a
+                    href={
+                        localStorage.getItem("userType") == "OWNER"
+                            ? "/owner"
+                            : "/"
+                    }
+                >
                     <img src="/assets/img/zic_mainlogo.png" alt="Logo" />
                 </a>
                 <IconWrapper>
@@ -92,26 +99,34 @@ const MainHeader = () => {
                         onClick={handleLogout}
                         style={{ width: "1.8rem", height: "1.8rem" }}
                     />
-                    <IAddRooom
-                        onClick={handlePlus}
-                        width={"1.8rem"}
-                        height={"1.8rem"}
-                    />
-                    <IRevenue
-                        onClick={handleOwner}
-                        width={"1.8rem"}
-                        height={"1.8rem"}
-                    />
-                    <Icalendar
-                        onClick={handleCalender}
-                        width={"2.2rem"}
-                        height={"2.2rem"}
-                    />
-                    <IUser
-                        onClick={handleUser}
-                        width={"2rem"}
-                        height={"2rem"}
-                    />
+                    {localStorage.getItem("userType") == "OWNER" && (
+                        <>
+                            <IAddRooom
+                                onClick={handlePlus}
+                                width={"1.8rem"}
+                                height={"1.8rem"}
+                            />
+                            <IRevenue
+                                onClick={handleOwner}
+                                width={"1.8rem"}
+                                height={"1.8rem"}
+                            />
+                        </>
+                    )}
+                    {localStorage.getItem("userType") == "USER" && (
+                        <Icalendar
+                            onClick={handleCalender}
+                            width={"2.2rem"}
+                            height={"2.2rem"}
+                        />
+                    )}
+                    {localStorage.getItem("userType") != "OWNER" && (
+                        <IUser
+                            onClick={handleUser}
+                            width={"2rem"}
+                            height={"2rem"}
+                        />
+                    )}
                 </IconWrapper>
             </Header>
             <Content>

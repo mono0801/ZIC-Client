@@ -25,14 +25,11 @@ const User = () => {
 
     const fetchNewsList = async () => {
         try {
-            //   const token = localStorage.getItem("accessToken");
-            const token = `eyJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJUeXBlIjoiVVNFUiIsInVzZXJOYW1lIjoiVXNlclRlc3QiLCJpYXQiOjE3Mzk3OTk0NzIsImV4cCI6MTczOTg4NTg3Mn0.IQ-HZchE9xaQyI8Y8xAYz-7XW8NTOX5gZKL52ADOgEo`;
-
             const response = await axios.get(
                 `${import.meta.env.VITE_API_URL}/api/user/mypage`,
                 {
                     headers: {
-                        Authorization: token,
+                        Authorization: localStorage.getItem("accessToken"),
                     },
                 }
             );
@@ -245,8 +242,8 @@ const PracticeWrapper = styled.div`
     padding: 0 3%;
     margin: 2% 0;
     flex-direction: column;
-    justify-content: space-between;
-    /* gap: 1rem; */
+    justify-content: start;
+    gap: 1rem;
     overflow-y: auto;
 
     scrollbar-width: none; /* Firefox */

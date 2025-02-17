@@ -56,7 +56,7 @@ const Owner = () => {
     return (
         <Container ismobile={checkMobile()}>
             <CalendarWrapper>
-                <CalendarComponent onDateSelect={handleDateSelect} />
+                <CalendarComponent onDateSelect={handleDateSelect} value={selectedDate}/>
             </CalendarWrapper>
             <Label>예약 내역</Label>
             <ReservationContainer>
@@ -76,6 +76,7 @@ const Owner = () => {
                         date={el.reservationResult.date}
                         startTime={el.reservationResult.startTime}
                         endTime={el.reservationResult.endTime}
+                        key={el.reservationResult.id}
                     />
                 ))}
             </ReservationContainer>
