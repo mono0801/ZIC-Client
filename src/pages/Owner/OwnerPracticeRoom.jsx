@@ -1,10 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
-import { CiHeart } from "react-icons/ci";
 import { useEffect, useState } from "react";
-import { FaHeart } from "react-icons/fa";
-import { FiMapPin } from "react-icons/fi";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 import {
     getDownloadURL,
@@ -22,6 +19,9 @@ import {
     patchOwnerPracticeRoom,
 } from "../../api/owner";
 import { getPracticeRoomLike, postPracticeRoomLike } from "../../api/etc";
+import IFilledHeart from "../../Components/icons/IfilledHeart";
+import IHeart from "../../Components/icons/Iheart";
+import IPin from "../../Components/icons/Ipin";
 
 const MainPracticeRoomContainer = styled.div`
     width: 100%;
@@ -128,22 +128,10 @@ const Title = styled.div`
         color: #7d7d7d;
         cursor: pointer;
     }
-`;
 
-// ✅ FaHeart에 스타일 적용
-const StyledFaHeart = styled(FaHeart)`
-    color: #ff4e4e;
-    margin-right: 0.5rem;
-    width: 1rem;
-    height: 1rem;
-`;
-
-// ✅ CiHeart는 기본 색상 유지
-const StyledCiHeart = styled(CiHeart)`
-    color: #7d7d7d;
-    margin-right: 0.5rem;
-    width: 1rem;
-    height: 1rem;
+    span {
+        margin-left: 0.5rem;
+    }
 `;
 
 const Address = styled.div`
@@ -353,11 +341,14 @@ const OwnerPracticeRoom = () => {
                         <p>{practiceRooms.practiceRoomDTO.name}</p>
                         {!isLoadingLikes && (
                             <div onClick={() => handleLike()}>
-                                {/* 본인 id 가져와서 비교하기 */}
+                                {/* 본인 id 가져와서 바교하기 */}
                                 {likes.find((like) => like == "2") ? (
-                                    <StyledFaHeart />
+                                    <IFilledHeart
+                                        width={"1rem"}
+                                        height={"1rem"}
+                                    />
                                 ) : (
-                                    <StyledCiHeart />
+                                    <IHeart width={"1rem"} height={"1rem"} />
                                 )}
                                 <span>
                                     {(likes?.length || 0) > 100
@@ -375,7 +366,7 @@ const OwnerPracticeRoom = () => {
                                 practiceRooms.practiceRoomDTO.address
                             }`}
                         >
-                            <FiMapPin />
+                            <IPin width={"1.2rem"} height={"1.2rem"} />
                             {practiceRooms.practiceRoomDTO.region +
                                 " " +
                                 practiceRooms.practiceRoomDTO.address}
