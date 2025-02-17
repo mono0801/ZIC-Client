@@ -10,11 +10,11 @@ const User = () => {
         userName: "",
         userThisMonthPractices: {
             userThisMonthPracticeList: [],
-            totalPracticeCount: 0
+            totalPracticeCount: 0,
         },
         frequentPracticeRooms: {
-            frequentPracticeRoomDetailList: []
-        }
+            frequentPracticeRoomDetailList: [],
+        },
     });
 
     const navigate = useNavigate();
@@ -26,23 +26,24 @@ const User = () => {
     const fetchNewsList = async () => {
         try {
             //   const token = localStorage.getItem("accessToken");
-              const token = `eyJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJUeXBlIjoiVVNFUiIsInVzZXJOYW1lIjoiVXNlclRlc3QiLCJpYXQiOjE3Mzk2OTc0MjAsImV4cCI6MTczOTc4MzgyMH0.yJULrK0Ks1E6YYIl1PIWrngzuYIQcdmZgDlwfJU0K_w`;
+            const token = `eyJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJUeXBlIjoiVVNFUiIsInVzZXJOYW1lIjoiVXNlclRlc3QiLCJpYXQiOjE3Mzk3OTk0NzIsImV4cCI6MTczOTg4NTg3Mn0.IQ-HZchE9xaQyI8Y8xAYz-7XW8NTOX5gZKL52ADOgEo`;
 
-              const response = await axios.get(
-                `${import.meta.env.VITE_EC2_URL}/api/user/mypage`, {
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_URL}/api/user/mypage`,
+                {
                     headers: {
                         Authorization: token,
                     },
                 }
-              );
+            );
 
-              console.log("API 응답: ", response);
-            
-              if (!response.data.isSuccess) {
-                  console.error("API 오류: ", response.data);
-              }
-              setData(response.data.result);
-              console.log(data);
+            console.log("API 응답: ", response);
+
+            if (!response.data.isSuccess) {
+                console.error("API 오류: ", response.data);
+            }
+            setData(response.data.result);
+            console.log(data);
             // setData(mypage.result);
         } catch (error) {
             console.error("데이터를 불러오는 중 에러 발생:", error);
@@ -110,7 +111,7 @@ const User = () => {
                                 </div>
                             )
                     )}
-                     {data.frequentPracticeRooms.frequentPracticeRoomDetailList.map(
+                    {data.frequentPracticeRooms.frequentPracticeRoomDetailList.map(
                         (room, index) =>
                             index === 0 ? (
                                 <div key={index}>
@@ -127,7 +128,7 @@ const User = () => {
                                 </div>
                             )
                     )}
-                     {data.frequentPracticeRooms.frequentPracticeRoomDetailList.map(
+                    {data.frequentPracticeRooms.frequentPracticeRoomDetailList.map(
                         (room, index) =>
                             index === 0 ? (
                                 <div key={index}>
