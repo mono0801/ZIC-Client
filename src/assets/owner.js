@@ -1,3 +1,4 @@
+// 삭제하면 안됨
 export const revenueResult = {
     result: {
         practiceRoomEarning: [
@@ -12,7 +13,7 @@ export const revenueResult = {
                         fee: 0,
                         reservationCount: 0,
                         totalRevenue: 0,
-                    }
+                    },
                 ],
             },
         ],

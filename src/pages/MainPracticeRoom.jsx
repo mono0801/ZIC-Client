@@ -9,6 +9,8 @@ import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { userDetailRoom } from "../assets/userDetailRoom";
 import { ownerPracticeRoom } from "../assets/OwnerPracticeRoom";
 import PracticeRoomDetailCard from "../Components/PracticeRoomDetailCard";
+import { getPracticeRoomLike, postPracticeRoomLike } from "../api/etc";
+import { useQuery } from "@tanstack/react-query";
 
 const MainPracticeRoomContainer = styled.div`
     width: 100%;
@@ -112,7 +114,7 @@ const Title = styled.div`
 // ✅ FaHeart에 스타일 적용
 const StyledFaHeart = styled(FaHeart)`
     color: #ff4e4e;
-    margin-right: 6%;
+    margin-right: 0.5rem;
     width: 1rem;
     height: 1rem;
 `;
@@ -120,7 +122,7 @@ const StyledFaHeart = styled(FaHeart)`
 // ✅ CiHeart는 기본 색상 유지
 const StyledCiHeart = styled(CiHeart)`
     color: #7d7d7d;
-    margin-right: 6%;
+    margin-right: 0.5rem;
     width: 1rem;
     height: 1rem;
 `;
@@ -163,8 +165,21 @@ const MainPracticeRoom = () => {
     const [query] = useSearchParams();
     const navigate = useNavigate();
     const [toggleActive, setToggleActive] = useState(false);
+    const {
+        data: likes,
+        isLoading: isLoadingLikes,
+        refetch,
+    } = useQuery({
+        queryKey: ["practiceRoomLikes", id],
+        queryFn: () => getPracticeRoomLike(id),
+    });
+
     console.log(`PracticeRoom Id : ${id}`);
     console.log(`Date : ${query.get("date")}`);
+
+    const handleLike = () => {
+        postPracticeRoomLike(id).then((res) => (res ? refetch() : null));
+    };
 
     return (
         <MainPracticeRoomContainer>
@@ -177,19 +192,21 @@ const MainPracticeRoom = () => {
                 <TitleContainer>
                     <Title>
                         <p>{ownerPracticeRoom.name}</p>
-                        <div onClick={() => setToggleActive(!toggleActive)}>
-                            {toggleActive ? (
-                                <StyledFaHeart />
-                            ) : (
-                                <StyledCiHeart />
-                            )}
-                            {/* TODO : 좋아요 기능 구현 */}
-                            <span>
-                                {ownerPracticeRoom.like > 100
-                                    ? "99+"
-                                    : ownerPracticeRoom.like}
-                            </span>
-                        </div>
+                        {!isLoadingLikes && (
+                            <div onClick={() => handleLike()}>
+                                {/* 본인 id 가져와서 바교하기 */}
+                                {likes.find((like) => like == "2") ? (
+                                    <StyledFaHeart />
+                                ) : (
+                                    <StyledCiHeart />
+                                )}
+                                <span>
+                                    {(likes?.length || 0) > 100
+                                        ? "99+"
+                                        : likes?.length || 0}
+                                </span>
+                            </div>
+                        )}
                     </Title>
                     <Address>
                         <a
