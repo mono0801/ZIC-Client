@@ -11,14 +11,14 @@ const Container = styled.div`
     height: 100%;
     width: 100%;
     display: grid;
-    grid-template-rows: ${(props) => (props.ismobile ? "45%" : "35%")} 1fr;
+    grid-template-rows: ${(props) => (props.ismobile ? "45%" : "35%")} 1rem 1fr;
     box-sizing: border-box;
     gap: 3%;
 `;
 
 const CalendarWrapper = styled.div``;
 
-const ReservationWrapper = styled.div`
+const ReservationContainer = styled.div`
     width: 100%;
     height: 100%;
 
@@ -31,7 +31,7 @@ const ReservationWrapper = styled.div`
     }
 `;
 
-const ReservationLabel = styled.p`
+const Label = styled.p`
     font-family: "Pretendard-Bold";
     font-size: 1rem;
     margin-bottom: 3%;
@@ -56,10 +56,10 @@ const Owner = () => {
     return (
         <Container ismobile={checkMobile()}>
             <CalendarWrapper>
-                <CalendarComponent onDateSelect={handleDateSelect} />
+                <CalendarComponent onDateSelect={handleDateSelect} value={selectedDate}/>
             </CalendarWrapper>
-            <ReservationWrapper>
-                <ReservationLabel>예약 내역</ReservationLabel>
+            <Label>예약 내역</Label>
+            <ReservationContainer>
                 {userReservation.result.resultList.map((el) => (
                     <ReservationCard
                         img={
@@ -76,9 +76,10 @@ const Owner = () => {
                         date={el.reservationResult.date}
                         startTime={el.reservationResult.startTime}
                         endTime={el.reservationResult.endTime}
+                        key={el.reservationResult.id}
                     />
                 ))}
-            </ReservationWrapper>
+            </ReservationContainer>
         </Container>
     );
 };

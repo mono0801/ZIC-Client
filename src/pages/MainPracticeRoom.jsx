@@ -1,14 +1,17 @@
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
-import { CiHeart } from "react-icons/ci";
 import { useState } from "react";
-import { FaHeart } from "react-icons/fa";
 import { FiMapPin } from "react-icons/fi";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { userDetailRoom } from "../assets/userDetailRoom";
 import { ownerPracticeRoom } from "../assets/OwnerPracticeRoom";
 import PracticeRoomDetailCard from "../Components/PracticeRoomDetailCard";
+import { getPracticeRoomLike, postPracticeRoomLike } from "../api/etc";
+import { useQuery } from "@tanstack/react-query";
+import IHeart from "../Components/icons/Iheart";
+import IFilledHeart from "../Components/icons/IfilledHeart";
+import IPin from "../Components/icons/Ipin";
 
 const MainPracticeRoomContainer = styled.div`
     width: 100%;
@@ -107,22 +110,10 @@ const Title = styled.div`
         color: #7d7d7d;
         cursor: pointer;
     }
-`;
 
-// ✅ FaHeart에 스타일 적용
-const StyledFaHeart = styled(FaHeart)`
-    color: #ff4e4e;
-    margin-right: 6%;
-    width: 1rem;
-    height: 1rem;
-`;
-
-// ✅ CiHeart는 기본 색상 유지
-const StyledCiHeart = styled(CiHeart)`
-    color: #7d7d7d;
-    margin-right: 6%;
-    width: 1rem;
-    height: 1rem;
+    span {
+        margin-left: 0.5rem;
+    }
 `;
 
 const Address = styled.div`
@@ -162,9 +153,21 @@ const MainPracticeRoom = () => {
     const { id } = useParams();
     const [query] = useSearchParams();
     const navigate = useNavigate();
-    const [toggleActive, setToggleActive] = useState(false);
+    const {
+        data: likes,
+        isLoading: isLoadingLikes,
+        refetch,
+    } = useQuery({
+        queryKey: ["practiceRoomLikes", id],
+        queryFn: () => getPracticeRoomLike(id),
+    });
+
     console.log(`PracticeRoom Id : ${id}`);
     console.log(`Date : ${query.get("date")}`);
+
+    const handleLike = () => {
+        postPracticeRoomLike(id).then((res) => (res ? refetch() : null));
+    };
 
     return (
         <MainPracticeRoomContainer>
@@ -177,19 +180,26 @@ const MainPracticeRoom = () => {
                 <TitleContainer>
                     <Title>
                         <p>{ownerPracticeRoom.name}</p>
-                        <div onClick={() => setToggleActive(!toggleActive)}>
-                            {toggleActive ? (
-                                <StyledFaHeart />
-                            ) : (
-                                <StyledCiHeart />
-                            )}
-                            {/* TODO : 좋아요 기능 구현 */}
-                            <span>
-                                {ownerPracticeRoom.like > 100
-                                    ? "99+"
-                                    : ownerPracticeRoom.like}
-                            </span>
-                        </div>
+                        {!isLoadingLikes && (
+                            <div onClick={() => handleLike()}>
+                                {likes.find(
+                                    (like) =>
+                                        like == localStorage.getItem("userId")
+                                ) ? (
+                                    <IFilledHeart
+                                        width={"1rem"}
+                                        height={"1rem"}
+                                    />
+                                ) : (
+                                    <IHeart width={"1rem"} height={"1rem"} />
+                                )}
+                                <span>
+                                    {(likes?.length || 0) > 100
+                                        ? "99+"
+                                        : likes?.length || 0}
+                                </span>
+                            </div>
+                        )}
                     </Title>
                     <Address>
                         <a
@@ -199,7 +209,7 @@ const MainPracticeRoom = () => {
                                 ownerPracticeRoom.address
                             }`}
                         >
-                            <FiMapPin />
+                            <IPin width={"1.2rem"} height={"1.2rem"} />
                             {ownerPracticeRoom.region +
                                 " " +
                                 ownerPracticeRoom.address}

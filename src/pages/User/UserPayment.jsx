@@ -2,11 +2,13 @@ import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { FiMapPin } from "react-icons/fi";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ownerPracticeRoom } from "../../assets/OwnerPracticeRoom";
 import Button from "../../Components/Button";
 import { TimePicker } from "react-ios-time-picker";
+import axios from "axios";
+import { checkMobile } from "../../utils/checkMobile";
 
 const Container = styled.div`
     width: 100%;
@@ -177,6 +179,7 @@ const UserPayment = () => {
     const [total, setTotal] = useState(0);
     const [query] = useSearchParams();
     const date = query.get("date");
+    const { id } = useParams();
 
     useEffect(() => {
         const tax_free = subtractTimes(startTime, endTime).hours * fee;
@@ -188,11 +191,49 @@ const UserPayment = () => {
         if (toTime(startTime).getTime() > toTime(endTime).getTime()) {
             return alert("시작 시간이 종료 시간보다 늦어선 안됩니다.");
         }
+
         const body = {
+            reservationNumber: date.split("-").join(""),
+            practiceRoomDetail: id,
+            date,
             startTime: startTime,
             endTime: endTime,
         };
-        console.log(body);
+
+        const option = {
+            url: `${
+                import.meta.env.VITE_API_URL
+            }/api/reservation/payment/kakao/ready`,
+            method: "POST",
+            headers: {
+                Authorization: localStorage.getItem("accessToken"),
+                "Content-Type": "application/json",
+            },
+            data: body,
+        };
+
+        axios(option)
+            .then((res) => {
+                const reservationData = {
+                    tid: res.data.result.paymentResponse.tid,
+                    reservationNumber:
+                        res.data.result.reservationResult.reservationNumber,
+                    reservationId: res.data.result.reservationResult.id,
+                    date: res.data.result.reservationResult.date,
+                };
+
+                window.sessionStorage.setItem(
+                    "reservationData",
+                    JSON.stringify(reservationData)
+                );
+
+                checkMobile()
+                    ? (window.location.href =
+                          res.data.result.paymentResponse.next_redirect_mobile_url)
+                    : (window.location.href =
+                          res.data.result.paymentResponse.next_redirect_pc_url);
+            })
+            .catch((err) => console.log(err.result));
     };
 
     const toTime = (time) => {

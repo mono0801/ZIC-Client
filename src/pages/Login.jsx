@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import { BsChatFill } from "react-icons/bs";
+import Button from "../Components/Button";
+import { getTestJWT } from "../api/etc";
+import { useNavigate } from "react-router-dom";
 
 const LoginContainer = styled.div`
     height: 100vh;
@@ -35,7 +38,7 @@ const Banner = styled.div`
 `;
 
 const BannerText = styled.p`
-    font-size: 1.3rem;
+    font-size: 100%;
     color: #030303;
     font-family: "Pretendard-Bold";
     margin-left: 5%;
@@ -102,6 +105,15 @@ const Login = () => {
             "http://localhost:8080/oauth2/authorization/kakao";
     };
 
+    // TODO : 삭제하기
+    const navigate = useNavigate();
+    const handleUserLogin = () => {
+        getTestJWT(1).then(() => navigate("/"));
+    };
+    const handleOwnerLogin = () => {
+        getTestJWT(2).then(() => navigate("/owner"));
+    };
+
     return (
         <LoginContainer>
             <BannerWrapper>
@@ -112,6 +124,20 @@ const Login = () => {
                 </Banner>
             </BannerWrapper>
             <KakaoWrapper>
+                {/* 테스트용 나중에 삭제하기 */}
+                <div style={{ display: "flex", width: "100%", gap: "5%" }}>
+                    <Button
+                        height={"2rem"}
+                        text={"이용자"}
+                        onClick={handleUserLogin}
+                    />
+                    <Button
+                        height={"2rem"}
+                        text={"대여자"}
+                        onClick={handleOwnerLogin}
+                    />
+                </div>
+
                 <KakaoBtn onClick={handleKakaoLogin}>
                     <BsChatFill />
                     <p>카카오로 시작하기</p>

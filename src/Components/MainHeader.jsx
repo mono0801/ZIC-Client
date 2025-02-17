@@ -1,10 +1,11 @@
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
-import { CiCalendar } from "react-icons/ci";
-import { CiUser } from "react-icons/ci";
-import { CiSquarePlus } from "react-icons/ci";
-import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import Icalendar from "./icons/Icalendar";
+import IUser from "./icons/Iuser";
+import IAddRooom from "./icons/IaddRoom";
+import IRevenue from "./icons/Irevenue";
+import { FaSignOutAlt } from "react-icons/fa";
 
 const Container = styled.div`
     display: flex;
@@ -28,15 +29,17 @@ const Header = styled.div`
     }
 
     svg {
-        width: 30%;
-        height: 30%;
         color: #a9a9a9;
         cursor: pointer;
+
+        &:hover {
+            color: #278cff !important;
+        }
     }
 `;
 
 const IconWrapper = styled.div`
-    width: 25%;
+    width: auto;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -69,19 +72,61 @@ const MainHeader = () => {
         navigate("/user");
     };
 
+    // TODO : 로그아웃 테스트
+    const handleLogout = () => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("userType");
+        navigate("/login");
+    };
+
     return (
         <Container>
             <Header>
-                {/* TODO : owner는 메인 클릭시 /owner로 이동하게 구현 */}
-                {/* TODO : user는 메인 클릭시 /으로 가게 구현 */}
-                <a href="/">
+                <a
+                    href={
+                        localStorage.getItem("userType") == "OWNER"
+                            ? "/owner"
+                            : "/"
+                    }
+                >
                     <img src="/assets/img/zic_mainlogo.png" alt="Logo" />
                 </a>
                 <IconWrapper>
-                    <CiSquarePlus onClick={handlePlus} />
-                    <FaUser onClick={handleOwner} />
-                    <CiCalendar onClick={handleCalender} />
-                    <CiUser onClick={handleUser} />
+                    {/* TODO : 로그아웃을 위해 임시로 만든 아이콘 */}
+                    <FaSignOutAlt
+                        onClick={handleLogout}
+                        style={{ width: "1.8rem", height: "1.8rem" }}
+                    />
+                    {localStorage.getItem("userType") == "OWNER" && (
+                        <>
+                            <IAddRooom
+                                onClick={handlePlus}
+                                width={"1.8rem"}
+                                height={"1.8rem"}
+                            />
+                            <IRevenue
+                                onClick={handleOwner}
+                                width={"1.8rem"}
+                                height={"1.8rem"}
+                            />
+                        </>
+                    )}
+                    {localStorage.getItem("userType") == "USER" && (
+                        <Icalendar
+                            onClick={handleCalender}
+                            width={"2.2rem"}
+                            height={"2.2rem"}
+                        />
+                    )}
+                    {localStorage.getItem("userType") != "OWNER" && (
+                        <IUser
+                            onClick={handleUser}
+                            width={"2rem"}
+                            height={"2rem"}
+                        />
+                    )}
                 </IconWrapper>
             </Header>
             <Content>

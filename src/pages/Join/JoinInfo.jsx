@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../Components/Button";
 import { JoinContainer } from "../../styles/container";
@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { IoIosSearch } from "react-icons/io";
 import { regions, instruments } from "../../assets/category";
 import ScrollContainer from "react-indiana-drag-scroll";
+import Isearch from "../../Components/icons/Isearch";
 
 const InputContainer = styled.div`
     width: 100%;
@@ -16,8 +17,8 @@ const InputLabel = styled.p`
     font-size: 80%;
     font-family: "Pretendard-Regular";
     letter-spacing: 2%;
-    margin-top: 5%;
-    margin-bottom: 2%;
+    margin-top: 4%;
+    margin-bottom: 1%;
     color: ${(props) => (props.isActive ? "#C6C6C6" : "#030303")};
 `;
 
@@ -30,7 +31,7 @@ const InputWrapper = styled.div`
         background: none;
         border: none;
         border-bottom: 1px solid #dcdcdc;
-        padding: 2% 0 2% 1%;
+        padding: 1% 0 2% 1%;
         box-sizing: border-box;
         font-size: 100%;
         font-family: "Pretendard-Regular";
@@ -41,8 +42,6 @@ const InputWrapper = styled.div`
     svg {
         position: absolute;
         color: #c6c6c6;
-        width: 1.7em;
-        height: 1.7em;
         top: 50%;
         transform: translateY(-50%);
         right: 0%;
@@ -128,6 +127,12 @@ const JoinInfo = () => {
     const [address, setAddress] = useState("");
     const [selectedInstruments, setSelectedInstruments] = useState([]);
 
+    useEffect(() => {
+        if (role.role == "owner") {
+            setRegionToggle(true);
+        }
+    }, []);
+
     const handleNext = () => {
         console.log(region);
         console.log(selectedInstruments);
@@ -156,7 +161,7 @@ const JoinInfo = () => {
                             value={region}
                             onChange={(e) => setRegion(e.target.value)}
                         />
-                        <IoIosSearch
+                        <Isearch
                             onClick={() => setRegionToggle(!regionToggle)}
                         />
                     </InputWrapper>
@@ -204,7 +209,7 @@ const JoinInfo = () => {
                             value={region}
                             onChange={(e) => setRegion(e.target.value)}
                         />
-                        <IoIosSearch
+                        <Isearch
                             onClick={() => setRegionToggle(!regionToggle)}
                         />
                     </InputWrapper>
