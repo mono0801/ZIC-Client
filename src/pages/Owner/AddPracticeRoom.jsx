@@ -156,8 +156,10 @@ const OwnerAddPracticeRoom = () => {
                         <p>{practiceRooms.practiceRoomDTO.name}</p>
                         {!isLoadingLikes && (
                             <div onClick={() => handleLike()}>
-                                {/* 본인 id 가져와서 바교하기 */}
-                                {likes.find((like) => like == "2") ? (
+                                {likes.find(
+                                    (like) =>
+                                        like == localStorage.getItem("userId")
+                                ) ? (
                                     <IFilledHeart
                                         width={"1rem"}
                                         height={"1rem"}

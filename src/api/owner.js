@@ -5,7 +5,7 @@ export const axiosRevenue = async (date) => {
         url: `${import.meta.env.VITE_API_URL}/api/owner/revenue?date=${date}`,
         method: "GET",
         headers: {
-            Authorization: import.meta.env.VITE_JWT,
+            Authorization: localStorage.getItem("accessToken"),
             "Content-Type": "application/json",
         },
     };
@@ -24,7 +24,7 @@ export const axiosOwnerPracticeRoomDetail = async () => {
         url: `${import.meta.env.VITE_API_URL}/api/practice-room-details/owner`,
         method: "GET",
         headers: {
-            Authorization: import.meta.env.VITE_JWT,
+            Authorization: localStorage.getItem("accessToken"),
             "Content-Type": "application/json",
         },
     };
@@ -45,7 +45,7 @@ export const getOwnerPracticeRoomDetail = async (practiceRoomDetailId) => {
         }/api/practice-room-details/${practiceRoomDetailId}`,
         method: "GET",
         headers: {
-            Authorization: import.meta.env.VITE_JWT,
+            Authorization: localStorage.getItem("accessToken"),
             "Content-Type": "application/json",
         },
     };
@@ -59,13 +59,12 @@ export const getOwnerPracticeRoomDetail = async (practiceRoomDetailId) => {
     }
 };
 
-// TODO : 로컬로 테스트 해보기
 export const patchOwnerPracticeRoomDetail = async (id, body, method) => {
     const option = {
         url: `${import.meta.env.VITE_API_URL}/api/practice-room-details/${id}`,
         method: method,
         headers: {
-            Authorization: import.meta.env.VITE_JWT,
+            Authorization: localStorage.getItem("accessToken"),
             "Content-Type": "application/json",
         },
         data: body,
@@ -89,7 +88,7 @@ export const patchPracticeRoomDetailStatus = async (id) => {
             {},
             {
                 headers: {
-                    Authorization: import.meta.env.VITE_JWT,
+                    Authorization: localStorage.getItem("accessToken"),
                     "Content-Type": "application/json",
                 },
             }
@@ -110,7 +109,7 @@ export const postOwnerPracticeRoomDetail = async (id, body) => {
             body,
             {
                 headers: {
-                    Authorization: import.meta.env.VITE_JWT,
+                    Authorization: localStorage.getItem("accessToken"),
                     "Content-Type": "application/json",
                 },
             }
@@ -129,7 +128,7 @@ export const patchOwnerPracticeRoom = async (id, body) => {
             body,
             {
                 headers: {
-                    Authorization: import.meta.env.VITE_JWT,
+                    Authorization: localStorage.getItem("accessToken"),
                     "Content-Type": "application/json",
                 },
             }

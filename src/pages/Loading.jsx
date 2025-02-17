@@ -72,7 +72,7 @@ const Loading = () => {
                 }/api/reservation/payment/kakao/approve`,
                 method: "POST",
                 headers: {
-                    Authorization: import.meta.env.VITE_USER_JWT,
+                    Authorization: localStorage.getItem("accessToken"),
                     "Content-Type": "application/json",
                 },
                 data: body,

@@ -1,4 +1,27 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+
+// TODO : 나중에 삭제하기
+export const getTestJWT = async (id) => {
+    try {
+        const response = await axios.get(
+            `${
+                import.meta.env.VITE_API_URL
+            }/api/test/user/get-token-from-user-id?userId=${id}`
+        );
+        const decoded = jwtDecode(response.data);
+        localStorage.setItem("accessToken", response.data);
+        localStorage.setItem("userId", decoded.userId);
+        localStorage.setItem("userName", decoded.userName);
+        localStorage.setItem("userType", decoded.userType);
+
+        console.log(decoded);
+        return true; // 성공적인 응답 처리
+    } catch (err) {
+        console.error(err); // 에러 처리
+        throw err;
+    }
+};
 
 export const getPracticeRoomLike = async (id) => {
     try {
@@ -8,7 +31,7 @@ export const getPracticeRoomLike = async (id) => {
             }/api/practice-rooms/${id}/likes/count`,
             {
                 headers: {
-                    Authorization: import.meta.env.VITE_JWT,
+                    Authorization: localStorage.getItem("accessToken"),
                     "Content-Type": "application/json",
                 },
             }
@@ -28,7 +51,7 @@ export const postPracticeRoomLike = async (id) => {
             {},
             {
                 headers: {
-                    Authorization: import.meta.env.VITE_JWT,
+                    Authorization: localStorage.getItem("accessToken"),
                     "Content-Type": "application/json",
                 },
             }

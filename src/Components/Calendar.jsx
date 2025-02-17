@@ -11,7 +11,7 @@ import axios from "axios";
     클릭한 날짜에 해당하는 예약내역 하단에 뜨도록*/
 
 const ReactCalendar = () => {
-    const [selectedDate, setSelectedDate] = useState(new Date("")); //하단에 예약 내역을 표시할 때 사용
+    const [selectedDate, setSelectedDate] = useState(new Date()); //하단에 예약 내역을 표시할 때 사용
     const [dayList, setDayList] = useState([]);
     const [reservations, setReservations] = useState([]);
     const page = 1; // 페이지 번호 (예시 값)
@@ -24,20 +24,20 @@ const ReactCalendar = () => {
     //         try {
     //             const response = await axios.get(
     //                 `http://43.200.3.214:8080/api/reservation/owner?date=2025-01&page=1`, {
-                        
+
     //                     headers: {
     //                         Authorization: `eyJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsInVzZXJUeXBlIjoiT1dORVIiLCJ1c2VyTmFtZSI6Ik93bmVyVGVzdCIsImlhdCI6MTczOTYzNDQzNCwiZXhwIjoxNzM5NzIwODM0fQ.g245fBrpF4Q4k_XaM1zQ65VIMcMwzZ-ogzqsjNMxR5E`
     //                     }
     //             }); console.log("🔍 Authorization 토큰:", localStorage.getItem("accessToken"));
 
     //             console.log("API 응답: ", response.data);
-                
+
     //             if (!response.data.isSuccess) {
     //                 console.error("API 오류: ", response.data);
     //             }
 
     //             // 서버에서 받은 데이터 (날짜 리스트로 변환)
-    //             const reservedDates = response.data.map(item => item.date); 
+    //             const reservedDates = response.data.map(item => item.date);
     //             setDayList(reservedDates);
 
     //             console.log("예약된 날짜 리스트: ", reservedDates);
@@ -58,20 +58,22 @@ const ReactCalendar = () => {
 
         try {
             const response = await axios.get(
-                `http://43.200.3.214:8080/api/reservation/owner?date=${activeDate}&page=1`,
-               {
+                `${
+                    import.meta.env.VITE_API_URL
+                }/api/reservation/owner?date=${activeDate}&page=1`,
+                {
                     headers: {
-                        Authorization: `eyJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsInVzZXJUeXBlIjoiT1dORVIiLCJ1c2VyTmFtZSI6Ik93bmVyVGVzdCIsImlhdCI6MTczOTYzNDQzNCwiZXhwIjoxNzM5NzIwODM0fQ.g245fBrpF4Q4k_XaM1zQ65VIMcMwzZ-ogzqsjNMxR5E`
-                    }
+                        Authorization: localStorage.getItem("accessToken"),
+                    },
                 }
             );
 
             console.log("API 응답: ", response);
-            
-             if (!response.data.isSuccess) {
-                 console.error("API 오류: ", response.data);
+
+            if (!response.data.isSuccess) {
+                console.error("API 오류: ", response.data);
             }
-    
+
             setReservations(response.data);
         } catch (error) {
             console.error("예약 내역 불러오기 실패! : ", error);
@@ -80,17 +82,16 @@ const ReactCalendar = () => {
 
     return (
         <div>
-            <CalendarComponent 
-            showDate={true} 
-            onDateSelect={handleDateSelect} 
-            value={selectedDate}
-            dayList={dayList} // API에서 가져온 날짜 리스트 전달
+            <CalendarComponent
+                onDateSelect={handleDateSelect}
+                value={selectedDate}
+                dayList={dayList} // API에서 가져온 날짜 리스트 전달
             />
         </div>
     );
 };
 
-const CalendarComponent = ({ showDate, onDateSelect, value, dayList }) => {
+const CalendarComponent = ({ onDateSelect, value, dayList }) => {
     const tileClassName = ({ date, view }) => {
         // view가 "month"일 때만 적용
         if (view === "month") {
