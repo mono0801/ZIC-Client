@@ -202,11 +202,11 @@ const UserPayment = () => {
 
         const option = {
             url: `${
-                import.meta.env.VITE_EC2_URL
+                import.meta.env.VITE_API_URL
             }/api/reservation/payment/kakao/ready`,
             method: "POST",
             headers: {
-                Authorization: import.meta.env.VITE_USER_JWT,
+                Authorization: import.meta.env.VITE_JWT,
                 "Content-Type": "application/json",
             },
             data: body,
@@ -233,7 +233,7 @@ const UserPayment = () => {
                     : (window.location.href =
                           res.data.result.paymentResponse.next_redirect_pc_url);
             })
-            .catch((err) => alert(err.response.data.result.startTime));
+            .catch((err) => console.log(err.result));
     };
 
     const toTime = (time) => {

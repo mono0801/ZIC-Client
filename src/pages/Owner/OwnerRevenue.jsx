@@ -1,11 +1,11 @@
-import { revenueResult } from "../../assets/owner";
 import OwnerReservationStat from "../../Components/OwnerReservationStat";
 import styled from "styled-components";
 import Chart from "../../Components/Chart";
 import DateSelector from "../../Components/DateSelector";
 import { useEffect, useState } from "react";
 import moment from "moment";
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { axiosRevenue } from "../../api/owner";
 
 const StatContainer = styled.div`
     width: 100%;
@@ -23,38 +23,41 @@ const StatContainer = styled.div`
 `;
 
 const OwnerRevenue = () => {
-    const [data, setData] = useState(null);
     const [selectedDate, setSelectedDate] = useState(
         moment().format("YYYY-MM-DD")
     );
 
+    const { data } = useQuery({
+        queryKey: ["revenue", selectedDate], // queryKey는 쿼리 고유 키
+        queryFn: () => axiosRevenue(selectedDate), // 실제 데이터 요청 함수
+        enabled: !!selectedDate, // selectedDate가 있을 때만 쿼리 활성화
+        placeholderData: {
+            practiceRoomEarning: [
+                {
+                    practiceRoomDetail: [
+                        {
+                            practiceRoomDetailId: 0,
+                            practiceRoomDetailName: "로딩중",
+                            fee: 0,
+                            reservationCount: 0,
+                            totalRevenue: 0,
+                        },
+                    ],
+                },
+            ],
+            monthlyEarning: [
+                {
+                    year: 0,
+                    month: 0,
+                    totalRevenue: 0,
+                },
+            ],
+        },
+    });
+
     useEffect(() => {
         console.log(selectedDate);
-        axiosRevenue(selectedDate);
     }, [selectedDate]);
-
-    useEffect(() => {
-        console.log(data);
-    }, [data]);
-
-    const axiosRevenue = (date) => {
-        const option = {
-            url: `${
-                import.meta.env.VITE_EC2_URL
-            }/api/owner/revenue?date=${date}`,
-            method: "GET",
-            headers: {
-                Authorization: import.meta.env.VITE_OWNER_JWT,
-                "Content-Type": "application/json",
-            },
-        };
-
-        axios(option)
-            .then((res) => {
-                setData(res.data.result);
-            })
-            .catch((err) => console.error(err));
-    };
 
     return (
         <StatContainer>
@@ -63,7 +66,7 @@ const OwnerRevenue = () => {
                 onChange={setSelectedDate}
                 showDate={false}
             />
-            {data && (
+            {data.practiceRoomEarning && (
                 <>
                     <OwnerReservationStat
                         text={"총 이용 횟수"}
