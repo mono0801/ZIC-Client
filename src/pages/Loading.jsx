@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
-import { checkMobile } from "../utils/checkMobile";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const Container = styled.div`
     width: 100%;
