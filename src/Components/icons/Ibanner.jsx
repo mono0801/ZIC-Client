@@ -106,7 +106,7 @@ const IBanner = (props) => (
             fontSize="1.1rem"
             fill="#030303"
             fontWeight="Bold"
-            font-family="Pretendard-Bold"
+            fontFamily="Pretendard-Bold"
         >
             {props.text}
         </text>
