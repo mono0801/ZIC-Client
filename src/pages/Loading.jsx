@@ -46,7 +46,6 @@ const Container = styled.div`
 `;
 
 const Loading = () => {
-    const [isMobile, setIsMobile] = useState(false);
     const pathRef1 = useRef(null);
     const pathRef2 = useRef(null);
     const pathRef3 = useRef(null);
@@ -54,8 +53,36 @@ const Loading = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // 결제 토큰 처리
-        if (query.get("pg_token")) {
+        if (query.get("jwtAccessToken")) {
+            // 로그인 처리 구현
+            const decodedToken = jwtDecode(jwtAccessToken);
+            const userId = decodedToken.userId;
+            const userName = decodedToken.userName;
+            const userType = decodedToken.userType;
+
+            console.log("받은 JWT 액세스 토큰:", jwtAccessToken);
+            console.log("받은 JWT 액세스 토큰:", userId);
+            console.log("받은 JWT 액세스 토큰:", userName);
+            console.log("받은 JWT 액세스 토큰:", userType);
+
+            // 로컬 스토리지 또는 쿠키에 저장
+            localStorage.setItem("accessToken", jwtAccessToken);
+            localStorage.setItem("userId", userId);
+            localStorage.setItem("userName", userName);
+            localStorage.setItem("userType", userType);
+
+            // 이후 필요한 페이지로 이동 (예: 홈 화면)
+            if (userType === "USER") {
+                window.location.href = "/";
+            }
+            if (userType === "PENDING") {
+                window.location.href = "/join/category/";
+            }
+            if (userType === "OWNER") {
+                window.location.href = "/owner/";
+            }
+        } else if (query.get("pg_token")) {
+            // 결제 토큰 처리
             const storedData = JSON.parse(
                 window.sessionStorage.getItem("reservationData")
             );
@@ -86,15 +113,16 @@ const Loading = () => {
                     navigate("/");
                 })
                 .catch((err) => console.error(err));
+        } else {
+            // TODO : 바꾸기
+            console.log("이 페이지에 대한 접근 권한이 없습니다.");
+            // alert("이 페이지에 대한 접근 권한이 없습니다.");
+            // navigate(-1);
         }
-        // 로그인 처리 구현
     }, [query]);
 
     useEffect(() => {
-        setIsMobile(checkMobile());
-    }, []);
-
-    useEffect(() => {
+        // ZIC 로고 애니메이션 담당
         if (pathRef1.current && pathRef2.current && pathRef3.current) {
             const length1 = pathRef1.current.getTotalLength();
             const length2 = pathRef2.current.getTotalLength();
@@ -115,8 +143,6 @@ const Loading = () => {
     // return <Container><p>ZIC</P></Container>;
     return (
         <Container>
-            <p>Loading</p>
-            <p>Mobile : {isMobile + ""}</p>
             <svg
                 width="105"
                 height="47"
