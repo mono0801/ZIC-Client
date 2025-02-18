@@ -4,6 +4,7 @@ import Button from "../Components/Button";
 import { getTestJWT } from "../api/etc";
 import { useNavigate } from "react-router-dom";
 import IBanner from "../Components/icons/Ibanner";
+import axios from "axios";
 
 const LoginContainer = styled.div`
     height: 100vh;
@@ -77,10 +78,21 @@ const KakaoBtn = styled.div`
 `;
 
 const Login = () => {
-    // TODO : 로그인 API 적용
-    const handleKakaoLogin = () => {
-        window.location.href =
-            "http://localhost:8080/oauth2/authorization/kakao";
+    const kakaoLogin = () => {
+        window.location.href = `${
+            import.meta.env.VITE_API_URL
+        }/oauth2/authorization/kakao`;
+        // try {
+        //     const response = await axios.get(
+        //         `${import.meta.env.VITE_API_URL}/oauth2/authorization/kakao`
+        //     );
+        //     console.log("res응답 : " + response);
+        //     if (!response.data.isSuccess) {
+        //         console.error("API 오류: ", response.data);
+        //     }
+        // }catch (error){
+        //     console.log("데이터를 불러오는 중 에러 발생 : ", error);
+        // }
     };
 
     // TODO : 삭제하기 - 테스트용 로그인 api
@@ -114,7 +126,7 @@ const Login = () => {
                     />
                 </div>
 
-                <KakaoBtn onClick={handleKakaoLogin}>
+                <KakaoBtn onClick={kakaoLogin}>
                     <BsChatFill />
                     <p>카카오로 시작하기</p>
                     <div />
