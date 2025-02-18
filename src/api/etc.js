@@ -39,6 +39,7 @@ export const getPracticeRoomList = async (page, size) => {
 };
 // -------------------------------------------------------------------
 
+// 연습실 좋아요 목록 조회 api
 export const getPracticeRoomLike = async (id) => {
     try {
         const response = await axios.get(
@@ -60,6 +61,7 @@ export const getPracticeRoomLike = async (id) => {
     }
 };
 
+// 연습실 좋아요 변경 api
 export const postPracticeRoomLike = async (id) => {
     try {
         const response = await axios.post(
