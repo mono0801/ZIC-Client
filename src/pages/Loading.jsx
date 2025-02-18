@@ -55,6 +55,7 @@ const Loading = () => {
     useEffect(() => {
         if (query.get("jwtAccessToken")) {
             // 로그인 처리 구현
+            const jwtAccessToken = query.get("jwtAccessToken");
             const decodedToken = jwtDecode(jwtAccessToken);
             const userId = decodedToken.userId;
             const userName = decodedToken.userName;
