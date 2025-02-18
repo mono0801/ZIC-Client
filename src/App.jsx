@@ -99,7 +99,10 @@ function App() {
                     {/* 로그인 */}
                     <Route element={<OnlyNotLogin />}>
                         <Route path="/login" element={<Login />} />
-                        <Route path="/login/loading" element={<Loading />} />
+                        <Route
+                            path="/login/oauth/loading"
+                            element={<Loading />}
+                        />
                     </Route>
 
                     {/* 회원가입 */}
