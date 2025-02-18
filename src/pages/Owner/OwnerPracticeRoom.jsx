@@ -254,7 +254,9 @@ const OwnerPracticeRoom = () => {
                 setNotUpload(false);
                 const storage = getStorage(app);
                 // 연습실 대표 사진 이름 형식 = zic/{대여자 이름}/main/{파일 이름}_{현재 시간}
-                const fileName = `zic/default/main/${file.name}`;
+                const fileName = `zic/${localStorage.getItem(
+                    "userName"
+                )}_${localStorage.getItem("userId")}/main/${file.name}`;
                 const storageRef = ref(storage, fileName);
                 const uploadTask = uploadBytesResumable(storageRef, file);
                 uploadTask.on(

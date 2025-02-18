@@ -7,7 +7,6 @@ const Container = styled.div`
     height: 100%;
     display: grid;
     grid-template-rows: ${(props) => (props.showDate ? "30% 50%" : "1fr")};
-    background: #fff;
     box-sizing: border-box;
     gap: 8%;
 

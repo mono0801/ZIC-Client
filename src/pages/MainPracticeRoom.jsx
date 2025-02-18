@@ -162,6 +162,7 @@ const MainPracticeRoom = () => {
         queryFn: () => getPracticeRoomLike(id),
     });
 
+    // TODO : 내부방 목록 가져오기
     console.log(`PracticeRoom Id : ${id}`);
     console.log(`Date : ${query.get("date")}`);
 

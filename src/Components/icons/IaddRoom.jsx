@@ -7,7 +7,6 @@ const IAddRooom = (props) => (
         {...props}
     >
         <g clipPath="url(#clip0_1792_217)">
-            <rect width={22} height={22} fill="white" />
             <path
                 d="M11.0002 7.3335V14.6668M7.3335 11.0002H14.6668M20.1668 11.0002C20.1668 16.0628 16.0628 20.1668 11.0002 20.1668C5.93755 20.1668 1.8335 16.0628 1.8335 11.0002C1.8335 5.93755 5.93755 1.8335 11.0002 1.8335C16.0628 1.8335 20.1668 5.93755 20.1668 11.0002Z"
                 stroke="currentColor"
@@ -18,7 +17,7 @@ const IAddRooom = (props) => (
         </g>
         <defs>
             <clipPath id="clip0_1792_217">
-                <rect width={22} height={22} fill="white" />
+                <rect width={22} height={22} />
             </clipPath>
         </defs>
     </svg>
