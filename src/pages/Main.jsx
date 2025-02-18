@@ -137,7 +137,9 @@ const Main = () => {
             );
 
             console.log(response);
+
             return response.data.result.resultList;
+            
         } catch (error) {
             console.log("API 호출 에러: ", error);
             throw error;
