@@ -68,7 +68,7 @@ const Loading = () => {
 
             const option = {
                 url: `${
-                    import.meta.env.VITE_EC2_URL
+                    import.meta.env.VITE_API_URL
                 }/api/reservation/payment/kakao/approve`,
                 method: "POST",
                 headers: {

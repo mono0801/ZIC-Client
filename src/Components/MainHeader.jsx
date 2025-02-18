@@ -55,7 +55,6 @@ const Content = styled.div`
 const MainHeader = () => {
     const navigate = useNavigate();
 
-    // TODO : JWT를 통해 오너 페이지로 갈지 유저 페이지로 갈지 구현
     const handlePlus = () => {
         navigate("/owner/practiceRoom");
     };
