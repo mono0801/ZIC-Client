@@ -103,9 +103,9 @@ function App() {
                     </Route>
 
                     {/* 회원가입 */}
-                    <Route element={<OnlyPending />}>
-                        <Route path="/join/*" element={<JoinRoutes />} />
-                    </Route>
+                    {/* <Route element={<OnlyPending />}> */}
+                    <Route path="/join/*" element={<JoinRoutes />} />
+                    {/* </Route> */}
 
                     {/* 유저 */}
                     <Route element={<OnlyUser />}>
