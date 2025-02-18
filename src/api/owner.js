@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// 대여자 전용 수익 통게 조회 api
 export const axiosRevenue = async (date) => {
     const option = {
         url: `${import.meta.env.VITE_API_URL}/api/owner/revenue?date=${date}`,
@@ -19,6 +20,7 @@ export const axiosRevenue = async (date) => {
     }
 };
 
+// 대여자 전용 연습실과 내부 방 목록 조회 api
 export const axiosOwnerPracticeRoomDetail = async () => {
     const option = {
         url: `${import.meta.env.VITE_API_URL}/api/practice-room-details/owner`,
@@ -38,6 +40,7 @@ export const axiosOwnerPracticeRoomDetail = async () => {
     }
 };
 
+// 대여자 전용 연습실 내부 방 단일 조회 api
 export const getOwnerPracticeRoomDetail = async (practiceRoomDetailId) => {
     const option = {
         url: `${
@@ -59,6 +62,7 @@ export const getOwnerPracticeRoomDetail = async (practiceRoomDetailId) => {
     }
 };
 
+// 대여자 전용 연습실 내부 방 정보 변경 api
 export const patchOwnerPracticeRoomDetail = async (id, body, method) => {
     const option = {
         url: `${import.meta.env.VITE_API_URL}/api/practice-room-details/${id}`,
@@ -79,6 +83,7 @@ export const patchOwnerPracticeRoomDetail = async (id, body, method) => {
     }
 };
 
+// 대여자 전용 연습실 내부 방 이용 가능 상태 변경 api
 export const patchPracticeRoomDetailStatus = async (id) => {
     try {
         const response = await axios.patch(
@@ -100,6 +105,7 @@ export const patchPracticeRoomDetailStatus = async (id) => {
     }
 };
 
+// 대여자 전용 연습실 내부 방 등록 api
 export const postOwnerPracticeRoomDetail = async (id, body) => {
     try {
         const response = await axios.post(
@@ -121,6 +127,7 @@ export const postOwnerPracticeRoomDetail = async (id, body) => {
     }
 };
 
+// 대여자 전용 연습실 내부 방 정보 변경 api
 export const patchOwnerPracticeRoom = async (id, body) => {
     try {
         const response = await axios.patch(
