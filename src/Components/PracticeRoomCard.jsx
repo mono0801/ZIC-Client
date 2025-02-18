@@ -87,8 +87,11 @@ const RoomTime = styled.p`
 `;
 
 const PracticeRoomCard = ({ practiceRoom, selectedDate }) => {
-    const [current, total] = practiceRoom.available.split("/").map(Number);
-    const isFull = current >= total;
+    //const [current, total] = practiceRoom.available.split("/").map(Number);
+    //const isFull = current >= total;
+
+    const [current, total] = [2, 4];
+    const isFull = false;
 
     return (
         <RoomItem
@@ -108,7 +111,8 @@ const PracticeRoomCard = ({ practiceRoom, selectedDate }) => {
                 </RoomInfo>
                 <RoomTime>
                     <span>1시간</span>
-                    <span>{practiceRoom.price.toLocaleString()}</span>
+                    {/* <span>{practiceRoom.price.toLocaleString()}</span> */}
+                    <span>10,000</span>
                     <span>원</span>
                 </RoomTime>
             </InfoContainer>

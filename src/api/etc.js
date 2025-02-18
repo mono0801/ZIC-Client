@@ -23,6 +23,22 @@ export const getTestJWT = async (id) => {
     }
 };
 
+export const getPracticeRoomList = async (page, size) => {
+    try {
+        const response = await axios.get(
+            `${
+                import.meta.env.VITE_API_URL
+            }/api/practice-rooms?page=${page}&size=${size}`
+        );
+        console.log(response);
+        return response.data.result.resultList; // 성공적인 응답 처리
+    } catch (err) {
+        console.error(err); // 에러 처리
+        throw err;
+    }
+};
+// -------------------------------------------------------------------
+
 export const getPracticeRoomLike = async (id) => {
     try {
         const response = await axios.get(
