@@ -78,9 +78,10 @@ const KakaoBtn = styled.div`
 `;
 
 const Login = () => {
-    // TODO : 로그인 API 적용
     const kakaoLogin = () => {
-        window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/kakao`;
+        window.location.href = `${
+            import.meta.env.VITE_API_URL
+        }/oauth2/authorization/kakao`;
         // try {
         //     const response = await axios.get(
         //         `${import.meta.env.VITE_API_URL}/oauth2/authorization/kakao`

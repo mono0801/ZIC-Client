@@ -21,7 +21,6 @@ import OnlyUser from "./router/OnlyUser";
 import BlockAdmin from "./router/BlockAdmin";
 import OnlyPending from "./router/OnlyPending";
 import OnlyNotLogin from "./router/OnlyNotLogin";
-import KakaoLoginCallback from "./pages/KakaoLoginCallback";
 
 const JoinRoutes = () => {
     return (
@@ -100,10 +99,10 @@ function App() {
                     {/* 로그인 */}
                     <Route element={<OnlyNotLogin />}>
                         <Route path="/login" element={<Login />} />
-                        <Route path="/login/loading" element={<Loading />} />
-
-                        {/*카카오 로그인 임시 리다이렉트 */}
-                        <Route path="/login/oauth/loading" element={<KakaoLoginCallback />} />
+                        <Route
+                            path="/login/oauth/loading"
+                            element={<Loading />}
+                        />
                     </Route>
 
                     {/* 회원가입 */}
@@ -120,8 +119,6 @@ function App() {
                     <Route element={<OnlyAdmin />}>
                         <Route path="/owner/*" element={<OwnerRoutes />} />
                     </Route>
-
-                    
                 </Route>
             </Routes>
         </BrowserRouter>
