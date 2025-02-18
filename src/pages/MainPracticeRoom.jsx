@@ -1,17 +1,19 @@
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
-import { useState } from "react";
-import { FiMapPin } from "react-icons/fi";
+import { useEffect, useState } from "react";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
-import { userDetailRoom } from "../assets/userDetailRoom";
-import { ownerPracticeRoom } from "../assets/OwnerPracticeRoom";
 import PracticeRoomDetailCard from "../Components/PracticeRoomDetailCard";
 import { getPracticeRoomLike, postPracticeRoomLike } from "../api/etc";
 import { useQuery } from "@tanstack/react-query";
 import IHeart from "../Components/icons/Iheart";
 import IFilledHeart from "../Components/icons/IfilledHeart";
 import IPin from "../Components/icons/Ipin";
+import {
+    getUserDetailReservedTime,
+    getUserPracticeRoom,
+    getUserPracticeRoomDetailList,
+} from "../api/user";
 
 const MainPracticeRoomContainer = styled.div`
     width: 100%;
@@ -152,7 +154,14 @@ const CardContainer = styled.div`
 const MainPracticeRoom = () => {
     const { id } = useParams();
     const [query] = useSearchParams();
+    const [timeList, setTimeList] = useState([]);
     const navigate = useNavigate();
+
+    const { data: practiceRoom, isLoading: isLoadingPracticeRoom } = useQuery({
+        queryKey: ["practiceRoom", id],
+        queryFn: () => getUserPracticeRoom(id),
+    });
+
     const {
         data: likes,
         isLoading: isLoadingLikes,
@@ -162,7 +171,29 @@ const MainPracticeRoom = () => {
         queryFn: () => getPracticeRoomLike(id),
     });
 
-    // TODO : 내부방 목록 가져오기
+    const { data: practiceRoomDetails, isLoading: isLoadingDetails } = useQuery(
+        {
+            queryKey: ["practiceRoomDetails", id],
+            queryFn: () => getUserPracticeRoomDetailList(id, 1),
+        }
+    );
+
+    useEffect(() => {
+        if (!isLoadingDetails) {
+            const promises = practiceRoomDetails.map((detail) =>
+                getUserDetailReservedTime(
+                    detail.practiceRoomDetailId,
+                    query.get("date")
+                )
+            );
+
+            Promise.all(promises).then((results) => {
+                console.log(results);
+                setTimeList(results.reverse()); // TODO : 나중에 오름차순으로 변경되면 수정
+            });
+        }
+    }, [isLoadingDetails]);
+
     console.log(`PracticeRoom Id : ${id}`);
     console.log(`Date : ${query.get("date")}`);
 
@@ -170,9 +201,9 @@ const MainPracticeRoom = () => {
         postPracticeRoomLike(id).then((res) => (res ? refetch() : null));
     };
 
-    return (
+    return isLoadingPracticeRoom ? null : (
         <MainPracticeRoomContainer>
-            <Banner bgphoto={ownerPracticeRoom.img}></Banner>
+            <Banner bgphoto={practiceRoom.image}></Banner>
             <BackBtn>
                 <IoIosArrowBack onClick={() => navigate(-1)} />
             </BackBtn>
@@ -180,7 +211,7 @@ const MainPracticeRoom = () => {
             <PracticeRoomContainer>
                 <TitleContainer>
                     <Title>
-                        <p>{ownerPracticeRoom.name}</p>
+                        <p>{practiceRoom.name}</p>
                         {!isLoadingLikes && (
                             <div onClick={() => handleLike()}>
                                 {likes.find(
@@ -205,34 +236,35 @@ const MainPracticeRoom = () => {
                     <Address>
                         <a
                             href={`https://map.naver.com/p/search/${
-                                ownerPracticeRoom.region +
-                                " " +
-                                ownerPracticeRoom.address
+                                practiceRoom.region + " " + practiceRoom.address
                             }`}
                         >
                             <IPin width={"1.2rem"} height={"1.2rem"} />
-                            {ownerPracticeRoom.region +
-                                " " +
-                                ownerPracticeRoom.address}
+                            {practiceRoom.region + " " + practiceRoom.address}
                             <MdOutlineArrowForwardIos />
                         </a>
                     </Address>
                 </TitleContainer>
             </PracticeRoomContainer>
-            <CardContainer>
-                {userDetailRoom.map((el) => (
-                    <PracticeRoomDetailCard
-                        key={el.practiceRoomDetailId}
-                        img={el.image}
-                        time={el.reservedTimes}
-                        name={el.name}
-                        fee={el.fee}
-                        id={el.practiceRoomDetailId}
-                        date={query.get("date")}
-                        status={el.status}
-                    />
-                ))}
-            </CardContainer>
+            {!isLoadingDetails && (
+                <CardContainer>
+                    {timeList.length !== 0 &&
+                        practiceRoomDetails.map((el) => {
+                            return (
+                                <PracticeRoomDetailCard
+                                    key={el.practiceRoomDetailId}
+                                    img={el.image}
+                                    time={timeList[el.practiceRoomDetailId - 1]}
+                                    name={el.name}
+                                    fee={el.fee}
+                                    id={el.practiceRoomDetailId}
+                                    date={query.get("date")}
+                                    status={el.status}
+                                />
+                            );
+                        })}
+                </CardContainer>
+            )}
         </MainPracticeRoomContainer>
     );
 };
