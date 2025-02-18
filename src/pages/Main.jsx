@@ -5,6 +5,8 @@ import { regions, instruments } from "../assets/category";
 import Dropdown from "../Components/DropDown";
 import { useEffect, useState } from "react";
 import DateSelector from "../Components/DateSelector";
+import { useQuery } from "@tanstack/react-query";
+import { getPracticeRoomList } from "../api/etc";
 
 const Container = styled.div`
     width: 100%;
@@ -106,6 +108,11 @@ const Main = () => {
     const [instrument, setInstrument] = useState(null);
     const [price, setPrice] = useState(null);
 
+    const { data, isLoading } = useQuery({
+        queryKey: ["practiceRoom"], // queryKey는 쿼리 고유 키
+        queryFn: () => getPracticeRoomList(1, 100), // 실제 데이터 요청 함수
+    });
+
     useEffect(() => {
         if (location == null && instrument == null && price == null) {
             return;
@@ -156,13 +163,14 @@ const Main = () => {
                     <Banner src={"/assets/img/banner.png"} alt="banner" />
                 </ParamContainer>
                 <ListContainer>
-                    {practiceRooms.map((room) => (
-                        <PracticeRoomCard
-                            key={room.practiceRoomId}
-                            practiceRoom={room}
-                            selectedDate={selectedDate}
-                        />
-                    ))}
+                    {!isLoading &&
+                        data.map((room) => (
+                            <PracticeRoomCard
+                                key={room.practiceRoomId}
+                                practiceRoom={room}
+                                selectedDate={selectedDate}
+                            />
+                        ))}
                 </ListContainer>
             </Wrapper>
             <Footer>
