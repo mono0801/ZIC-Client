@@ -237,7 +237,9 @@ const AddPracticeRoom = () => {
                 setNotUpload(false);
                 const storage = getStorage(app);
                 // 연습실 내부방 사진 이름 형식 = zic/{대여자 이름}/room/{파일 이름}_{현재 시간}
-                const fileName = `zic/test/room/${
+                const fileName = `zic/${localStorage.getItem(
+                    "userName"
+                )}_${localStorage.getItem("userId")}/room/${
                     file.name
                 }_${new Date().getTime()}`;
                 const storageRef = ref(storage, fileName);

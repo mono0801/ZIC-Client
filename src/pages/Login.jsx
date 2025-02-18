@@ -3,6 +3,7 @@ import { BsChatFill } from "react-icons/bs";
 import Button from "../Components/Button";
 import { getTestJWT } from "../api/etc";
 import { useNavigate } from "react-router-dom";
+import IBanner from "../Components/icons/Ibanner";
 
 const LoginContainer = styled.div`
     height: 100vh;
@@ -21,34 +22,11 @@ const BannerWrapper = styled.div`
     flex-direction: column; /* 세로 정렬 */
     font-family: "Pretendard-Bold";
     font-size: 20px;
-`;
 
-const Banner = styled.div`
-    overflow: visible;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-image: url(${(props) => props.bgphoto});
-    background-size: cover;
-    background-repeat: no-repeat;
-    position: relative;
-    height: 10%;
-    padding: 20px;
-`;
-
-const BannerText = styled.p`
-    font-size: 100%;
-    color: #030303;
-    font-family: "Pretendard-Bold";
-    margin-left: 5%;
-`;
-
-const BannerImage = styled.img`
-    margin-top: 1%;
-    height: 4.2rem;
-    background-size: cover;
-    margin-right: 4%;
+    div {
+        width: 100%;
+        height: 20%;
+    }
 `;
 
 const KakaoWrapper = styled.div`
@@ -105,7 +83,7 @@ const Login = () => {
             "http://localhost:8080/oauth2/authorization/kakao";
     };
 
-    // TODO : 삭제하기
+    // TODO : 삭제하기 - 테스트용 로그인 api
     const navigate = useNavigate();
     const handleUserLogin = () => {
         getTestJWT(1).then(() => navigate("/"));
@@ -117,11 +95,9 @@ const Login = () => {
     return (
         <LoginContainer>
             <BannerWrapper>
-                <Banner bgphoto={"/assets/img/piano5line.png"}>
-                    <BannerText>당신이 연주할 곳은 여기</BannerText>
-                    {/* TODO : ZIC 로고 포지션 수정하기 */}
-                    <BannerImage src="/assets/img/zic_banner.png" />
-                </Banner>
+                <div>
+                    <IBanner text="당신이 연주할 곳은 여기" />
+                </div>
             </BannerWrapper>
             <KakaoWrapper>
                 {/* 테스트용 나중에 삭제하기 */}
