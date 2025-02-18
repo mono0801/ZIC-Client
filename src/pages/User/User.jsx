@@ -50,6 +50,9 @@ const User = () => {
     //logout api 연동해야함
     const handleLogout = () => {
         localStorage.removeItem("accessToken");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("userType");
         navigate("/login");
     };
 
