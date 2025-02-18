@@ -136,11 +136,9 @@ const Main = () => {
                     showDate={true}
                     onChange={setSelectedDate}
                 />
-                {/* <CalendarComponent /> */}
                 <ParamContainer>
                     <DropDownContainer>
                         <DropDownWrapper>
-                            {/* 드롭 다운 디자인 수정하기 */}
                             <Dropdown
                                 label={"지역"}
                                 options={locationOptions}
