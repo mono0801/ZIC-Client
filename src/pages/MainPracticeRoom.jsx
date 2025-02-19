@@ -1,7 +1,6 @@
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
-import { useEffect, useState } from "react";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 import PracticeRoomDetailCard from "../Components/PracticeRoomDetailCard";
 import { getPracticeRoomLike, postPracticeRoomLike } from "../api/etc";
@@ -10,10 +9,10 @@ import IHeart from "../Components/icons/Iheart";
 import IFilledHeart from "../Components/icons/IfilledHeart";
 import IPin from "../Components/icons/Ipin";
 import {
-    getUserDetailReservedTime,
     getUserPracticeRoom,
     getUserPracticeRoomDetailList,
 } from "../api/user";
+import Icalendar from "../Components/icons/Icalendar";
 
 const MainPracticeRoomContainer = styled.div`
     width: 100%;
@@ -119,18 +118,30 @@ const Title = styled.div`
 `;
 
 const Address = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     color: #545454;
+    font-family: "Pretendard-ExtraLight";
 
     a {
+        width: 50%;
         display: flex;
         align-items: center;
         justify-content: start;
         gap: 2%;
         text-decoration: none;
-        font-family: "Pretendard-ExtraLight";
         letter-spacing: 2%;
         margin-right: 2%;
         color: #545454;
+    }
+
+    p {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        gap: 2%;
+        width: 50%;
     }
 `;
 
@@ -154,7 +165,6 @@ const CardContainer = styled.div`
 const MainPracticeRoom = () => {
     const { id } = useParams();
     const [query] = useSearchParams();
-    const [timeList, setTimeList] = useState([]);
     const navigate = useNavigate();
 
     const { data: practiceRoom, isLoading: isLoadingPracticeRoom } = useQuery({
@@ -174,28 +184,10 @@ const MainPracticeRoom = () => {
     const { data: practiceRoomDetails, isLoading: isLoadingDetails } = useQuery(
         {
             queryKey: ["practiceRoomDetails", id],
-            queryFn: () => getUserPracticeRoomDetailList(id, 1),
+            queryFn: () =>
+                getUserPracticeRoomDetailList(id, 1, query.get("date")),
         }
     );
-
-    useEffect(() => {
-        if (!isLoadingDetails) {
-            const promises = practiceRoomDetails.map((detail) =>
-                getUserDetailReservedTime(
-                    detail.practiceRoomDetailId,
-                    query.get("date")
-                )
-            );
-
-            Promise.all(promises).then((results) => {
-                console.log(results);
-                setTimeList(results.reverse()); // TODO : 나중에 오름차순으로 변경되면 수정
-            });
-        }
-    }, [isLoadingDetails]);
-
-    console.log(`PracticeRoom Id : ${id}`);
-    console.log(`Date : ${query.get("date")}`);
 
     const handleLike = () => {
         postPracticeRoomLike(id).then((res) => (res ? refetch() : null));
@@ -243,26 +235,28 @@ const MainPracticeRoom = () => {
                             {practiceRoom.region + " " + practiceRoom.address}
                             <MdOutlineArrowForwardIos />
                         </a>
+                        <p>
+                            {/* <Icalendar width="1rem" height="1rem" /> */}
+                            {query.get("date")}
+                        </p>
                     </Address>
                 </TitleContainer>
             </PracticeRoomContainer>
             {!isLoadingDetails && (
                 <CardContainer>
-                    {timeList.length !== 0 &&
-                        practiceRoomDetails.map((el) => {
-                            return (
-                                <PracticeRoomDetailCard
-                                    key={el.practiceRoomDetailId}
-                                    img={el.image}
-                                    time={timeList[el.practiceRoomDetailId - 1]}
-                                    name={el.name}
-                                    fee={el.fee}
-                                    id={el.practiceRoomDetailId}
-                                    date={query.get("date")}
-                                    status={el.status}
-                                />
-                            );
-                        })}
+                    {practiceRoomDetails.map((el) => (
+                        <PracticeRoomDetailCard
+                            key={el.practiceRoomDetailId}
+                            img={el.image}
+                            time={el.availableTimeSlots}
+                            name={el.name}
+                            fee={el.fee}
+                            id={id}
+                            detailId={el.practiceRoomDetailId}
+                            date={query.get("date")}
+                            status={el.status}
+                        />
+                    ))}
                 </CardContainer>
             )}
         </MainPracticeRoomContainer>
