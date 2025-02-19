@@ -133,15 +133,6 @@ const JoinInfo = () => {
         if (!localStorage.getItem("accessToken")) {
             navigate("/login");
         }
-
-        // console.log(region);
-        // console.log(selectedInstruments);
-        // console.log(role.role);
-        console.log("region: " +region)
-        console.log("brand: " + brand)
-        console.log("number: " + number)
-        console.log("address: " + address)
-        console.log("selectedInstruments: " + selectedInstruments)
         
         if (role.role == "owner") {
             setRegionToggle(true);
@@ -151,14 +142,17 @@ const JoinInfo = () => {
     const handleNext = () => {
         console.log(region);
         console.log(selectedInstruments);
-        
-        if(role.role == "user"){
-            userSignup();
-            navigate(`/join/${role.role}/success`);
+    
+        if (role.role === "user") {
+            userSignup().then(() => {
+                navigate(`/join/${role.role}/success`);
+            }).catch(error => console.error("회원가입 실패:", error));
         }
-        if(role.role == "owner"){
-            ownerSignup();
-            navigate(`/join/${role.role}/success`);
+    
+        if (role.role === "owner") {
+            ownerSignup().then(() => {
+                navigate(`/join/${role.role}/success`);
+            }).catch(error => console.error("회원가입 실패:", error));
         }
     };
 
