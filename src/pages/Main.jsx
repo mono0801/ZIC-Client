@@ -121,6 +121,7 @@ const Main = () => {
                 instrument,
                 price
             ),
+        staleTime: 0,
     });
 
     useEffect(() => {
@@ -200,6 +201,7 @@ const Main = () => {
                     </DropDownContainer>
                     <Banner src={"/assets/img/banner.png"} alt="banner" />
                 </ParamContainer>
+
                 <ListContainer>
                     {!isLoading && data && data.length > 0 ? ( //로딩X, data가 배열, null 이나 undefined X
                         data.map((room) => (
