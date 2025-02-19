@@ -127,6 +127,7 @@ const JoinInfo = () => {
     const [number, setNumber] = useState("");
     const [address, setAddress] = useState("");
     const [selectedInstruments, setSelectedInstruments] = useState([]);
+    const [practiceRoomId, setPracticeRoomId] = useState(0);
 
     useEffect(() => {
 
@@ -134,10 +135,11 @@ const JoinInfo = () => {
             navigate("/login");
         }
         
+        console.log("내가 원하는 값 : " +practiceRoomId);
         if (role.role == "owner") {
             setRegionToggle(true);
         }
-    }, [region,brand,number,address,selectedInstruments]);
+    }, [region,brand,number,address,selectedInstruments,practiceRoomId]);
 
     const handleNext = () => {
         console.log(region);
@@ -151,7 +153,7 @@ const JoinInfo = () => {
     
         if (role.role === "owner") {
             ownerSignup().then(() => {
-                navigate(`/join/${role.role}/success`);
+                navigate(`/join/${role.role}/success`, { state: { practiceRoomId }});
             }).catch(error => console.error("회원가입 실패:", error));
         }
     };
@@ -196,7 +198,7 @@ const JoinInfo = () => {
                 {
                     region1: region, //통일 필요
                     region2: address,
-                    instrument: selectedInstruments,
+                    instrumentList: selectedInstruments,
                     businessName : brand,
                     businessNumber : number
                 },
@@ -209,15 +211,19 @@ const JoinInfo = () => {
             console.log("회원가입 응답:", res.data);
             console.log(res.data.isSuccess);
             if (res.data.isSuccess) {
-                const { userId, userName, userRole, token } = res.data.result;
+                const { userId, userName, userRole, token, practiceRoomId } = res.data.result;
               
                 localStorage.setItem("accessToken", token);
                 localStorage.setItem("userId", userId);
                 localStorage.setItem("userName", userName);
                 localStorage.setItem("userType", userRole); 
+                localStorage.setItem("practiceRoomId", practiceRoomId); 
+                
                 console.log("localStorage에 저장 완료!");
             }
-            console.log("회원가입 응답:", res.data);
+            setPracticeRoomId(res.data.result.practiceRoomId);
+            console.log(practiceRoomId);
+            console.log(res.data.result.practiceRoomId);
         }
         catch (error) {
             console.error("데이터를 연결하는 중 에러 발생:" , error);
