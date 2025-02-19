@@ -1,13 +1,12 @@
 import styled from "styled-components";
-import { practiceRooms } from "../assets/PracticeRoom";
 import PracticeRoomCard from "../Components/PracticeRoomCard";
 import { regions, instruments } from "../assets/category";
 import Dropdown from "../Components/DropDown";
 import { useEffect, useState } from "react";
 import DateSelector from "../Components/DateSelector";
 import { useQuery } from "@tanstack/react-query";
-import { getPracticeRoomList } from "../api/etc";
 import axios from "axios";
+import moment from "moment";
 
 const Container = styled.div`
     width: 100%;
@@ -100,7 +99,9 @@ const Footer = styled.div`
 `;
 
 const Main = () => {
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState(
+        moment().format("YYYY-MM-DD")
+    );
     const locationOptions = regions;
     const instrumentOptions = instruments;
     const priceOptions = ["저가순", "고가순"];
@@ -110,30 +111,53 @@ const Main = () => {
     const [price, setPrice] = useState(null);
 
     const { data, isLoading } = useQuery({
-        queryKey: ["practiceRoom"], // queryKey는 쿼리 고유 키
-        queryFn: () => getPracticeRoomList(1, 100), // 실제 데이터 요청 함수
+        queryKey: ["practiceRoom", location, instrument, price],
+        queryFn: () =>
+            getPracticeRoomList(
+                1,
+                100,
+                selectedDate,
+                location,
+                instrument,
+                price
+            ),
     });
 
     useEffect(() => {
-        if (location == null && instrument == null && price == null) {
-            return;
-        }
+        console.log(selectedDate);
         console.log({
             location,
             instrument,
             price,
         });
-    }, [location, instrument, price]);
+    }, [location, instrument, price, selectedDate]);
 
-    const getPracticeRoomList = async (page, size) => {
+    const getPracticeRoomList = async (
+        page,
+        size,
+        date,
+        region,
+        instrument,
+        price
+    ) => {
         try {
+            const params = new URLSearchParams();
+            params.append("page", page);
+            params.append("size", size);
+            params.append("date", date);
+            if (region && region != "전체") params.append("regionName", region);
+            if (instrument && instrument != "전체")
+                params.append("instrumentName", instrument);
+            if (price == "고가순") {
+                params.append("priceSort", "DESC");
+            } else {
+                params.append("priceSort", "ASC");
+            }
+
             const response = await axios.get(
-                `${import.meta.env.VITE_API_URL}/api/practice-rooms?page=${page}&size=${size}`,
-                {
-                    headers: {
-                        Authorization: localStorage.getItem("accessToken"),
-                    },
-                }
+                `${
+                    import.meta.env.VITE_API_URL
+                }/api/practice-rooms?${params.toString()}`
             );
 
             console.log(response);
@@ -142,11 +166,7 @@ const Main = () => {
             console.log("API 호출 에러: ", error);
             throw error;
         }
-    }
-
-    useEffect(() => {
-        console.log(selectedDate);
-    }, [selectedDate]);
+    };
 
     return (
         <Container>
@@ -187,10 +207,14 @@ const Main = () => {
                                 key={room.practiceRoomId}
                                 practiceRoom={room}
                                 selectedDate={selectedDate}
+                                totalCount={room.totalRoomCount}
+                                availableCount={room.availableRoomCount}
+                                price={10000}
                             />
                         ))
-                    ) : (<p>불러올 연습실 데이터가 없습니다.</p>)
-                    }
+                    ) : (
+                        <p>불러올 연습실 데이터가 없습니다.</p>
+                    )}
                 </ListContainer>
             </Wrapper>
             <Footer>
