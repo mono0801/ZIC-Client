@@ -4,13 +4,12 @@ import { FiMapPin } from "react-icons/fi";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ownerPracticeRoom } from "../../assets/OwnerPracticeRoom";
 import Button from "../../Components/Button";
-import { TimePicker } from "react-ios-time-picker";
 import axios from "axios";
 import { checkMobile } from "../../utils/checkMobile";
 import { useQuery } from "@tanstack/react-query";
 import { getUserPracticeRoom } from "../../api/user";
+import SelectTime from "../../Components/SelectTime";
 
 const Container = styled.div`
     width: 100%;
@@ -112,18 +111,21 @@ const TimeContainer = styled.div`
     align-items: center;
 
     input,
-    p {
+    p,
+    span {
         font-family: "Pretendard-Bold";
         font-size: 170%;
     }
 
-    input {
-        width: 5rem;
+    input,
+    p {
+        width: 5.5rem;
         border: 2px solid transparent;
         border-radius: 1rem;
         text-align: center;
     }
 
+    p,
     input:first-child,
     input:last-child {
         cursor: pointer;
@@ -173,12 +175,23 @@ const Total = styled.div`
     }
 `;
 
+const BackDiv = styled.div`
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    max-width: 500px;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+`;
+
 const UserPayment = () => {
     const navigate = useNavigate();
     const fee = 10000;
     const [startTime, setStartTime] = useState("01:00");
     const [endTime, setEndTime] = useState("12:00");
     const [total, setTotal] = useState(0);
+    const [startToggle, setStartToggle] = useState(false);
+    const [endToggle, setEndToggle] = useState(false);
     const [query] = useSearchParams();
     const date = query.get("date");
     const { practiceRoomId, practiceRoomDetailId } = useParams();
@@ -302,18 +315,9 @@ const UserPayment = () => {
 
                 <ReservationContainer>
                     <TimeContainer>
-                        {/* UI 변경하기 */}
-                        <TimePicker
-                            onChange={setStartTime}
-                            value={startTime}
-                            className="react-ios-time-picker"
-                        />
-                        <p>~</p>
-                        <TimePicker
-                            onChange={setEndTime}
-                            value={endTime}
-                            className="react-ios-time-picker"
-                        />
+                        <p onClick={() => setStartToggle(true)}>{startTime}</p>
+                        <span>~</span>
+                        <p onClick={() => setEndToggle(true)}>{endTime}</p>
                     </TimeContainer>
                     <InfoContainer>
                         <div>
@@ -343,6 +347,36 @@ const UserPayment = () => {
                 </ReservationContainer>
             </Wrapper>
             <Button text="결제하기" onClick={hanldeNext} height={"100%"} />
+
+            {(startToggle || endToggle) && (
+                <>
+                    <BackDiv
+                        onClick={() => {
+                            setStartToggle(false);
+                            setEndToggle(false);
+                        }}
+                    />
+                    <SelectTime />
+                </>
+            )}
+            {startToggle && (
+                <SelectTime
+                    text={"시작 시간"}
+                    notMin={true}
+                    time={startTime}
+                    setTime={setStartTime}
+                    onCancel={setStartToggle}
+                />
+            )}
+            {endToggle && (
+                <SelectTime
+                    text={"종료 시간"}
+                    notMin={true}
+                    time={endTime}
+                    setTime={setEndTime}
+                    onCancel={setEndToggle}
+                />
+            )}
         </Container>
     );
 };
