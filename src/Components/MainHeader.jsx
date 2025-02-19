@@ -5,7 +5,7 @@ import Icalendar from "./icons/Icalendar";
 import IUser from "./icons/Iuser";
 import IAddRooom from "./icons/IaddRoom";
 import IRevenue from "./icons/Irevenue";
-import { FaSignOutAlt } from "react-icons/fa";
+import { MdLogin, MdLogout } from "react-icons/md";
 
 const Container = styled.div`
     display: flex;
@@ -22,7 +22,7 @@ const Header = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #fff; //정호
+    /* background-color: #fff; //정호 */
 
     img {
         margin-bottom: 10px;
@@ -71,7 +71,6 @@ const MainHeader = () => {
         navigate("/user");
     };
 
-    // TODO : 로그아웃 테스트
     const handleLogout = () => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("userId");
@@ -93,11 +92,18 @@ const MainHeader = () => {
                     <img src="/assets/img/zic_mainlogo.png" alt="Logo" />
                 </a>
                 <IconWrapper>
-                    {/* TODO : 로그아웃을 위해 임시로 만든 아이콘 */}
-                    <FaSignOutAlt
-                        onClick={handleLogout}
-                        style={{ width: "1.8rem", height: "1.8rem" }}
-                    />
+                    {localStorage.getItem("accessToken") ? (
+                        <MdLogout
+                            onClick={handleLogout}
+                            style={{ width: "1.8rem", height: "1.8rem" }}
+                        />
+                    ) : (
+                        <MdLogin
+                            onClick={handleLogout}
+                            style={{ width: "1.8rem", height: "1.8rem" }}
+                        />
+                    )}
+
                     {localStorage.getItem("userType") == "OWNER" && (
                         <>
                             <IAddRooom
