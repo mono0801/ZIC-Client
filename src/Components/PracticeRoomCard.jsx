@@ -99,11 +99,19 @@ const PracticeRoomCard = ({
         if (availableCount == totalCount) setIsFull(true);
     }, []);
 
+    const handleNext = (e) => {
+        if (isFull) {
+            e.preventDefault(); // 네비게이션을 막는다.
+            alert("현재 연습실이 만실입니다.");
+        }
+    };
+
     return (
         <RoomItem
             to={`/practiceRoom/${practiceRoom.practiceRoomId}?date=${selectedDate}`}
             className="room-item"
             key={practiceRoom.id}
+            onClick={handleNext}
         >
             <img src={practiceRoom.image} alt={practiceRoom.name} />
             <InfoContainer>
