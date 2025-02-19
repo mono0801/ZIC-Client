@@ -22,7 +22,7 @@ export const regions = [
 export const instruments = [
     "베이스",
     "드럼",
-    "플루트",
+    "플룻",
     "기타",
     "하프",
     "피아노",

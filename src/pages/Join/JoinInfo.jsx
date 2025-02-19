@@ -7,6 +7,7 @@ import { IoIosSearch } from "react-icons/io";
 import { regions, instruments } from "../../assets/category";
 import ScrollContainer from "react-indiana-drag-scroll";
 import Isearch from "../../Components/icons/Isearch";
+import axios from "axios";
 
 const InputContainer = styled.div`
     width: 100%;
@@ -120,7 +121,7 @@ const InstrumentBtn = styled.button`
 const JoinInfo = () => {
     const role = useParams();
     const navigate = useNavigate();
-    const [regionToggle, setRegionToggle] = useState(false);
+    const [regionToggle, setRegionToggle] = useState(true);
     const [region, setRegion] = useState("");
     const [brand, setBrand] = useState("");
     const [number, setNumber] = useState("");
@@ -128,17 +129,106 @@ const JoinInfo = () => {
     const [selectedInstruments, setSelectedInstruments] = useState([]);
 
     useEffect(() => {
+
+        if (!localStorage.getItem("accessToken")) {
+            navigate("/login");
+        }
+
+        // console.log(region);
+        // console.log(selectedInstruments);
+        // console.log(role.role);
+        console.log("region: " +region)
+        console.log("brand: " + brand)
+        console.log("number: " + number)
+        console.log("address: " + address)
+        console.log("selectedInstruments: " + selectedInstruments)
+        
         if (role.role == "owner") {
             setRegionToggle(true);
         }
-    }, []);
+    }, [region,brand,number,address,selectedInstruments]);
 
     const handleNext = () => {
         console.log(region);
         console.log(selectedInstruments);
-        // TODO : 로그인 API 설정하기
-        navigate(`/join/${role.role}/success`);
+        
+        if(role.role == "user"){
+            userSignup();
+            navigate(`/join/${role.role}/success`);
+        }
+        if(role.role == "owner"){
+            ownerSignup();
+            navigate(`/join/${role.role}/success`);
+        }
     };
+
+    const userSignup = async () => {
+        console.log(localStorage.getItem("accessToken"));
+        try {
+            const res = await axios.patch(
+                `${import.meta.env.VITE_API_URL}/api/user/details`,
+                {
+                    region : region,
+                    instrumentList: selectedInstruments
+                },
+                {
+                    headers : {
+                        Authorization: localStorage.getItem("accessToken"),
+                    },
+                }
+            );
+            console.log("회원가입 응답:", res.data);
+            console.log(res.data.isSuccess);
+            if (res.data.isSuccess) {
+                const { userId, userName, userRole, token } = res.data.result;
+              
+                localStorage.setItem("accessToken", token);
+                localStorage.setItem("userId", userId);
+                localStorage.setItem("userName", userName);
+                localStorage.setItem("userType", userRole); 
+                console.log("localStorage에 저장 완료!");
+            }
+        }
+        catch (error) {
+            console.error("데이터를 연결하는 중 에러 발생:" , error);
+        }
+    }
+
+    const ownerSignup = async () => {
+        console.log(localStorage.getItem("accessToken"));
+        try {
+            const res = await axios.patch(
+                `${import.meta.env.VITE_API_URL}/api/owner/details`,
+                {
+                    region1: region, //통일 필요
+                    region2: address,
+                    instrument: selectedInstruments,
+                    businessName : brand,
+                    businessNumber : number
+                },
+                {
+                    headers : {
+                        Authorization: localStorage.getItem("accessToken"),
+                    },
+                }
+            );
+            console.log("회원가입 응답:", res.data);
+            console.log(res.data.isSuccess);
+            if (res.data.isSuccess) {
+                const { userId, userName, userRole, token } = res.data.result;
+              
+                localStorage.setItem("accessToken", token);
+                localStorage.setItem("userId", userId);
+                localStorage.setItem("userName", userName);
+                localStorage.setItem("userType", userRole); 
+                console.log("localStorage에 저장 완료!");
+            }
+            console.log("회원가입 응답:", res.data);
+        }
+        catch (error) {
+            console.error("데이터를 연결하는 중 에러 발생:" , error);
+        }
+    }
 
     const handleInstrumentClick = (instrument) => {
         setSelectedInstruments(
@@ -252,7 +342,7 @@ const JoinInfo = () => {
                 </InstrumentWarpper>
             </InstrumentContainer>
 
-            <Button text={"완료"} onClick={handleNext} height={"100%"} />
+            <Button text={"완료"}  onClick={handleNext} height={"100%"} />
         </JoinContainer>
     );
 };
