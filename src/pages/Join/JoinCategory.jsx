@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Button from "../../Components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { JoinContainer } from "../../styles/container";
 
@@ -58,6 +58,12 @@ const JoinBtn = styled.button.withConfig({
 const JoinCategory = () => {
     const [activeBtn, setActiveBtn] = useState(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!localStorage.getItem("accessToken")) {
+            navigate("/login");
+        }
+    }, [activeBtn]);
 
     const handleClick = (id) => {
         setActiveBtn(id);
