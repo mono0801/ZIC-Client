@@ -9,6 +9,8 @@ import Button from "../../Components/Button";
 import { TimePicker } from "react-ios-time-picker";
 import axios from "axios";
 import { checkMobile } from "../../utils/checkMobile";
+import { useQuery } from "@tanstack/react-query";
+import { getUserPracticeRoom } from "../../api/user";
 
 const Container = styled.div`
     width: 100%;
@@ -179,7 +181,12 @@ const UserPayment = () => {
     const [total, setTotal] = useState(0);
     const [query] = useSearchParams();
     const date = query.get("date");
-    const { id } = useParams();
+    const { practiceRoomId, practiceRoomDetailId } = useParams();
+
+    const { data: practiceRoom, isLoading: isLoadingPracticeRoom } = useQuery({
+        queryKey: ["practiceRoom", practiceRoomId],
+        queryFn: () => getUserPracticeRoom(practiceRoomId),
+    });
 
     useEffect(() => {
         const tax_free = subtractTimes(startTime, endTime).hours * fee;
@@ -194,7 +201,7 @@ const UserPayment = () => {
 
         const body = {
             reservationNumber: date.split("-").join(""),
-            practiceRoomDetail: id,
+            practiceRoomDetail: practiceRoomDetailId,
             date,
             startTime: startTime,
             endTime: endTime,
@@ -233,7 +240,13 @@ const UserPayment = () => {
                     : (window.location.href =
                           res.data.result.paymentResponse.next_redirect_pc_url);
             })
-            .catch((err) => console.log(err.result));
+            .catch((err) => {
+                if (err.response && err.response.data.result?.startTime) {
+                    alert(err.response.data.result.startTime);
+                } else {
+                    console.log(err);
+                }
+            });
     };
 
     const toTime = (time) => {
@@ -244,6 +257,7 @@ const UserPayment = () => {
     };
 
     function subtractTimes(time1, time2) {
+        console.log(time1, time2);
         const difference = toTime(time2) - toTime(time1); // 밀리초 단위로 차이 계산
 
         const hours = Math.floor(difference / (1000 * 60 * 60)); // 시간 차이
@@ -261,25 +275,29 @@ const UserPayment = () => {
                     <IoIosArrowBack onClick={() => navigate(-1)} />
                 </BackBtn>
                 <TitleContainer>
-                    <Title>
-                        <p>{ownerPracticeRoom.name}</p>
-                    </Title>
+                    {!isLoadingPracticeRoom && (
+                        <>
+                            <Title>
+                                <p>{practiceRoom.name}</p>
+                            </Title>
 
-                    <div>
-                        <Address
-                            href={`https://map.naver.com/p/search/${
-                                ownerPracticeRoom.region +
-                                " " +
-                                ownerPracticeRoom.address
-                            }`}
-                        >
-                            <FiMapPin />
-                            {ownerPracticeRoom.region +
-                                " " +
-                                ownerPracticeRoom.address}
-                            <MdOutlineArrowForwardIos />
-                        </Address>
-                    </div>
+                            <div>
+                                <Address
+                                    href={`https://map.naver.com/p/search/${
+                                        practiceRoom.region +
+                                        " " +
+                                        practiceRoom.address
+                                    }`}
+                                >
+                                    <FiMapPin />
+                                    {practiceRoom.region +
+                                        " " +
+                                        practiceRoom.address}
+                                    <MdOutlineArrowForwardIos />
+                                </Address>
+                            </div>
+                        </>
+                    )}
                 </TitleContainer>
 
                 <ReservationContainer>

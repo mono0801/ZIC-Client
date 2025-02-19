@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import DateSelector from "../Components/DateSelector";
 import { useQuery } from "@tanstack/react-query";
 import { getPracticeRoomList } from "../api/etc";
+import axios from "axios";
 
 const Container = styled.div`
     width: 100%;
@@ -124,6 +125,25 @@ const Main = () => {
         });
     }, [location, instrument, price]);
 
+    const getPracticeRoomList = async (page, size) => {
+        try {
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_URL}/api/practice-rooms?page=${page}&size=${size}`,
+                {
+                    headers: {
+                        Authorization: localStorage.getItem("accessToken"),
+                    },
+                }
+            );
+
+            console.log(response);
+            return response.data.result.resultList;
+        } catch (error) {
+            console.log("API 호출 에러: ", error);
+            throw error;
+        }
+    }
+
     useEffect(() => {
         console.log(selectedDate);
     }, [selectedDate]);
@@ -161,14 +181,16 @@ const Main = () => {
                     <Banner src={"/assets/img/banner.png"} alt="banner" />
                 </ParamContainer>
                 <ListContainer>
-                    {!isLoading &&
+                    {!isLoading && data && data.length > 0 ? ( //로딩X, data가 배열, null 이나 undefined X
                         data.map((room) => (
                             <PracticeRoomCard
                                 key={room.practiceRoomId}
                                 practiceRoom={room}
                                 selectedDate={selectedDate}
                             />
-                        ))}
+                        ))
+                    ) : (<p>불러올 연습실 데이터가 없습니다.</p>)
+                    }
                 </ListContainer>
             </Wrapper>
             <Footer>
