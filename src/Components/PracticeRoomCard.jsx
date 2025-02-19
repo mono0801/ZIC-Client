@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -86,12 +87,17 @@ const RoomTime = styled.p`
     }
 `;
 
-const PracticeRoomCard = ({ practiceRoom, selectedDate }) => {
-    //const [current, total] = practiceRoom.available.split("/").map(Number);
-    //const isFull = current >= total;
-
-    const [current, total] = [2, 4];
-    const isFull = false;
+const PracticeRoomCard = ({
+    practiceRoom,
+    selectedDate,
+    totalCount,
+    availableCount,
+    price,
+}) => {
+    const [isFull, setIsFull] = useState(false);
+    useEffect(() => {
+        if (availableCount == totalCount) setIsFull(true);
+    }, []);
 
     return (
         <RoomItem
@@ -104,15 +110,14 @@ const PracticeRoomCard = ({ practiceRoom, selectedDate }) => {
                 <RoomInfo>
                     <RoomAvailable isFull={isFull}>
                         {isFull
-                            ? `만실 ${practiceRoom.available}`
-                            : `이용가능 ${practiceRoom.available}`}
+                            ? `만실 ${availableCount} / ${totalCount}`
+                            : `이용가능 ${availableCount} / ${totalCount}`}
                     </RoomAvailable>
                     <h3>{practiceRoom.name}</h3>
                 </RoomInfo>
                 <RoomTime>
                     <span>1시간</span>
-                    {/* <span>{practiceRoom.price.toLocaleString()}</span> */}
-                    <span>10,000</span>
+                    <span>{price.toLocaleString()}</span>
                     <span>원</span>
                 </RoomTime>
             </InfoContainer>
