@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../Components/Button";
 import { JoinContainer } from "../../styles/container";
 import styled from "styled-components";
-import { IoIosSearch } from "react-icons/io";
 import { regions, instruments } from "../../assets/category";
 import ScrollContainer from "react-indiana-drag-scroll";
 import Isearch from "../../Components/icons/Isearch";

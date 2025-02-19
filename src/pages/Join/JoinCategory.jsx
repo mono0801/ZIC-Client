@@ -34,7 +34,9 @@ const BtnWrapper = styled.div`
     grid-column-gap: 15px;
 `;
 
-const JoinBtn = styled.button`
+const JoinBtn = styled.button.withConfig({
+    shouldForwardProp: (prop) => prop !== "isActive",
+})`
     text-align: center;
     font-family: "Pretendard-Bold";
     color: ${(props) => (props.isActive ? "white" : "black")};

@@ -22,21 +22,6 @@ export const getTestJWT = async (id) => {
         throw err;
     }
 };
-
-export const getPracticeRoomList = async (page, size) => {
-    try {
-        const response = await axios.get(
-            `${
-                import.meta.env.VITE_API_URL
-            }/api/practice-rooms?page=${page}&size=${size}`
-        );
-        console.log(response);
-        return response.data.result.resultList; // 성공적인 응답 처리
-    } catch (err) {
-        console.error(err); // 에러 처리
-        throw err;
-    }
-};
 // -------------------------------------------------------------------
 
 // 연습실 좋아요 목록 조회 api
@@ -53,7 +38,6 @@ export const getPracticeRoomLike = async (id) => {
                 },
             }
         );
-        console.log(response.data.result.likeList);
         return response.data.result.likeList; // 성공적인 응답 처리
     } catch (err) {
         console.error(err); // 에러 처리
