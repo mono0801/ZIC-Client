@@ -53,7 +53,6 @@ export const getPracticeRoomLike = async (id) => {
                 },
             }
         );
-        console.log(response.data.result.likeList);
         return response.data.result.likeList; // 성공적인 응답 처리
     } catch (err) {
         console.error(err); // 에러 처리
