@@ -78,11 +78,7 @@ const ReservationCard = ({
     };
 
     return (
-<<<<<<< HEAD
-        <ReservationContainer onClick={onClick}>
-=======
         <ReservationContainer onClick={onClick ? onClick : null}>
->>>>>>> 64cf041594747cf6b443177e813f25907088c130
             <ReservationImg bgphoto={img} />
             <ReservationInfo>
                 <TitleWrapper>

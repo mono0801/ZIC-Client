@@ -211,7 +211,7 @@ const Main = () => {
                                 selectedDate={selectedDate}
                                 totalCount={room.totalRoomCount}
                                 availableCount={room.availableRoomCount}
-                                price={10000}
+                                price={room.minFee}
                             />
                         ))
                     ) : (
