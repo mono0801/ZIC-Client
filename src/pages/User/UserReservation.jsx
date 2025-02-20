@@ -75,6 +75,7 @@ const UserReservation = () => {
         axios(option)
             .then((res) => {
                 alert("예약 취소 성공", res.data);
+                navigate(0);
             })
             .catch((err) => console.error("예약 취소 실패", err.response.data));
     };
