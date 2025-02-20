@@ -9,6 +9,7 @@ import { axiosOwnerPracticeRoomDetail } from "../../api/owner";
 import IFilledHeart from "../../Components/icons/IfilledHeart";
 import IHeart from "../../Components/icons/Iheart";
 import IPin from "../../Components/icons/Ipin";
+import { useEffect } from "react";
 
 const OwnerPracticeRoomContainer = styled.div`
     width: 100%;
@@ -140,6 +141,7 @@ const OwnerAddPracticeRoom = () => {
     useEffect(() => {
         refetch();
     }, [likes]);
+
     const handleLike = () => {
         postPracticeRoomLike(practiceRoomId).then((res) =>
             res ? refetch() : null
