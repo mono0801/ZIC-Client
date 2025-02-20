@@ -183,7 +183,7 @@ const MainPracticeRoom = () => {
 
     const { data: practiceRoomDetails, isLoading: isLoadingDetails } = useQuery(
         {
-            queryKey: ["practiceRoomDetails", id],
+            queryKey: ["practiceRoomDetails", id, query.get("date")],
             queryFn: () =>
                 getUserPracticeRoomDetailList(id, 1, query.get("date")),
         }
