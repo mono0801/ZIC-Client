@@ -1,6 +1,5 @@
 // 삭제하면 안됨
 export const regions = [
-    "전체",
     "부산",
     "충북",
     "충남",
@@ -21,7 +20,6 @@ export const regions = [
 ];
 
 export const instruments = [
-    "전체",
     "베이스",
     "드럼",
     "플룻",
