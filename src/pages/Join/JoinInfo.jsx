@@ -134,6 +134,10 @@ const JoinInfo = () => {
     useEffect(() => {
         console.log("내가 원하는 값 : " + practiceRoomId);
         if (role.role == "owner") {
+            if (checkMobile()) {
+                navigate("/");
+                alert("휴대폰으로는 대여자 회원가입을 하실 수 없습니다.");
+            }
             setRegionToggle(true);
         }
     }, [region, brand, number, address, selectedInstruments]);
