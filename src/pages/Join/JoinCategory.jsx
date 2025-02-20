@@ -59,12 +59,6 @@ const JoinCategory = () => {
     const [activeBtn, setActiveBtn] = useState(null);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (!localStorage.getItem("accessToken")) {
-            navigate("/login");
-        }
-    }, [activeBtn]);
-
     const handleClick = (id) => {
         setActiveBtn(id);
     };
