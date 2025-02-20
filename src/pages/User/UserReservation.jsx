@@ -1,9 +1,8 @@
 import Button from "../../Components/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CalendarComponent from "../../Components/Calendar";
 import styled from "styled-components";
 import ReservationCard from "../../Components/ReservationCard";
-import { userReservation } from "../../assets/userReservation";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { checkMobile } from "../../utils/checkMobile";
@@ -14,14 +13,14 @@ const Container = styled.div`
     height: 100%;
     width: 100%;
     display: grid;
-    grid-template-rows: ${(props) => (props.ismobile ? "45%" : "35%")} 1rem 1fr 6%;
+    grid-template-rows: ${(props) => (props.ismobile ? "45%" : "35%")} 1fr 6%;
     box-sizing: border-box;
     gap: 3%;
 `;
 
 const CalendarWrapper = styled.div``;
 
-const ReservationContainer = styled.div`
+const ReservationWrapper = styled.div`
     width: 100%;
     height: 100%;
 
@@ -34,34 +33,40 @@ const ReservationContainer = styled.div`
     }
 `;
 
-const Label = styled.p`
+const ReservationLabel = styled.p`
     font-family: "Pretendard-Bold";
     font-size: 1rem;
+    margin-bottom: 3%;
 `;
 
 const UserReservation = () => {
     const [selectedDate, setSelectedDate] = useState(
         moment().format("YYYY-MM-DD")
-    );
-    // TODO : 달력 컴포넌트 통해 예약 내역 API 구현
+    ); //선택한 날짜 (하단에 예약 내역을 표시할 때 사용)
+    const [reservations, setReservations] = useState({ resultList: [] }); //선택한 날짜의 예약 내역
+
     const navigate = useNavigate();
     const handleNext = () => {
         navigate("/");
     };
+
+    // 예약 취소 api 호출 함수
     const axiosReservationCancle = (id, tid, amount, tax_free, vat) => {
         const body = {
-            reservationId: id,
-            tid: tid,
-            cancel_amount: amount,
-            cancel_tax_free_amount: tax_free,
-            cancel_vat_amount: vat,
+            reservationId: id, //예약 id
+            tid: tid, // 취소할 결제의의 거래 id
+            cancel_amount: amount, // 취소할 총 금액
+            cancel_tax_free_amount: tax_free, // 면세 금액
+            cancel_vat_amount: vat, // 부가세 금액
         };
 
         const option = {
-            url: `${import.meta.env.VITE_EC2_URL}/api/reservation/payment/kakao/cancel`,
-            method: "POST",
+            url: `${
+                import.meta.env.VITE_API_URL
+            }/api/reservation/payment/kakao/cancel`,
+            method: "PATCH",
             headers: {
-                Authorization: import.meta.env.VITE_USER_JWT,
+                Authorization: localStorage.getItem("accessToken"),
                 "Content-Type": "application/json",
             },
             data: body,
@@ -69,57 +74,130 @@ const UserReservation = () => {
 
         axios(option)
             .then((res) => {
-                console.log(res.data);
+                alert("예약 취소 성공", res.data);
             })
-            .catch((err) => console.error(err));
+            .catch((err) => console.error("예약 취소 실패", err.response.data));
     };
 
-    // 날짜 선택 시 처리 함수
-    const handleDateSelect = (date) => {
-        const formattedDate = moment(date).format("YYYY-MM-DD"); // 날짜 포맷
-        setSelectedDate(formattedDate); // 상태에 저장
+    const handleDateSelect = async (date) => {
+        console.log("handleDateSelect 실행됨! 선택된 날짜:", date);
+        setSelectedDate(moment(date).format("YYYY-MM-DD"));
     };
 
     useEffect(() => {
-        console.log(selectedDate);
+        const fetchReservations = async () => {
+            try {
+                const response = await axios.get(
+                    `${
+                        import.meta.env.VITE_API_URL
+                    }/api/reservation/user?date=${selectedDate}&page=1`,
+                    {
+                        headers: {
+                            Authorization: localStorage.getItem("accessToken"),
+                        },
+                    }
+                );
+
+                if (!response.data.isSuccess) {
+                    console.error("API 오류: ", response.data.result);
+                    return;
+                }
+
+                setReservations(response.data.result);
+            } catch (error) {
+                console.error("예약 내역 불러오기 실패! : ", error);
+            }
+        };
+
+        fetchReservations();
     }, [selectedDate]);
 
     return (
         <Container ismobile={checkMobile()}>
             <CalendarWrapper>
-                <CalendarComponent onDateSelect={handleDateSelect} />
+                <CalendarComponent
+                    role="user"
+                    onDateSelect={handleDateSelect}
+                />
             </CalendarWrapper>
-            <Label>예약 내역</Label>
-            <ReservationContainer>
-                {userReservation.result.resultList.map((el) => (
-                    <ReservationCard
-                        key={el.reservationResult.id}
-                        img={
-                            el.reservationResult.practiceRoomDetail
-                                .practiceRoomDetailImage
-                        }
-                        roomName={
-                            el.reservationResult.practiceRoom.PracticeRoomName
-                        }
-                        detailName={
-                            el.reservationResult.practiceRoomDetail
-                                .practiceRoomDetailName
-                        }
-                        date={el.reservationResult.date}
-                        startTime={el.reservationResult.startTime}
-                        endTime={el.reservationResult.endTime}
-                        onClick={() =>
-                            axiosReservationCancle(
-                                el.reservationResult.id,
-                                el.reservationDetailResult.tid,
-                                el.reservationDetailResult.amount,
-                                el.reservationDetailResult.tax_free_amount,
-                                el.reservationDetailResult.vat_amount
-                            )
-                        }
-                    />
-                ))}
-            </ReservationContainer>
+            <ReservationWrapper>
+                <ReservationLabel>예약 내역</ReservationLabel>
+                {reservations?.resultList?.length > 0 ? (
+                    reservations.resultList.map((el) => {
+                        const reservationStatus = el.reservationResult.status; // 예약 상태 가져오기
+                        const reservationEndTime = moment(
+                            `${el.reservationResult.date} ${el.reservationResult.endTime}`,
+                            "YYYY-MM-DD HH:mm"
+                        ); // 예약 종료 시간
+                        const now = moment(); // 현재 시간
+
+                        // 종료된 예약 여부 확인
+                        const isPastReservation =
+                            reservationEndTime.isBefore(now);
+
+                        return (
+                            <ReservationCard
+                                key={el.reservationResult.id}
+                                img={
+                                    el.reservationResult.practiceRoomDetail
+                                        .practiceRoomDetailImage ?? ""
+                                }
+                                roomName={
+                                    el.reservationResult.practiceRoom
+                                        .PracticeRoomName ?? "이름 없음"
+                                }
+                                detailName={
+                                    el.reservationResult.practiceRoomDetail
+                                        .practiceRoomDetailName ??
+                                    "상세 이름 없음"
+                                }
+                                date={el.reservationResult.date ?? "날짜 없음"}
+                                startTime={
+                                    el.reservationResult.startTime ??
+                                    "시작 시간 없음"
+                                }
+                                endTime={
+                                    el.reservationResult.endTime ??
+                                    "종료 시간 없음"
+                                }
+                                onClick={() => {
+                                    if (isPastReservation) {
+                                        alert(
+                                            "이미 종료된 예약은 취소할 수 없습니다."
+                                        );
+                                        return;
+                                    }
+
+                                    if (reservationStatus === "SUCCESS") {
+                                        const isConfirmed =
+                                            confirm(
+                                                "정말로 예약을 취소하시겠습니까?"
+                                            );
+                                        if (isConfirmed) {
+                                            axiosReservationCancle(
+                                                el.reservationResult.id,
+                                                el.reservationDetailResult.tid,
+                                                el.reservationDetailResult
+                                                    .amount,
+                                                el.reservationDetailResult
+                                                    .tax_free_amount,
+                                                el.reservationDetailResult
+                                                    .vat_amount
+                                            );
+                                        }
+                                    } else {
+                                        alert(
+                                            "해당 예약은 결제 완료 상태가 아닙니다."
+                                        );
+                                    }
+                                }}
+                            />
+                        );
+                    })
+                ) : (
+                    <p>예약 내역이 없습니다.</p>
+                )}
+            </ReservationWrapper>
             <Button text="예약하기" onClick={handleNext} height={"100%"} />
         </Container>
     );
