@@ -3,6 +3,7 @@ import Button from "../../Components/Button";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { JoinContainer } from "../../styles/container";
+import Calendar from "../../Components/Calendar";
 
 const Wrapper = styled.div`
     height: 100%;
@@ -56,11 +57,13 @@ const JoinBtn = styled.button.withConfig({
 `;
 
 const JoinCategory = () => {
+    const [role, setRole] = useState("owner");
     const [activeBtn, setActiveBtn] = useState(null);
     const navigate = useNavigate();
 
     const handleClick = (id) => {
         setActiveBtn(id);
+        setRole(id);
     };
 
     const handleNext = () => {
