@@ -250,15 +250,17 @@ const JoinInfo = () => {
                     </InputWrapper>
 
                     <RegionCategory>
-                        {regions.map((el) => (
-                            <RegionBtn
-                                key={el}
-                                selected={region == el}
-                                onClick={() => setRegion(el)}
-                            >
-                                {el}
-                            </RegionBtn>
-                        ))}
+                        {regions
+                            .filter((el) => el !== "전체")
+                            .map((el) => (
+                                <RegionBtn
+                                    key={el}
+                                    selected={region == el}
+                                    onClick={() => setRegion(el)}
+                                >
+                                    {el}
+                                </RegionBtn>
+                            ))}
                     </RegionCategory>
                 </InputContainer>
             ) : (
@@ -294,15 +296,17 @@ const JoinInfo = () => {
                         <Isearch />
                     </InputWrapper>
                     <RegionCategory>
-                        {regions.map((el) => (
-                            <RegionBtn
-                                key={el}
-                                selected={region == el}
-                                onClick={() => setRegion(el)}
-                            >
-                                {el}
-                            </RegionBtn>
-                        ))}
+                        {regions
+                            .filter((el) => el !== "전체")
+                            .map((el) => (
+                                <RegionBtn
+                                    key={el}
+                                    selected={region == el}
+                                    onClick={() => setRegion(el)}
+                                >
+                                    {el}
+                                </RegionBtn>
+                            ))}
                     </RegionCategory>
                     <InputWrapper>
                         <input
@@ -318,15 +322,21 @@ const JoinInfo = () => {
             <InstrumentContainer isActive={selectedInstruments.length > 0}>
                 <p>연주 가능 종목</p>
                 <InstrumentWarpper isRole={role.role == "user"}>
-                    {instruments.map((instrument) => (
-                        <InstrumentBtn
-                            key={instrument}
-                            selected={selectedInstruments.includes(instrument)} // 선택된 상태 확인
-                            onClick={() => handleInstrumentClick(instrument)} // 클릭 이벤트 핸들러
-                        >
-                            {instrument}
-                        </InstrumentBtn>
-                    ))}
+                    {instruments
+                        .filter((el) => el !== "전체")
+                        .map((instrument) => (
+                            <InstrumentBtn
+                                key={instrument}
+                                selected={selectedInstruments.includes(
+                                    instrument
+                                )} // 선택된 상태 확인
+                                onClick={() =>
+                                    handleInstrumentClick(instrument)
+                                } // 클릭 이벤트 핸들러
+                            >
+                                {instrument}
+                            </InstrumentBtn>
+                        ))}
                 </InstrumentWarpper>
             </InstrumentContainer>
 
