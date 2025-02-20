@@ -139,12 +139,9 @@ const OwnerAddPracticeRoom = () => {
     });
 
     useEffect(() => {
-        return () => {};
-    }, []);
-    () => {
         refetch();
-    },
-        [likes];
+    }, [likes]);
+
     const handleLike = () => {
         postPracticeRoomLike(practiceRoomId).then((res) =>
             res ? refetch() : null
