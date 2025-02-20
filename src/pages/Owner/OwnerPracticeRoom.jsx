@@ -334,7 +334,7 @@ const OwnerPracticeRoom = () => {
                 <input multiple={false} name="imgUrl" {...getInputProps()} />
             </Banner>
             <BackBtn>
-                <IoIosArrowBack onClick={() => navigate(-1)} />
+                <IoIosArrowBack onClick={() => navigate("/owner")} />
             </BackBtn>
 
             <PracticeRoomContainer>

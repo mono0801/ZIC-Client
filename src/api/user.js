@@ -27,3 +27,18 @@ export const getUserPracticeRoomDetailList = async (id, page, date) => {
         throw err;
     }
 };
+
+// 이용자 전용 연습실 내부 방 목록 조회 api
+export const getUserPracticeRoomDetail = async (id) => {
+    try {
+        const response = await axios.get(
+            `${
+                import.meta.env.VITE_API_URL
+            }/api/practice-room-details/${id}`
+        );
+        return response.data.result; // 성공적인 응답 처리
+    } catch (err) {
+        console.error(err); // 에러 처리
+        throw err;
+    }
+};
