@@ -41,7 +41,10 @@ const UserRoutes = () => {
     return (
         <Routes>
             {/* 결제 페이지 */}
-            <Route path="/practiceRoom/:practiceRoomId/payment/:practiceRoomDetailId" element={<UserPayment />} />
+            <Route
+                path="/practiceRoom/:practiceRoomId/payment/:practiceRoomDetailId"
+                element={<UserPayment />}
+            />
             {/* 예약 결제 콜백 페이지 */}
             <Route path="/reservation/payment/loading" element={<Loading />} />
             <Route element={<MainHeader />}>

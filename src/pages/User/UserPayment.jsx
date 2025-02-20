@@ -5,8 +5,8 @@ import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Button from "../../Components/Button";
-import { TimePicker } from "react-ios-time-picker";
 import axios from "axios";
+import { TimePicker } from "react-ios-time-picker";
 import { checkMobile } from "../../utils/checkMobile";
 import { useQuery } from "@tanstack/react-query";
 import { getUserPracticeRoom, getUserPracticeRoomDetail } from "../../api/user";
@@ -172,6 +172,15 @@ const Total = styled.div`
     }
 `;
 
+const BackDiv = styled.div`
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    max-width: 500px;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+`;
+
 const UserPayment = () => {
     const navigate = useNavigate();
     const [startTime, setStartTime] = useState("01:00 AM");
@@ -179,6 +188,8 @@ const UserPayment = () => {
     const [end, setEnd] = useState("");
     const [endTime, setEndTime] = useState("12:00 AM");
     const [total, setTotal] = useState(0);
+    const [startToggle, setStartToggle] = useState(false);
+    const [endToggle, setEndToggle] = useState(false);
     const [query] = useSearchParams();
     const date = query.get("date");
     const { practiceRoomId, practiceRoomDetailId } = useParams();
@@ -387,6 +398,36 @@ const UserPayment = () => {
                 </ReservationContainer>
             </Wrapper>
             <Button text="결제하기" onClick={hanldeNext} height={"100%"} />
+
+            {(startToggle || endToggle) && (
+                <>
+                    <BackDiv
+                        onClick={() => {
+                            setStartToggle(false);
+                            setEndToggle(false);
+                        }}
+                    />
+                    <SelectTime />
+                </>
+            )}
+            {startToggle && (
+                <SelectTime
+                    text={"시작 시간"}
+                    notMin={true}
+                    time={startTime}
+                    setTime={setStartTime}
+                    onCancel={setStartToggle}
+                />
+            )}
+            {endToggle && (
+                <SelectTime
+                    text={"종료 시간"}
+                    notMin={true}
+                    time={endTime}
+                    setTime={setEndTime}
+                    onCancel={setEndToggle}
+                />
+            )}
         </Container>
     );
 };
