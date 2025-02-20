@@ -197,7 +197,7 @@ const MainPracticeRoom = () => {
         <MainPracticeRoomContainer>
             <Banner bgphoto={practiceRoom.image}></Banner>
             <BackBtn>
-                <IoIosArrowBack onClick={() => navigate(-1)} />
+                <IoIosArrowBack onClick={() => navigate("/")} />
             </BackBtn>
 
             <PracticeRoomContainer>

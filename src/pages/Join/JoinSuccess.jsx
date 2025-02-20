@@ -53,21 +53,17 @@ const JoinSuccess = () => {
     const param = useParams();
     const navigate = useNavigate();
 
-    useEffect (() => {
-        if (!localStorage.getItem("accessToken")) {
-            navigate("/login");
-        }
-    })
-
     const handleNext = () => {
         if (param.role == "user") {
             navigate("/");
         } else if (param.role == "owner") {
             const practiceRoomId = localStorage.getItem("practiceRoomId");
             console.log(practiceRoomId);
-            localStorage.removeItem("practiceRoomId")
+            localStorage.removeItem("practiceRoomId");
 
-            navigate(`/owner/practiceRoom/${practiceRoomId}/practiceRoomDetail`);
+            navigate(
+                `/owner/practiceRoom/${practiceRoomId}/practiceRoomDetail`
+            );
         }
     };
 
