@@ -3,7 +3,7 @@ import Button from "../../Components/Button";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { JoinContainer } from "../../styles/container";
-import Calendar from "../../Components/Calendar"
+import Calendar from "../../Components/Calendar";
 
 const Wrapper = styled.div`
     height: 100%;
@@ -92,7 +92,6 @@ const JoinCategory = () => {
                     ))}
                 </BtnWrapper>
             </Wrapper>
-            <Calendar role={role} />
             <div />
             <Button text={"다음"} onClick={handleNext} height={"100%"} />
         </JoinContainer>
