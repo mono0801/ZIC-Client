@@ -6,9 +6,7 @@ import { checkMobile } from "../../utils/checkMobile";
 import CalendarComponent from "../../Components/Calendar";
 import axios from "axios";
 
-const Container = styled.div.attrs((props) => ({
-    ismobile: undefined,
-}))`
+const Container = styled.div`
     padding: 5%;
     height: 100%;
     width: 100%;
