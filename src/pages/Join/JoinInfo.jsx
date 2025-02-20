@@ -7,6 +7,7 @@ import { IoIosSearch } from "react-icons/io";
 import { regions, instruments } from "../../assets/category";
 import ScrollContainer from "react-indiana-drag-scroll";
 import axios from "axios";
+import { checkMobile } from "../../utils/checkMobile";
 
 const InputContainer = styled.div`
     width: 100%;
@@ -150,6 +151,12 @@ const JoinInfo = () => {
         }
 
         if (role.role === "owner") {
+            if (checkMobile()) {
+                return alert(
+                    "휴대폰으로는 대여자 회원가입을 하실 수 없습니다."
+                );
+            }
+
             ownerSignup()
                 .then(() => {
                     navigate(`/join/${role.role}/success`, {

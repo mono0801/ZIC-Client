@@ -13,6 +13,7 @@ import {
     getUserPracticeRoomDetailList,
 } from "../api/user";
 import Icalendar from "../Components/icons/Icalendar";
+import { useEffect } from "react";
 
 const MainPracticeRoomContainer = styled.div`
     width: 100%;
@@ -180,6 +181,10 @@ const MainPracticeRoom = () => {
         queryKey: ["practiceRoomLikes", id],
         queryFn: () => getPracticeRoomLike(id),
     });
+
+    useEffect(() => {
+        refetch();
+    }, [likes]);
 
     const { data: practiceRoomDetails, isLoading: isLoadingDetails } = useQuery(
         {
