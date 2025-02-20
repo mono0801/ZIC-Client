@@ -6,10 +6,10 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Button from "../../Components/Button";
 import axios from "axios";
+import { TimePicker } from "react-ios-time-picker";
 import { checkMobile } from "../../utils/checkMobile";
 import { useQuery } from "@tanstack/react-query";
-import { getUserPracticeRoom } from "../../api/user";
-import SelectTime from "../../Components/SelectTime";
+import { getUserPracticeRoom, getUserPracticeRoomDetail } from "../../api/user";
 
 const Container = styled.div`
     width: 100%;
@@ -111,21 +111,18 @@ const TimeContainer = styled.div`
     align-items: center;
 
     input,
-    p,
-    span {
+    p {
         font-family: "Pretendard-Bold";
-        font-size: 170%;
+        font-size: 160%;
     }
 
-    input,
-    p {
-        width: 5.5rem;
+    input {
+        width: 8rem;
         border: 2px solid transparent;
         border-radius: 1rem;
         text-align: center;
     }
 
-    p,
     input:first-child,
     input:last-child {
         cursor: pointer;
@@ -186,9 +183,10 @@ const BackDiv = styled.div`
 
 const UserPayment = () => {
     const navigate = useNavigate();
-    const fee = 10000;
-    const [startTime, setStartTime] = useState("01:00");
-    const [endTime, setEndTime] = useState("12:00");
+    const [startTime, setStartTime] = useState("01:00 AM");
+    const [start, setStart] = useState("");
+    const [end, setEnd] = useState("");
+    const [endTime, setEndTime] = useState("12:00 AM");
     const [total, setTotal] = useState(0);
     const [startToggle, setStartToggle] = useState(false);
     const [endToggle, setEndToggle] = useState(false);
@@ -201,14 +199,35 @@ const UserPayment = () => {
         queryFn: () => getUserPracticeRoom(practiceRoomId),
     });
 
+    const { data: detailRoom, isLoading: isLoadingDetail } = useQuery({
+        queryKey: ["practiceRoomDetail", practiceRoomDetailId],
+        queryFn: () => getUserPracticeRoomDetail(practiceRoomDetailId),
+    });
+
     useEffect(() => {
-        const tax_free = subtractTimes(startTime, endTime).hours * fee;
-        const tax = tax_free / 10;
-        setTotal(tax_free + tax);
+        const startDate = toTime(startTime);
+        const endDate = toTime(endTime);
+
+        const formatTime = (date) => {
+            const hours = String(date.getHours()).padStart(2, "0"); // 두 자리 숫자로 변환
+            const minutes = String(date.getMinutes()).padStart(2, "0");
+            return `${hours}:${minutes}`;
+        };
+
+        setStart(formatTime(startDate));
+        setEnd(formatTime(endDate));
+
+        if (!isLoadingDetail) {
+            const tax_free =
+                subtractTimes(startTime, endTime).hours * detailRoom.fee;
+            const tax = tax_free / 10;
+            setTotal(tax_free + tax);
+        }
     }, [startTime, endTime]);
 
     const hanldeNext = () => {
-        if (toTime(startTime).getTime() > toTime(endTime).getTime()) {
+        console.log(`Start : ${start}, End : ${end}`);
+        if (toTime(start).getTime() > toTime(end).getTime()) {
             return alert("시작 시간이 종료 시간보다 늦어선 안됩니다.");
         }
 
@@ -263,14 +282,24 @@ const UserPayment = () => {
     };
 
     const toTime = (time) => {
-        const [hours, minutes] = time.split(":").map(Number);
+        const [hours, minutes] = time.split(":");
+        const [min, format] = minutes.split(" ");
+
+        let hour = parseInt(hours, 10);
+        const minute = parseInt(min, 10);
+
+        if (format === "PM" && hour !== 12) {
+            hour += 12; // PM이면 12 더하기 (단, 12 PM이면 그대로)
+        } else if (format === "AM" && hour === 12) {
+            hour = 0; // 12 AM이면 0으로 변환
+        }
+
         const date = new Date();
-        date.setHours(hours, minutes, 0, 0);
+        date.setHours(hour, minute, 0, 0);
         return date;
     };
 
     function subtractTimes(time1, time2) {
-        console.log(time1, time2);
         const difference = toTime(time2) - toTime(time1); // 밀리초 단위로 차이 계산
 
         const hours = Math.floor(difference / (1000 * 60 * 60)); // 시간 차이
@@ -285,7 +314,13 @@ const UserPayment = () => {
         <Container>
             <Wrapper>
                 <BackBtn>
-                    <IoIosArrowBack onClick={() => navigate(-1)} />
+                    <IoIosArrowBack
+                        onClick={() =>
+                            navigate(
+                                `/practiceRoom/${practiceRoomId}?date=${date}`
+                            )
+                        }
+                    />
                 </BackBtn>
                 <TitleContainer>
                     {!isLoadingPracticeRoom && (
@@ -315,9 +350,20 @@ const UserPayment = () => {
 
                 <ReservationContainer>
                     <TimeContainer>
-                        <p onClick={() => setStartToggle(true)}>{startTime}</p>
-                        <span>~</span>
-                        <p onClick={() => setEndToggle(true)}>{endTime}</p>
+                        {/* UI 변경하기 */}
+                        <TimePicker
+                            onChange={setStartTime}
+                            value={startTime}
+                            className="react-ios-time-picker"
+                            use12Hours
+                        />
+                        <p>~</p>
+                        <TimePicker
+                            onChange={setEndTime}
+                            value={endTime}
+                            className="react-ios-time-picker"
+                            use12Hours
+                        />
                     </TimeContainer>
                     <InfoContainer>
                         <div>
@@ -333,7 +379,12 @@ const UserPayment = () => {
                         </div>
                         <div>
                             <p>시간 당 금액</p>
-                            <p>{fee.toLocaleString()}원</p>
+                            <p>
+                                {!isLoadingDetail
+                                    ? detailRoom.fee.toLocaleString()
+                                    : 0}
+                                원
+                            </p>
                         </div>
                         <div>
                             <p>수수료</p>

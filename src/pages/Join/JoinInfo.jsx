@@ -120,7 +120,6 @@ const InstrumentBtn = styled.button`
 const JoinInfo = () => {
     const role = useParams();
     const navigate = useNavigate();
-    const [regionToggle, setRegionToggle] = useState(true);
     const [region, setRegion] = useState("");
     const [brand, setBrand] = useState("");
     const [number, setNumber] = useState("");
@@ -129,31 +128,29 @@ const JoinInfo = () => {
     const [practiceRoomId, setPracticeRoomId] = useState(0);
 
     useEffect(() => {
-
-        if (!localStorage.getItem("accessToken")) {
-            navigate("/login");
-        }
-        
-        console.log("내가 원하는 값 : " +practiceRoomId);
-        if (role.role == "owner") {
-            setRegionToggle(true);
-        }
-    }, [region,brand,number,address,selectedInstruments,practiceRoomId]);
+        console.log("내가 원하는 값 : " + practiceRoomId);
+    }, [region, brand, number, address, selectedInstruments, practiceRoomId]);
 
     const handleNext = () => {
         console.log(region);
         console.log(selectedInstruments);
-    
+
         if (role.role === "user") {
-            userSignup().then(() => {
-                navigate(`/join/${role.role}/success`);
-            }).catch(error => console.error("회원가입 실패:", error));
+            userSignup()
+                .then(() => {
+                    navigate(`/join/${role.role}/success`);
+                })
+                .catch((error) => console.error("회원가입 실패:", error));
         }
-    
+
         if (role.role === "owner") {
-            ownerSignup().then(() => {
-                navigate(`/join/${role.role}/success`, { state: { practiceRoomId }});
-            }).catch(error => console.error("회원가입 실패:", error));
+            ownerSignup()
+                .then(() => {
+                    navigate(`/join/${role.role}/success`, {
+                        state: { practiceRoomId },
+                    });
+                })
+                .catch((error) => console.error("회원가입 실패:", error));
         }
     };
 
@@ -163,11 +160,11 @@ const JoinInfo = () => {
             const res = await axios.patch(
                 `${import.meta.env.VITE_API_URL}/api/user/details`,
                 {
-                    region : region,
-                    instrumentList: selectedInstruments
+                    region: region,
+                    instrumentList: selectedInstruments,
                 },
                 {
-                    headers : {
+                    headers: {
                         Authorization: localStorage.getItem("accessToken"),
                     },
                 }
@@ -176,18 +173,17 @@ const JoinInfo = () => {
             console.log(res.data.isSuccess);
             if (res.data.isSuccess) {
                 const { userId, userName, userRole, token } = res.data.result;
-              
+
                 localStorage.setItem("accessToken", token);
                 localStorage.setItem("userId", userId);
                 localStorage.setItem("userName", userName);
-                localStorage.setItem("userType", userRole); 
+                localStorage.setItem("userType", userRole);
                 console.log("localStorage에 저장 완료!");
             }
+        } catch (error) {
+            console.error("데이터를 연결하는 중 에러 발생:", error);
         }
-        catch (error) {
-            console.error("데이터를 연결하는 중 에러 발생:" , error);
-        }
-    }
+    };
 
     const ownerSignup = async () => {
         console.log(localStorage.getItem("accessToken"));
@@ -198,11 +194,11 @@ const JoinInfo = () => {
                     region1: region, //통일 필요
                     region2: address,
                     instrumentList: selectedInstruments,
-                    businessName : brand,
-                    businessNumber : number
+                    businessName: brand,
+                    businessNumber: number,
                 },
                 {
-                    headers : {
+                    headers: {
                         Authorization: localStorage.getItem("accessToken"),
                     },
                 }
@@ -210,24 +206,24 @@ const JoinInfo = () => {
             console.log("회원가입 응답:", res.data);
             console.log(res.data.isSuccess);
             if (res.data.isSuccess) {
-                const { userId, userName, userRole, token, practiceRoomId } = res.data.result;
-              
+                const { userId, userName, userRole, token, practiceRoomId } =
+                    res.data.result;
+
                 localStorage.setItem("accessToken", token);
                 localStorage.setItem("userId", userId);
                 localStorage.setItem("userName", userName);
-                localStorage.setItem("userType", userRole); 
-                localStorage.setItem("practiceRoomId", practiceRoomId); 
-                
+                localStorage.setItem("userType", userRole);
+                localStorage.setItem("practiceRoomId", practiceRoomId);
+
                 console.log("localStorage에 저장 완료!");
             }
             setPracticeRoomId(res.data.result.practiceRoomId);
             console.log(practiceRoomId);
             console.log(res.data.result.practiceRoomId);
+        } catch (error) {
+            console.error("데이터를 연결하는 중 에러 발생:", error);
         }
-        catch (error) {
-            console.error("데이터를 연결하는 중 에러 발생:" , error);
-        }
-    }
+    };
 
     const handleInstrumentClick = (instrument) => {
         setSelectedInstruments(
@@ -250,23 +246,20 @@ const JoinInfo = () => {
                             value={region}
                             onChange={(e) => setRegion(e.target.value)}
                         />
-                        <Isearch
-                            onClick={() => setRegionToggle(!regionToggle)}
-                        />
+                        <Isearch />
                     </InputWrapper>
-                    {regionToggle ? (
-                        <RegionCategory>
-                            {regions.map((el) => (
-                                <RegionBtn
-                                    key={el}
-                                    selected={region == el}
-                                    onClick={() => setRegion(el)}
-                                >
-                                    {el}
-                                </RegionBtn>
-                            ))}
-                        </RegionCategory>
-                    ) : null}
+
+                    <RegionCategory>
+                        {regions.map((el) => (
+                            <RegionBtn
+                                key={el}
+                                selected={region == el}
+                                onClick={() => setRegion(el)}
+                            >
+                                {el}
+                            </RegionBtn>
+                        ))}
+                    </RegionCategory>
                 </InputContainer>
             ) : (
                 <InputContainer>
@@ -298,22 +291,18 @@ const JoinInfo = () => {
                             value={region}
                             onChange={(e) => setRegion(e.target.value)}
                         />
-                        <Isearch
-                            onClick={() => setRegionToggle(!regionToggle)}
-                        />
+                        <Isearch />
                     </InputWrapper>
                     <RegionCategory>
-                        {regionToggle
-                            ? regions.map((el) => (
-                                  <RegionBtn
-                                      key={el}
-                                      selected={region == el}
-                                      onClick={() => setRegion(el)}
-                                  >
-                                      {el}
-                                  </RegionBtn>
-                              ))
-                            : null}
+                        {regions.map((el) => (
+                            <RegionBtn
+                                key={el}
+                                selected={region == el}
+                                onClick={() => setRegion(el)}
+                            >
+                                {el}
+                            </RegionBtn>
+                        ))}
                     </RegionCategory>
                     <InputWrapper>
                         <input
@@ -341,7 +330,7 @@ const JoinInfo = () => {
                 </InstrumentWarpper>
             </InstrumentContainer>
 
-            <Button text={"완료"}  onClick={handleNext} height={"100%"} />
+            <Button text={"완료"} onClick={handleNext} height={"100%"} />
         </JoinContainer>
     );
 };
