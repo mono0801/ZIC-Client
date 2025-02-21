@@ -11,12 +11,16 @@ const Container = styled.div`
     height: 100%;
     width: 100%;
     display: grid;
-    grid-template-rows: ${(props) => (props.ismobile ? "45%" : "35%")} 1fr;
+    /* grid-template-rows: ${(props) => (props.ismobile ? "40%" : "35%")} 1fr; */
+    grid-template-rows: 40% 1fr;
     box-sizing: border-box;
     gap: 3%;
 `;
 
-const CalendarWrapper = styled.div``;
+const CalendarWrapper = styled.div`
+    width: 100%;
+    height: auto;
+`;
 
 const ReservationWrapper = styled.div`
     width: 100%;
