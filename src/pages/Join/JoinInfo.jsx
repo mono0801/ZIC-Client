@@ -146,10 +146,9 @@ const JoinInfo = () => {
         console.log(region);
         console.log(selectedInstruments);
 
-        if (region == null || selectedInstruments.length == 0) {
-           return alert("데이터를 입력해주십시오.")
+        if (region == "" || selectedInstruments.length == 0) {
+            return alert("데이터를 입력해주십시오.");
         }
-
 
         if (role.role === "user") {
             userSignup()
