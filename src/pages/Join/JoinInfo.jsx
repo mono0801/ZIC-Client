@@ -145,7 +145,7 @@ const JoinInfo = () => {
     const handleNext = () => {
         console.log(region);
         console.log(selectedInstruments);
-        
+
         if (region == null || selectedInstruments.length == 0) {
            return alert("데이터를 입력해주십시오.")
         }
@@ -261,7 +261,7 @@ const JoinInfo = () => {
             {role.role == "user" ? (
                 <InputContainer>
                     <InputLabel isActive={region != ""}>지역</InputLabel>
-                    <InputWrapper>
+                    {/* <InputWrapper>
                         <input
                             type="text"
                             placeholder="시/도 단위 검색"
@@ -271,7 +271,7 @@ const JoinInfo = () => {
                         <IoIosSearch
                             onClick={() => setRegionToggle(!regionToggle)}
                         />
-                    </InputWrapper>
+                    </InputWrapper> */}
                     <RegionCategory>
                         {regions
                             .filter((el) => el !== "전체")
